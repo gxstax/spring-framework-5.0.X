@@ -198,6 +198,7 @@ public class AnnotatedBeanDefinitionReader {
 	}
 
 	/**
+	 * 这个方法是把我们的注解的类注册到BeanDefinition中去
 	 * Register a bean from the given bean class, deriving its metadata from
 	 * class-declared annotations.
 	 * @param annotatedClass the class of the bean
@@ -221,6 +222,11 @@ public class AnnotatedBeanDefinitionReader {
 		 * 这个AnnotatedGenericBeanDefinition可以理解为一个数据结构
 		 */
 		AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(annotatedClass);
+
+		/**
+		 * 这句话判断类是否加了注解（查看类中是否有@Compotent @Service  @Repository诸如此类的注解）
+		 * 通过判断有无注解，spring来判断是否需要解析，如果没有加注解，则Spring会跳过解析
+		 */
 		if (this.conditionEvaluator.shouldSkip(abd.getMetadata())) {
 			return;
 		}
@@ -230,16 +236,18 @@ public class AnnotatedBeanDefinitionReader {
 		 */
 		abd.setInstanceSupplier(instanceSupplier);
 
-
+		/**
+		 * 得到bean类的作用域
+		 */
 		ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(abd);
 
 		/**
-		 * 设置Scope
+		 * 把bean类的作用域添加到类定义中
 		 */
 		abd.setScope(scopeMetadata.getScopeName());
 
 		/**
-		 * 得到传入进来的需要注册的beanName
+		 * 通过beanNameGenerator生成一个BeanName
 		 */
 		String beanName = (name != null ? name : this.beanNameGenerator.generateBeanName(abd, this.registry));
 
@@ -269,6 +277,9 @@ public class AnnotatedBeanDefinitionReader {
 		BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);
 
 
+		/**
+		 *
+		 */
 		definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
 
 		/** -------   从这一行往上的代码就是把一个bean为一个bd（BeanDefinition）过程   --------- **/

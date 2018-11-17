@@ -2,7 +2,9 @@ package com.ant.test;
 
 import com.ant.Service.UserService;
 import com.ant.config.AppConfig;
+import com.ant.dao.IndexDao;
 import com.ant.dao.UserDao;
+import com.ant.dao.UserDaoImpl;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,7 +31,15 @@ public class TestDemo {
 		 **/
 		annotationConfigApplicationContext.register(AppConfig.class);
 
-		UserService service = annotationConfigApplicationContext.getBean(UserService.class);
-		service.query();
+		/**
+		 * 初始化Spring的环境
+		 */
+		annotationConfigApplicationContext.refresh();
+
+		IndexDao dao = annotationConfigApplicationContext.getBean(IndexDao.class);
+		dao.query();
+
+//		UserService service = annotationConfigApplicationContext.getBean(UserService.class);
+//		service.query();
 	}
 }

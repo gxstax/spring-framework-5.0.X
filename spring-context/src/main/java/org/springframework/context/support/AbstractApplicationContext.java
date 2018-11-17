@@ -301,6 +301,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
+	 * 获取我们的环境 例如：.properties配置文件
 	 * Return the {@code Environment} for this application context in configurable
 	 * form, allowing for further customization.
 	 * <p>If none specified, a default environment will be initialized via
@@ -513,6 +514,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
+			//初始化工厂类准备工作：包括设置启动时间，是否激活标志位，初始化属性源（property source）配置，
 			// Prepare this context for refreshing.
 			prepareRefresh();
 
@@ -520,10 +522,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			/**
 			 * 返回一个工厂beanFactory
 			 * 为什么要返回一个工厂？ 因为要对工厂进行初始化设置（相当于生产前添加设备以及员工）
+			 *
+			 * 前面我们再register方法中，已经把我们要生产的对象（相当于工厂要生产的产品）放进了类定义中（BeanDifinitionMap），
+			 * 下一步要产生这些类（产品），我们必须要初始化我们的工厂，并且要在工厂里面添加处理器（工厂工具和工人）才能生产出类对象
 			 */
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
+			//非常重要的一个类
 			//准备一个工厂
 			prepareBeanFactory(beanFactory);
 
@@ -593,6 +599,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			logger.info("Refreshing " + this);
 		}
 
+		//实际上这个是一个空方法，没有执行任何操作，可能是spring后续要做这部分扩展使用
 		// Initialize any placeholder property sources in the context environment
 		initPropertySources();
 
@@ -647,6 +654,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
+
+		//添加后置处理器
 		// Configure the bean factory with context callbacks.
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 
@@ -666,6 +675,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.registerResolvableDependency(ApplicationEventPublisher.class, this);
 		beanFactory.registerResolvableDependency(ApplicationContext.class, this);
 
+
+		//添加后置处理器
 		// Register early post-processor for detecting inner beans as ApplicationListeners.
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
 

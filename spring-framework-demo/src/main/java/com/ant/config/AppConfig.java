@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @Version 1.0
  */
 @Configuration
-@ComponentScan("com.ant")
+//@ComponentScan("com.ant")
 public class AppConfig {
 
 }
