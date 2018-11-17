@@ -17,7 +17,6 @@
 package org.springframework.context.annotation;
 
 import java.util.function.Supplier;
-
 import org.springframework.beans.factory.config.BeanDefinitionCustomizer;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -77,18 +76,25 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	}
 
 	/**
+	 * 这个构造方法需要传入一个被 JavaConfig 定义了的注解类
+	 * 这个方法会创建一个AnnotationConfigApplicationContext类，然后把我们传进来的被注解的类对象
+	 * 定义装入到Spring的上下文中，简单说就是让这些被注解的类受Spring管理
 	 * Create a new AnnotationConfigApplicationContext, deriving bean definitions
 	 * from the given annotated classes and automatically refreshing the context.
 	 * @param annotatedClasses one or more annotated classes,
 	 * e.g. {@link Configuration @Configuration} classes
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... annotatedClasses) {
-		this();
+		//这里由于它有父类，故而会先调用父类的构造方法，然后再调用自己的构造方法
+		//在自己的构造方法中会初始化一个读取器和扫描器
+
+		this();//调用无参构造方法，实例化一个bdReader(读取器)和一个scanner(扫描器)
 		register(annotatedClasses);
 		refresh();
 	}
 
 	/**
+	 *
 	 * Create a new AnnotationConfigApplicationContext, scanning for bean definitions
 	 * in the given packages and automatically refreshing the context.
 	 * @param basePackages the packages to check for annotated classes

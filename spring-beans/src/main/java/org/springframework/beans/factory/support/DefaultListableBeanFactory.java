@@ -830,6 +830,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 							"] with [" + beanDefinition + "]");
 				}
 			}
+
+			/**
+			 *  这行代码就是把我们的定义的bd注册到或者是放到我们的beanDifinitionMap当中去，是不是非常的easy?
+			 */
 			this.beanDefinitionMap.put(beanName, beanDefinition);
 		}
 		else {

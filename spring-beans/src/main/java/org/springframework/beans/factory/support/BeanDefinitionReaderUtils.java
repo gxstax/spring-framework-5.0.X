@@ -147,6 +147,10 @@ public class BeanDefinitionReaderUtils {
 
 		// Register bean definition under primary name.
 		String beanName = definitionHolder.getBeanName();
+
+		/**
+		 * 这行代码是把我们的class转换成功的bd注册到beanDifinitionMap(是我们beanFactory的一个属性)中去
+		 */
 		registry.registerBeanDefinition(beanName, definitionHolder.getBeanDefinition());
 
 		// Register aliases for bean name, if any.
@@ -158,7 +162,7 @@ public class BeanDefinitionReaderUtils {
 		}
 	}
 
-	/**
+	/**d
 	 * Register the given bean definition with a generated name,
 	 * unique within the given bean factory.
 	 * @param definition the bean definition to generate a bean name for
