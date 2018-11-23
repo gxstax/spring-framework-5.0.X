@@ -20,8 +20,8 @@ public class TestDemo {
 		// 把spring的所有前提环境准备好
 		// 1、准备工厂 == DefaultListableBeanFactory
 		// 2、实例化一个bdReader 和一个scanner
-		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext();
-
+		AnnotationConfigApplicationContext annotationConfigApplicationContext
+				= new AnnotationConfigApplicationContext();
 
 		/**
 		 * 这行代码是把我们自己定义的AppConfig.class的class类转换成bd,

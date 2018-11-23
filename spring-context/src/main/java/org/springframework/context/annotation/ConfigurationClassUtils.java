@@ -71,6 +71,7 @@ abstract class ConfigurationClassUtils {
 
 
 	/**
+	 * 判断该类上是否加了@Configuration注解
 	 * Check whether the given bean definition is a candidate for a configuration class
 	 * (or a nested component class declared within a configuration/component class,
 	 * to be auto-registered as well), and mark it accordingly.
@@ -109,6 +110,7 @@ abstract class ConfigurationClassUtils {
 			}
 		}
 
+		//判断当前这个bd中存放的类是否加了@Configurantion注解
 		if (isFullConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}

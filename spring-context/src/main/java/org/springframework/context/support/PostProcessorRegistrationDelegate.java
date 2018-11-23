@@ -75,6 +75,11 @@ final class PostProcessorRegistrationDelegate {
 			// uninitialized to let the bean factory post-processors apply to them!
 			// Separate between BeanDefinitionRegistryPostProcessors that implement
 			// PriorityOrdered, Ordered, and the rest.
+			/**
+			 * 这个地方又定义了一个List<BeanDefinitionRegistryPostProcessor>,
+			 * 这个List主要是维护spring自己实现了BeanDefinitionRegistryPostProcessor接口的对象
+			 */
+
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
 
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
@@ -86,9 +91,19 @@ final class PostProcessorRegistrationDelegate {
 					processedBeans.add(ppName);
 				}
 			}
+			//排序，不重要
 			sortPostProcessors(currentRegistryProcessors, beanFactory);
+
+			//这里是把spring的和我们定义的（这里是指加了注解交给spring管理的，不包括我们自己通过实现接口不加注解）合并
 			registryProcessors.addAll(currentRegistryProcessors);
+
+
+			/**
+			 * 最重要，注意这里是调用方法
+			 */
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
+
+			//因为currentRegistryProcessors已经合并到了registryProcessors，所以这里可以清理调了
 			currentRegistryProcessors.clear();
 
 			// Next, invoke the BeanDefinitionRegistryPostProcessors that implement Ordered.
@@ -117,8 +132,11 @@ final class PostProcessorRegistrationDelegate {
 					}
 				}
 				sortPostProcessors(currentRegistryProcessors, beanFactory);
+
 				registryProcessors.addAll(currentRegistryProcessors);
+
 				invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
+
 				currentRegistryProcessors.clear();
 			}
 
