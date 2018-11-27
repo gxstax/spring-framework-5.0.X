@@ -215,6 +215,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 
 
 	/**
+	 * 从注册表中的配置类派生更多的bean定义
 	 * Derive further bean definitions from the configuration classes in the registry.
 	 */
 	@Override
@@ -256,6 +257,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	}
 
 	/**
+	 * 拿出的所有bd，然后判断bd是否包含了@Configuration、@Import，@Compent....等注解
 	 * Build and validate a configuration model based on the registry of
 	 * {@link Configuration} classes.
 	 */
@@ -311,18 +313,29 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			this.environment = new StandardEnvironment();
 		}
 
+
+		//初始化一个解析器
 		// Parse each @Configuration class
 		ConfigurationClassParser parser = new ConfigurationClassParser(
 				this.metadataReaderFactory, this.problemReporter, this.environment,
 				this.resourceLoader, this.componentScanBeanNameGenerator, registry);
 
 		Set<BeanDefinitionHolder> candidates = new LinkedHashSet<>(configCandidates);
+
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
+
+		/**
+		 * 解析每一个加了@Configuration的类，
+		 * 实际上我们这里只有一个(可能会有多个，比如加入SpringMvc的配置类)，
+		 * 也就是我们的配置类AppConfig
+		 */
 		do {
+			//这行代码就是具体的bd的解析过程
 			parser.parse(candidates);
 			parser.validate();
 
 			Set<ConfigurationClass> configClasses = new LinkedHashSet<>(parser.getConfigurationClasses());
+
 			configClasses.removeAll(alreadyParsed);
 
 			// Read the model and create bean definitions based on its content
@@ -335,6 +348,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			alreadyParsed.addAll(configClasses);
 
 			candidates.clear();
+
+
 			if (registry.getBeanDefinitionCount() > candidateNames.length) {
 				String[] newCandidateNames = registry.getBeanDefinitionNames();
 				Set<String> oldCandidateNames = new HashSet<>(Arrays.asList(candidateNames));

@@ -54,6 +54,9 @@ final class PostProcessorRegistrationDelegate {
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
 		Set<String> processedBeans = new HashSet<>();
 
+		/**
+		 * 这里是循环我们自己定义的beanFactoryPostProcessors,这里应该我们程序员自己写的，并且加了@Component注解的，前面的注释应该有点问题；这里有待验证
+		 */
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
@@ -79,7 +82,6 @@ final class PostProcessorRegistrationDelegate {
 			 * 这个地方又定义了一个List<BeanDefinitionRegistryPostProcessor>,
 			 * 这个List主要是维护spring自己实现了BeanDefinitionRegistryPostProcessor接口的对象
 			 */
-
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
 
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
@@ -99,7 +101,10 @@ final class PostProcessorRegistrationDelegate {
 
 
 			/**
-			 * 最重要，注意这里是调用方法
+			 * 1.最重要，注意这里是调用方法,注意这里的参数currentRegistryProcessors，
+			 *   它传过来的是spring自己的BeanFactoryPostProcessor，
+			 *   并没有把程序员自己定义的传过去处理，
+			 *   后面我们看为什么要这么做
 			 */
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
 
