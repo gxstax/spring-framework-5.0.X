@@ -225,6 +225,7 @@ class ConfigurationClassParser {
 	}
 
 
+	//处理import的情况
 	protected void processConfigurationClass(ConfigurationClass configClass) throws IOException {
 		if (this.conditionEvaluator.shouldSkip(configClass.getMetadata(), ConfigurationPhase.PARSE_CONFIGURATION)) {
 			return;
@@ -250,6 +251,7 @@ class ConfigurationClassParser {
 		// Recursively process the configuration class and its superclass hierarchy.
 		SourceClass sourceClass = asSourceClass(configClass);
 		do {
+			//这行代码是处理我们加了@Configuration注解的类，本人是测试用的是AppConfig
 			sourceClass = doProcessConfigurationClass(configClass, sourceClass);
 		}
 		while (sourceClass != null);
@@ -269,6 +271,7 @@ class ConfigurationClassParser {
 	protected final SourceClass doProcessConfigurationClass(ConfigurationClass configClass, SourceClass sourceClass)
 			throws IOException {
 
+		//处理内部类，一般不会写内部类
 		// Recursively process any member (nested) classes first
 		processMemberClasses(configClass, sourceClass);
 

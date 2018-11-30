@@ -150,6 +150,8 @@ public class BeanDefinitionReaderUtils {
 
 		/**
 		 * 这行代码是把我们的class转换成功的bd注册到beanDifinitionMap(是我们beanFactory的一个属性)中去
+		 * 其实很简单，就是找到这个东西然后put进去
+		 * 其实最难的也是最简单，so,跟进去，看是不是就是put
 		 */
 		registry.registerBeanDefinition(beanName, definitionHolder.getBeanDefinition());
 

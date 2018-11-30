@@ -62,8 +62,32 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 */
 	public AnnotationConfigApplicationContext() {
 
+		/**
+		 * 父类的构造方法
+		 * 用来创建一个读取注解的Bean定义读取器
+		 * bean定义就是一个BeanDefinition，用来描述我们加了注解的类的注解以及类描述
+		 * 具体可以去看BeanDefinition这个类对象
+		 * 这个读取器实际上包括BeanDefinition,BeanNameGenerator等一些Bean属性
+		 *
+		 * 这里最主要的工作就是初始化了一个beanFactory，也就是我们的DefaultListableBeanFactory
+		 * 然后初始化了6个我们的bean定义对象放到beanFactory的beanDefinitonMap对象中去；也就是下面的这6个了
+		 *  0 = {ConcurrentHashMap$MapEntry@925} "org.springframework.context.annotation.internalConfigurationAnnotationProcessor" ->
+		 *  1 = {ConcurrentHashMap$MapEntry@926} "org.springframework.context.event.internalEventListenerFactory"
+		 *  2 = {ConcurrentHashMap$MapEntry@927} "org.springframework.context.event.internalEventListenerProcessor"
+		 *  3 = {ConcurrentHashMap$MapEntry@928} "org.springframework.context.annotation.internalAutowiredAnnotationProcessor"
+		 *  4 = {ConcurrentHashMap$MapEntry@929} "org.springframework.context.annotation.internalCommonAnnotationProcessor"
+		 *  5 = {ConcurrentHashMap$MapEntry@930} "org.springframework.context.annotation.internalRequiredAnnotationProcessor"
+		 *
+		 */
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 
+
+		/**
+		 * 可以用来扫描包或者类，来转换为bd(BeanDefinition)
+		 * 但是实际上我们调用refresh()方法扫描我们的包的时候并不是用的这个对象，
+		 * 而是在里面重新定义了一个对象，那么这个scanner是什么呢？
+		 * 这里的scanner是为了完成程序员在外部调用annotationConfigApplicationContext.scan()方法的时候用来扫描包；
+		 */
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
 

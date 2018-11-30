@@ -214,7 +214,7 @@ public class AnnotatedBeanDefinitionReader {
 	<T> void doRegisterBean(Class<T> annotatedClass, @Nullable Supplier<T> instanceSupplier, @Nullable String name,
 			@Nullable Class<? extends Annotation>[] qualifiers, BeanDefinitionCustomizer... definitionCustomizers) {
 
-		/**      接下来这个方法中的过程实际上把bean转换成一个bd的过程   **/
+		/**   --------------   接下来这个方法中的过程实际上把bean转换成一个bd的过程 ----------------  **/
 
 
 		/**
@@ -278,7 +278,7 @@ public class AnnotatedBeanDefinitionReader {
 
 
 		/**
-		 *
+		 * 是否启用代理模式
 		 */
 		definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
 

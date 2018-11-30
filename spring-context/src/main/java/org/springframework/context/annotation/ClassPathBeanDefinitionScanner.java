@@ -273,7 +273,9 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
 		for (String basePackage : basePackages) {
-			//扫描basePackage路径下的所有java文件，这行代码很重要，它的作用就是扫描我们包里的文件
+			// 这行代码很重要，它的作用就是扫描我们包里的文件
+			// 扫描basePackage路径下的所有java文件，
+			// 并把他们转换为BeanDefinition类型
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
 			for (BeanDefinition candidate : candidates) {
 				//解析scope属性
@@ -291,6 +293,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 					definitionHolder =
 							AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
 					beanDefinitions.add(definitionHolder);
+					//这个方法就是把扫描出来的类放到通过registry注册器注册到我们bd的map中去
 					registerBeanDefinition(definitionHolder, this.registry);
 				}
 			}
@@ -311,7 +314,8 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		}
 	}
 
-	/**
+	/**程序是怎么把我们扫描出来的类定义放到bd的map中去的呢？
+	 * 就是通过这个方法，下面我们进去看这个方法到底做了什么？
 	 * Register the specified bean with the given registry.
 	 * <p>Can be overridden in subclasses, e.g. to adapt the registration
 	 * process or to register further bean definitions for each scanned bean.
