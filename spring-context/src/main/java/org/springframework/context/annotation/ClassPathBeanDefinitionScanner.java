@@ -18,7 +18,6 @@ package org.springframework.context.annotation;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
