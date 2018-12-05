@@ -55,11 +55,16 @@ final class PostProcessorRegistrationDelegate {
 		Set<String> processedBeans = new HashSet<>();
 
 		/**
-		 * 这里是循环我们自己定义的beanFactoryPostProcessors,这里应该我们程序员自己写的，并且加了@Component注解的，前面的注释应该有点问题；这里有待验证
+		 * 这里是循环我们自己定义的beanFactoryPostProcessors,这里应该我们程序员自己写的，也就是实现BeanFactoryProcessor,
+		 * 并且调用annotationConfigApplicationContext.addBeanFactoryPostProcessor(beanFactoryPostProcessor);这个方法放进来的；
+		 *
 		 */
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
+
+			//存放我们程序员自己定义的实现BeanFactoryPostProcessor接口的beanFactoryPostProcessor
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
+			//存放我们程序员自己定义的实现BeanDefinitionRegistryPostProcessor接口的beanFactroyPostProcessor
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
 
 			for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
@@ -81,6 +86,10 @@ final class PostProcessorRegistrationDelegate {
 			/**
 			 * 这个地方又定义了一个List<BeanDefinitionRegistryPostProcessor>,
 			 * 这个List主要是维护spring自己实现了BeanDefinitionRegistryPostProcessor接口的对象
+			 * 其实这里实现BeanDefinitionRegistryPostProcessor接口的只有一个，就是那个最重要的db
+			 * 这个类ConfigurationClassPostProcessor，名字叫做internalConfigurationAnnotationProcessor
+			 * 是不是很熟悉？？？哈哈
+			 * ConfigurationClassPostProcessor这个类其实是实现了BeanDefinitionRegistryPostProcessor
 			 */
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
 
@@ -97,6 +106,7 @@ final class PostProcessorRegistrationDelegate {
 			sortPostProcessors(currentRegistryProcessors, beanFactory);
 
 			//这里是把spring的和我们定义的（这里是指加了注解交给spring管理的，不包括我们自己通过实现接口不加注解）合并
+			//别问为为啥合并，应为他们都是实现BeanDefinitionRegistryPostProcessor这个接口的
 			registryProcessors.addAll(currentRegistryProcessors);
 
 
@@ -294,6 +304,10 @@ final class PostProcessorRegistrationDelegate {
 	private static void invokeBeanDefinitionRegistryPostProcessors(
 			Collection<? extends BeanDefinitionRegistryPostProcessor> postProcessors, BeanDefinitionRegistry registry) {
 
+		/**
+		 * 这里循环spring自己定义的beanFactoryProcessor
+		 * 其实循环个屁，只有一个
+		 */
 		for (BeanDefinitionRegistryPostProcessor postProcessor : postProcessors) {
 			postProcessor.postProcessBeanDefinitionRegistry(registry);
 		}

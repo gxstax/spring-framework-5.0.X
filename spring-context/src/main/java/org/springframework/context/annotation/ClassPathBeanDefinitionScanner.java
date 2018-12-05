@@ -269,8 +269,13 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 * @return set of beans registered if any for tooling registration purposes (never {@code null})
 	 */
 	protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
+
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
+		/*
+		 * 又是一个holder,其实就是做转换用的
+		 */
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
+
 		for (String basePackage : basePackages) {
 			// 这行代码很重要，它的作用就是扫描我们包里的文件
 			// 扫描basePackage路径下的所有java文件，
@@ -297,6 +302,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 				}
 			}
 		}
+		//把结果返回出去
 		return beanDefinitions;
 	}
 

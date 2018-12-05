@@ -158,6 +158,8 @@ public class AnnotationConfigUtils {
 
 		/**
 		 * 定义一个bdHolder对象，用来存储我们初始化出来的6个BD定义对象
+		 * spring初始化的bd类型全部是RootBeanDefinition类型
+		 * 后面我们还会看到诸如scanner类型，annotation类型的
 		 */
 		Set<BeanDefinitionHolder> beanDefs = new LinkedHashSet<>(8);
 
@@ -203,7 +205,7 @@ public class AnnotationConfigUtils {
 		}
 
 		/**
-		 * 然而这不是第五个，这个没有哟
+		 * 然而这不是第五个，这并没有
 		 */
 		// Check for JPA support, and if present add the PersistenceAnnotationBeanPostProcessor.
 		if (jpaPresent && !registry.containsBeanDefinition(PERSISTENCE_ANNOTATION_PROCESSOR_BEAN_NAME)) {

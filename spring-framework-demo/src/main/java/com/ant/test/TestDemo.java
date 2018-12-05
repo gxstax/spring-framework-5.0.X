@@ -1,10 +1,12 @@
 package com.ant.test;
 
 import com.ant.Service.UserService;
+import com.ant.beanfactoryfostprocessor.MyBeanFactoryPostProcessor;
 import com.ant.config.AppConfig;
 import com.ant.dao.IndexDao;
 import com.ant.dao.UserDao;
 import com.ant.dao.UserDaoImpl;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,12 +26,19 @@ public class TestDemo {
 				= new AnnotationConfigApplicationContext();
 
 		/**
+		 * 测试自定义的BeanFactoryPostProcessor
+		 */
+//		BeanFactoryPostProcessor beanFactoryPostProcessor = new MyBeanFactoryPostProcessor();
+//		annotationConfigApplicationContext.addBeanFactoryPostProcessor(beanFactoryPostProcessor);
+
+		/**
 		 * 这行代码是把我们自己定义的AppConfig.class的class类转换成bd,
 		 * 然后put到我们的beanDifinitionMap当中去;
 		 * beanDifinitonMap实际上是我们的DefaultListableBeanFactory的属性
 		 * 那么我们的DefaultListableBeanFactory是怎么来的呢？在工厂中的什么位置呢？
 		 **/
 		annotationConfigApplicationContext.register(AppConfig.class);
+
 
 		/**
 		 * 初始化Spring的环境

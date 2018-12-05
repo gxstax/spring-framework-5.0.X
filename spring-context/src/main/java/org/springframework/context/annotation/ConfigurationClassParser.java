@@ -225,12 +225,19 @@ class ConfigurationClassParser {
 	}
 
 
-	//处理import的情况
+	/**
+	 * 处理注解类
+	 * @param configClass
+	 * @throws IOException
+	 */
 	protected void processConfigurationClass(ConfigurationClass configClass) throws IOException {
+		//判断是否跳过
 		if (this.conditionEvaluator.shouldSkip(configClass.getMetadata(), ConfigurationPhase.PARSE_CONFIGURATION)) {
 			return;
 		}
 
+		//处理import的情况
+		//就是判断这个注解类是否被别的类import被引用
 		ConfigurationClass existingClass = this.configurationClasses.get(configClass);
 		if (existingClass != null) {
 			if (configClass.isImported()) {
@@ -271,10 +278,15 @@ class ConfigurationClassParser {
 	protected final SourceClass doProcessConfigurationClass(ConfigurationClass configClass, SourceClass sourceClass)
 			throws IOException {
 
-		//处理内部类，一般不会写内部类
+		//处理内部类，就是你可以在AppConfig中写一个内部类，一般不会写内部类
 		// Recursively process any member (nested) classes first
 		processMemberClasses(configClass, sourceClass);
 
+		/*
+		 *处理引入的propertiess文件，
+		 * 就是你的AppConfig类有可能有引入的配置信息文件，
+		 * 比如数据库配置文件，比如一些系统的参数
+		 */
 		// Process any @PropertySource annotations
 		for (AnnotationAttributes propertySource : AnnotationConfigUtils.attributesForRepeatable(
 				sourceClass.getMetadata(), PropertySources.class,
@@ -288,6 +300,9 @@ class ConfigurationClassParser {
 			}
 		}
 
+		/*
+		 *这是处理 @ComponentScan注解
+		 */
 		// Process any @ComponentScan annotations
 		Set<AnnotationAttributes> componentScans = AnnotationConfigUtils.attributesForRepeatable(
 				sourceClass.getMetadata(), ComponentScans.class, ComponentScan.class);
@@ -295,7 +310,7 @@ class ConfigurationClassParser {
 				!this.conditionEvaluator.shouldSkip(sourceClass.getMetadata(), ConfigurationPhase.REGISTER_BEAN)) {
 			for (AnnotationAttributes componentScan : componentScans) {
 				// The config class is annotated with @ComponentScan -> perform the scan immediately
-				//很重要
+				//很重要 扫描普通类 何为普通类？
 				Set<BeanDefinitionHolder> scannedBeanDefinitions =
 						this.componentScanParser.parse(componentScan, sourceClass.getMetadata().getClassName());
 				// Check the set of scanned definitions for any further config classes and parse recursively if needed

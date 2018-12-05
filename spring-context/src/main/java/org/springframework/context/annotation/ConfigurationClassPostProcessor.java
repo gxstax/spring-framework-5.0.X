@@ -230,7 +230,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 					"postProcessBeanFactory already called on this post-processor against " + registry);
 		}
 		this.registriesPostProcessed.add(registryId);
-
+		//进去看下它是怎么处理的
 		processConfigBeanDefinitions(registry);
 	}
 
@@ -263,13 +263,16 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	 */
 	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
-		//获取
+		//获取所有的bd定义类spring的6个，还有自己定义的（也就是加了@configuration注解的）
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
+		/*
+		 *  FULL
+		 *  LITE
+		 */
 		for (String beanName : candidateNames) {
 			BeanDefinition beanDef = registry.getBeanDefinition(beanName);
-			if (ConfigurationClassUtils.isFullConfigurationClass(beanDef) ||
-					ConfigurationClassUtils.isLiteConfigurationClass(beanDef)) {
+			if (ConfigurationClassUtils.isFullConfigurationClass(beanDef) || ConfigurationClassUtils.isLiteConfigurationClass(beanDef)) {
 				//如果BeanDefinition中的ConfigurationClass为full 或者lite,证明已经处理过了，则跳过
 				//这里要根据后面的代码来理解
 				if (logger.isDebugEnabled()) {
@@ -278,6 +281,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			}
 			//判断是否加了Configration注解，加了则设定他的configrationclass 为full
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
+				//如果加了则放进我们定义的set<bd>集合中去
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
 			}
 		}

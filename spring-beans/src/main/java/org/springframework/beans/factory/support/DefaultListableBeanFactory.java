@@ -844,7 +844,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				// Cannot modify startup-time collection elements anymore (for stable iteration)
 				//咦，还加了个同步锁，spring真的是戏多
 				synchronized (this.beanDefinitionMap) {
-					/**
+					/*
 					 *  这行代码就是把我们的定义的bd注册到或者是放到我们的beanDifinitionMap当中去，是不是非常的easy?
 					 *  当秘密的面纱被揭下，哇，so他妈easy,对不对？
 					 */
@@ -862,7 +862,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			} else {
 				//如果注册器没有准备好，spring还有一套处理机制，就是先放到beanDefinitionMap，后面根据beanDefinitionNames再注册
 				//同时把manualSingletonNames属性中去掉这个
-				//我猜的，哈哈
+				//大家别当真，以上注释纯属虚构，如有雷同，那是我牛逼，
+				// 因为是我猜的，哈哈
 				// Still in startup registration phase
 				this.beanDefinitionMap.put(beanName, beanDefinition);
 				this.beanDefinitionNames.add(beanName);

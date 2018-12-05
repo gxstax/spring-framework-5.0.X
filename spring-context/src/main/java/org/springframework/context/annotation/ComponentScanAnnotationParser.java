@@ -81,6 +81,7 @@ class ComponentScanAnnotationParser {
 	 */
 	public Set<BeanDefinitionHolder> parse(AnnotationAttributes componentScan, final String declaringClass) {
 		//定义一个扫描器scanner
+		//这里印证了我们没有用初始化AnnotationConfigApplicationContext的时候定义的sanner，而是这里我们自己new了一个
 		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(this.registry,
 				componentScan.getBoolean("useDefaultFilters"), this.environment, this.resourceLoader);
 
@@ -118,7 +119,7 @@ class ComponentScanAnnotationParser {
 			scanner.getBeanDefinitionDefaults().setLazyInit(true);
 		}
 
-		//处理@@ComponentScan配置的包名称，会把所有配置的包名放入到basePackages中
+		//处理@ComponentScan配置的包名称，会把所有配置的包名放入到basePackages中
 		Set<String> basePackages = new LinkedHashSet<>();
 		String[] basePackagesArray = componentScan.getStringArray("basePackages");
 		for (String pkg : basePackagesArray) {
@@ -140,6 +141,7 @@ class ComponentScanAnnotationParser {
 				return declaringClass.equals(className);
 			}
 		});
+		//这里是重点，进去看看
 		return scanner.doScan(StringUtils.toStringArray(basePackages));
 	}
 
