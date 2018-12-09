@@ -36,7 +36,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  * <h3>Solution</h3>
  * <p>As of Spring 4.2, a proper solution is possible thanks to SPR-8849.
- * {@link TestClass3} and {@link TestClass4} both import
+ * {@link TestClass3} and {@link TestClass4} both imports
  * {@code datasource-config-with-auto-generated-db-name.xml} which makes
  * use of the new {@code generate-name} attribute of {@code <jdbc:embedded-database>}.
  *

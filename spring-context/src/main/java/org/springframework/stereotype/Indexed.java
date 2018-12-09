@@ -71,7 +71,7 @@ import java.lang.annotation.Target;
  * <pre class="code">
  * package com.example.foo;
  *
- * import com.example.AdminService;
+ * imports com.example.AdminService;
  *
  * public class ConfigurationAdminService implements AdminService { ... }
  * </pre>

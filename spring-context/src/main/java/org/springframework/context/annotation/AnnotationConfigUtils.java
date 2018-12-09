@@ -136,6 +136,7 @@ public class AnnotationConfigUtils {
 
 	/**
 	 * 这个方法产生我们AnnotationConfigApplicationContext中的6个BD
+	 * 每个bd里面都是存放的都是一个后置处理器类，其中就包括牛逼哄哄的ConfigurationClassPostProcessor
 	 * Register all relevant annotation post processors in the given registry.
 	 * @param registry the registry to operate on
 	 * @param source the configuration source element (already extracted)
@@ -165,6 +166,8 @@ public class AnnotationConfigUtils {
 
 		/**
 		 * 1.这里是第一个bd类，也是最重要的一个《MARK一下》
+		 *   这个bd里面存放的就是牛逼哄哄的ConfigurationClassPostProcessor类
+		 *   我们后面类的扫描就是这个牛逼的类来做处理的；
 		 */
 		if (!registry.containsBeanDefinition(CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME)) {
 			RootBeanDefinition def = new RootBeanDefinition(ConfigurationClassPostProcessor.class);

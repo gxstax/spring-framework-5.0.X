@@ -173,14 +173,14 @@ public class ReaderContext {
 	}
 
 	/**
-	 * Fire an import-processed event.
+	 * Fire an imports-processed event.
 	 */
 	public void fireImportProcessed(String importedResource, @Nullable Object source) {
 		this.eventListener.importProcessed(new ImportDefinition(importedResource, source));
 	}
 
 	/**
-	 * Fire an import-processed event.
+	 * Fire an imports-processed event.
 	 */
 	public void fireImportProcessed(String importedResource, Resource[] actualResources, @Nullable Object source) {
 		this.eventListener.importProcessed(new ImportDefinition(importedResource, actualResources, source));

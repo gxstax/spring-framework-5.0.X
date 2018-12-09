@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @datetime 2018/11/18 11:39
  * @Version 1.0
  */
-@Component
+//@Component
 public class MyBeanPostPorcessor implements BeanPostProcessor{
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {

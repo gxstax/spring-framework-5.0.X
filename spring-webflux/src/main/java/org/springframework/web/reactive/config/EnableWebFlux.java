@@ -58,7 +58,7 @@ import org.springframework.context.annotation.Import;
  * </pre>
  *
  * <p>Only one {@code @Configuration} class should have the {@code @EnableWebFlux}
- * annotation in order to import the Spring WebFlux configuration. There can
+ * annotation in order to imports the Spring WebFlux configuration. There can
  * however be multiple {@code @Configuration} classes that implement
  * {@code WebFluxConfigurer} that customize the provided configuration.
  *

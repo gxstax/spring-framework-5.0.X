@@ -161,7 +161,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 
 	/**
 	 * Parse the elements at the root level in the document:
-	 * "import", "alias", "bean".
+	 * "imports", "alias", "bean".
 	 * @param root the DOM root element of the document
 	 */
 	protected void parseBeanDefinitions(Element root, BeanDefinitionParserDelegate delegate) {
@@ -202,7 +202,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	}
 
 	/**
-	 * Parse an "import" element and load the bean definitions
+	 * Parse an "imports" element and load the bean definitions
 	 * from the given resource into the bean factory.
 	 */
 	protected void importBeanDefinitionResource(Element ele) {
@@ -237,7 +237,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 			}
 			catch (BeanDefinitionStoreException ex) {
 				getReaderContext().error(
-						"Failed to import bean definitions from URL location [" + location + "]", ele, ex);
+						"Failed to imports bean definitions from URL location [" + location + "]", ele, ex);
 			}
 		}
 		else {
@@ -262,7 +262,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 				getReaderContext().error("Failed to resolve current resource location", ele, ex);
 			}
 			catch (BeanDefinitionStoreException ex) {
-				getReaderContext().error("Failed to import bean definitions from relative location [" + location + "]",
+				getReaderContext().error("Failed to imports bean definitions from relative location [" + location + "]",
 						ele, ex);
 			}
 		}

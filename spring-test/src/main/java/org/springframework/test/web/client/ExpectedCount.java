@@ -23,7 +23,7 @@ import org.springframework.util.Assert;
  *
  * <p>Examples:
  * <pre>
- * import static org.springframework.test.web.client.ExpectedCount.*
+ * imports static org.springframework.test.web.client.ExpectedCount.*
  *
  * once()
  * twice()

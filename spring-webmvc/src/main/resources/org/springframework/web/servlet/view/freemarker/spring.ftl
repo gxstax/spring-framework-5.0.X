@@ -103,7 +103,7 @@
  * Also regards a "htmlEscape" variable in the namespace of this library.
  *
  * Producing no output, the following context variable will be available
- * each time this macro is referenced (assuming you import this library in
+ * each time this macro is referenced (assuming you imports this library in
  * your templates with the namespace 'spring'):
  *
  *   spring.status : a BindStatus instance holding the command object name,

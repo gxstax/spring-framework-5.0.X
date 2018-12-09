@@ -23,9 +23,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates one or more {@link Configuration @Configuration} classes to import.
+ * Indicates one or more {@link Configuration @Configuration} classes to imports.
  *
- * <p>Provides functionality equivalent to the {@code <import/>} element in Spring XML.
+ * <p>Provides functionality equivalent to the {@code <imports/>} element in Spring XML.
  * Allows for importing {@code @Configuration} classes, {@link ImportSelector} and
  * {@link ImportBeanDefinitionRegistrar} implementations, as well as regular component
  * classes (as of 4.2; analogous to {@link AnnotationConfigApplicationContext#register}).
@@ -55,7 +55,7 @@ public @interface Import {
 
 	/**
 	 * {@link Configuration}, {@link ImportSelector}, {@link ImportBeanDefinitionRegistrar}
-	 * or regular component classes to import.
+	 * or regular component classes to imports.
 	 */
 	Class<?>[] value();
 

@@ -790,17 +790,15 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition)
 			throws BeanDefinitionStoreException {
 
-		/**
-		 * 前面这些不重要，往后看，后面才是一行代码才是精髓（严肃脸）
-		 */
+		//前面这些不重要，往后看，后面才是一行代码才是精髓（严肃脸）
 		Assert.hasText(beanName, "Bean name must not be empty");
 		Assert.notNull(beanDefinition, "BeanDefinition must not be null");
 
+		//这里是什么不知道，判断是否是什么抽象的类定义，只是加了一重过滤，不重要
 		if (beanDefinition instanceof AbstractBeanDefinition) {
 			try {
 				((AbstractBeanDefinition) beanDefinition).validate();
-			}
-			catch (BeanDefinitionValidationException ex) {
+			} catch (BeanDefinitionValidationException ex) {
 				throw new BeanDefinitionStoreException(beanDefinition.getResourceDescription(), beanName,
 						"Validation of bean definition failed", ex);
 			}
@@ -814,40 +812,34 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				throw new BeanDefinitionStoreException(beanDefinition.getResourceDescription(), beanName,
 						"Cannot register bean definition [" + beanDefinition + "] for bean '" + beanName +
 						"': There is already [" + existingDefinition + "] bound.");
-			}
-			else if (existingDefinition.getRole() < beanDefinition.getRole()) {
+			}else if (existingDefinition.getRole() < beanDefinition.getRole()) {
 				// e.g. was ROLE_APPLICATION, now overriding with ROLE_SUPPORT or ROLE_INFRASTRUCTURE
 				if (logger.isWarnEnabled()) {
 					logger.warn("Overriding user-defined bean definition for bean '" + beanName +
 							"' with a framework-generated bean definition: replacing [" +
 							existingDefinition + "] with [" + beanDefinition + "]");
 				}
-			}
-			else if (!beanDefinition.equals(existingDefinition)) {
+			}else if (!beanDefinition.equals(existingDefinition)) {
 				if (logger.isInfoEnabled()) {
 					logger.info("Overriding bean definition for bean '" + beanName +
 							"' with a different definition: replacing [" + existingDefinition +
 							"] with [" + beanDefinition + "]");
 				}
-			}
-			else {
+			}else {
 				if (logger.isDebugEnabled()) {
 					logger.debug("Overriding bean definition for bean '" + beanName +
 							"' with an equivalent definition: replacing [" + existingDefinition +
 							"] with [" + beanDefinition + "]");
 				}
 			}
-
 			this.beanDefinitionMap.put(beanName, beanDefinition);
 		} else {
 			if (hasBeanCreationStarted()) {//判断一下我们用于注册bd的组件是否准备好
 				// Cannot modify startup-time collection elements anymore (for stable iteration)
 				//咦，还加了个同步锁，spring真的是戏多
 				synchronized (this.beanDefinitionMap) {
-					/*
-					 *  这行代码就是把我们的定义的bd注册到或者是放到我们的beanDifinitionMap当中去，是不是非常的easy?
-					 *  当秘密的面纱被揭下，哇，so他妈easy,对不对？
-					 */
+					//这行代码就是把我们的定义的bd注册到或者是放到我们的beanDifinitionMap当中去，是不是非常的easy?
+					//当秘密的面纱被揭下，哇，so他妈easy,对不对？
 					this.beanDefinitionMap.put(beanName, beanDefinition);
 					List<String> updatedDefinitions = new ArrayList<>(this.beanDefinitionNames.size() + 1);
 					updatedDefinitions.addAll(this.beanDefinitionNames);

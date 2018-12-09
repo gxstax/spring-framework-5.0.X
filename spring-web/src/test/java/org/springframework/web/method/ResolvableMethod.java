@@ -77,8 +77,8 @@ import static java.util.stream.Collectors.*;
  * return type, possibly with or without an annotation.
  *
  * <pre>
- * import static org.springframework.web.method.ResolvableMethod.on;
- * import static org.springframework.web.method.MvcAnnotationPredicates.requestMapping;
+ * imports static org.springframework.web.method.ResolvableMethod.on;
+ * imports static org.springframework.web.method.MvcAnnotationPredicates.requestMapping;
  *
  * // Return type
  * on(TestController.class).resolveReturnType(Foo.class);
@@ -101,7 +101,7 @@ import static java.util.stream.Collectors.*;
  * of methods with a wide array of argument types and parameter annotations.
  *
  * <pre>
- * import static org.springframework.web.method.MvcAnnotationPredicates.requestParam;
+ * imports static org.springframework.web.method.MvcAnnotationPredicates.requestParam;
  *
  * ResolvableMethod testMethod = ResolvableMethod.on(getClass()).named("handle").build();
  *

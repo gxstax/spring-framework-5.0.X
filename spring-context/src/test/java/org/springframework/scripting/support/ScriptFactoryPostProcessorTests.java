@@ -48,7 +48,7 @@ public class ScriptFactoryPostProcessorTests {
 	private static final String PROCESSOR_BEAN_NAME = "processor";
 
 	private static final String CHANGED_SCRIPT = "package org.springframework.scripting.groovy\n" +
-			"import org.springframework.scripting.Messenger\n" +
+			"imports org.springframework.scripting.Messenger\n" +
 			"class GroovyMessenger implements Messenger {\n" +
 			"  private String message = \"Bingo\"\n" +
 			"  public String getMessage() {\n" +

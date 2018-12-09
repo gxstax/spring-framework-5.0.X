@@ -28,7 +28,7 @@ import org.springframework.web.context.WebApplicationContext;
  *
  * <p>Example use:
  * <pre class="code">
- * import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer.sharedHttpSession;
+ * imports static org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer.sharedHttpSession;
  *
  * // ...
  *

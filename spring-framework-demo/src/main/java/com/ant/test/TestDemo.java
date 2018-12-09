@@ -1,14 +1,15 @@
 package com.ant.test;
 
-import com.ant.Service.UserService;
+import com.ant.beanfactoryfostprocessor.MyBeanDefinitionRegistryPostProcessor;
 import com.ant.beanfactoryfostprocessor.MyBeanFactoryPostProcessor;
 import com.ant.config.AppConfig;
+import com.ant.dao.Dao;
 import com.ant.dao.IndexDao;
-import com.ant.dao.UserDao;
-import com.ant.dao.UserDaoImpl;
+import com.ant.dao.IndexDao3;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Configuration;
+
+import java.lang.reflect.InvocationHandler;
 
 /**
  * @author gaoxx gaoxx@fxiaoke.com
@@ -25,11 +26,14 @@ public class TestDemo {
 		AnnotationConfigApplicationContext annotationConfigApplicationContext
 				= new AnnotationConfigApplicationContext();
 
-		/**
-		 * 测试自定义的BeanFactoryPostProcessor
-		 */
+
+		//测试自定义的BeanFactoryPostProcessor
 //		BeanFactoryPostProcessor beanFactoryPostProcessor = new MyBeanFactoryPostProcessor();
 //		annotationConfigApplicationContext.addBeanFactoryPostProcessor(beanFactoryPostProcessor);
+
+		//测试我们自己定义的BeanDefinitionRegistryPostProcessor
+//		BeanFactoryPostProcessor beanFactoryPostProcessor1 = new MyBeanDefinitionRegistryPostProcessor();
+//		annotationConfigApplicationContext.addBeanFactoryPostProcessor(beanFactoryPostProcessor1);
 
 		/**
 		 * 这行代码是把我们自己定义的AppConfig.class的class类转换成bd,
@@ -45,8 +49,10 @@ public class TestDemo {
 		 */
 		annotationConfigApplicationContext.refresh();
 
-		IndexDao dao = annotationConfigApplicationContext.getBean(IndexDao.class);
+		Dao dao = (Dao) annotationConfigApplicationContext.getBean("indexDao");
 		dao.query();
+
+//		annotationConfigApplicationContext.getBean(IndexDao3.class).query();
 
 //		UserService service = annotationConfigApplicationContext.getBean(UserService.class);
 //		service.query();

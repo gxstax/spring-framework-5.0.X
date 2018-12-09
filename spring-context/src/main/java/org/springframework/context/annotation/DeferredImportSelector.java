@@ -30,7 +30,7 @@ import org.springframework.lang.Nullable;
  * interface or use the {@link org.springframework.core.annotation.Order} annotation to
  * indicate a precedence against other {@link DeferredImportSelector}s.
  *
- * <p>Implementations may also provide an {@link #getImportGroup() import group} which
+ * <p>Implementations may also provide an {@link #getImportGroup() imports group} which
  * can provide additional sorting and filtering logic across different selectors.
  *
  * @author Phillip Webb
@@ -40,8 +40,8 @@ import org.springframework.lang.Nullable;
 public interface DeferredImportSelector extends ImportSelector {
 
 	/**
-	 * Return a specific import group or {@code null} if no grouping is required.
-	 * @return the import group class or {@code null}
+	 * Return a specific imports group or {@code null} if no grouping is required.
+	 * @return the imports group class or {@code null}
 	 */
 	@Nullable
 	default Class<? extends Group> getImportGroup() {
@@ -50,7 +50,7 @@ public interface DeferredImportSelector extends ImportSelector {
 
 
 	/**
-	 * Interface used to group results from different import selectors.
+	 * Interface used to group results from different imports selectors.
 	 */
 	interface Group {
 
@@ -68,7 +68,7 @@ public interface DeferredImportSelector extends ImportSelector {
 
 		/**
 		 * An entry that holds the {@link AnnotationMetadata} of the importing
-		 * {@link Configuration} class and the class name to import.
+		 * {@link Configuration} class and the class name to imports.
 		 */
 		class Entry {
 
@@ -90,7 +90,7 @@ public interface DeferredImportSelector extends ImportSelector {
 			}
 
 			/**
-			 * Return the fully qualified name of the class to import.
+			 * Return the fully qualified name of the class to imports.
 			 */
 			public String getImportClassName() {
 				return this.importClassName;

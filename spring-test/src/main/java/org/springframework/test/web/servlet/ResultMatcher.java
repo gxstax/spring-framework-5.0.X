@@ -27,9 +27,9 @@ package org.springframework.test.web.servlet;
  * <h3>Example Using Status and Content Result Matchers</h3>
  *
  * <pre class="code">
- * import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
- * import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
- * import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
+ * imports static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+ * imports static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+ * imports static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
  *
  * // ...
  *

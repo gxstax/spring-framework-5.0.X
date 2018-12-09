@@ -60,7 +60,7 @@ import org.springframework.context.annotation.Import;
  * </pre>
  *
  * <p><strong>Note:</strong> only one {@code @Configuration} class may have the
- * {@code @EnableWebMvc} annotation to import the Spring Web MVC
+ * {@code @EnableWebMvc} annotation to imports the Spring Web MVC
  * configuration. There can however be multiple {@code @Configuration} classes
  * implementing {@code WebMvcConfigurer} in order to customize the provided
  * configuration.

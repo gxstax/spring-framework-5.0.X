@@ -213,7 +213,7 @@ public abstract class AbstractBeanDefinitionReader implements EnvironmentCapable
 		ResourceLoader resourceLoader = getResourceLoader();
 		if (resourceLoader == null) {
 			throw new BeanDefinitionStoreException(
-					"Cannot import bean definitions from location [" + location + "]: no ResourceLoader available");
+					"Cannot imports bean definitions from location [" + location + "]: no ResourceLoader available");
 		}
 
 		if (resourceLoader instanceof ResourcePatternResolver) {

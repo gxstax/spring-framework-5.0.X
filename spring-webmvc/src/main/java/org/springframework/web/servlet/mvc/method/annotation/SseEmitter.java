@@ -77,7 +77,7 @@ public class SseEmitter extends ResponseBodyEmitter {
 	/**
 	 * Send the object formatted as a single SSE "data" line. It's equivalent to:
 	 * <pre>
-	 * // static import of SseEmitter.*
+	 * // static imports of SseEmitter.*
 	 *
 	 * SseEmitter emitter = new SseEmitter();
 	 * emitter.send(event().data(myObject));
@@ -98,7 +98,7 @@ public class SseEmitter extends ResponseBodyEmitter {
 	/**
 	 * Send the object formatted as a single SSE "data" line. It's equivalent to:
 	 * <pre>
-	 * // static import of SseEmitter.*
+	 * // static imports of SseEmitter.*
 	 *
 	 * SseEmitter emitter = new SseEmitter();
 	 * emitter.send(event().data(myObject, MediaType.APPLICATION_JSON));
@@ -119,7 +119,7 @@ public class SseEmitter extends ResponseBodyEmitter {
 	/**
 	 * Send an SSE event prepared with the given builder. For example:
 	 * <pre>
-	 * // static import of SseEmitter
+	 * // static imports of SseEmitter
 	 * SseEmitter emitter = new SseEmitter();
 	 * emitter.send(event().name("update").id("1").data(myObject));
 	 * </pre>

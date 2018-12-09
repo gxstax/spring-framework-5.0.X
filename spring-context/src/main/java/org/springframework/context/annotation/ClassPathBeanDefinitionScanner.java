@@ -271,11 +271,12 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
 
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
-		/*
-		 * 又是一个holder,其实就是做转换用的
-		 */
+
+		//又是一个holder,其实就是做转换用的
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
 
+		//这里做包的循环，因为我们@ComponetScan注解里可以放多个包路径
+		//然后会循环包下面的所有类，每扫描到一个就会把他注册到工厂中的放bd的map中去
 		for (String basePackage : basePackages) {
 			// 这行代码很重要，它的作用就是扫描我们包里的文件
 			// 扫描basePackage路径下的所有java文件，

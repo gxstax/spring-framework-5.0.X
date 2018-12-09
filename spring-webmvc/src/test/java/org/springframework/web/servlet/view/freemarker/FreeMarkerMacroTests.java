@@ -288,7 +288,7 @@ public class FreeMarkerMacroTests {
 		assertNotNull(macro);
 
 		FileSystemResource resource = new FileSystemResource(System.getProperty("java.io.tmpdir") + "/tmp.ftl");
-		FileCopyUtils.copy("<#import \"spring.ftl\" as spring />\n" + macro, new FileWriter(resource.getPath()));
+		FileCopyUtils.copy("<#imports \"spring.ftl\" as spring />\n" + macro, new FileWriter(resource.getPath()));
 
 		DummyMacroRequestContext rc = new DummyMacroRequestContext(request);
 		Map<String, String> msgMap = new HashMap<>();

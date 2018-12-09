@@ -52,7 +52,7 @@ import org.springframework.util.Assert;
  * reference the "spring.ftl" macro library contained in this package:
  *
  * <pre class="code">
- * &lt;#import "/spring.ftl" as spring/&gt;
+ * &lt;#imports "/spring.ftl" as spring/&gt;
  * &lt;@spring.bind "person.age"/&gt;
  * age is ${spring.status.value}</pre>
  *

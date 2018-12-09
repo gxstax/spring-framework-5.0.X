@@ -38,7 +38,7 @@ import org.springframework.util.StringUtils;
  * file to match the public URL paths that should be exposed to clients (e.g.
  * with an MD5 content-based hash inserted in the URL).
  *
- * <p>The implementation looks for links in CSS {@code @import} statements and
+ * <p>The implementation looks for links in CSS {@code @imports} statements and
  * also inside CSS {@code url()} functions. All links are then passed through the
  * {@link ResourceResolverChain} and resolved relative to the location of the
  * containing CSS file. If successfully resolved, the link is modified, otherwise
@@ -138,7 +138,7 @@ public class CssLinkResourceTransformer extends ResourceTransformerSupport {
 
 	protected abstract static class AbstractLinkParser implements LinkParser {
 
-		/** Return the keyword to use to search for links, e.g. "@import", "url(" */
+		/** Return the keyword to use to search for links, e.g. "@imports", "url(" */
 		protected abstract String getKeyword();
 
 		@Override
@@ -187,7 +187,7 @@ public class CssLinkResourceTransformer extends ResourceTransformerSupport {
 
 		@Override
 		protected String getKeyword() {
-			return "@import";
+			return "@imports";
 		}
 
 		@Override
@@ -196,7 +196,7 @@ public class CssLinkResourceTransformer extends ResourceTransformerSupport {
 				// Ignore, UrlLinkParser will take care
 			}
 			else if (logger.isErrorEnabled()) {
-				logger.error("Unexpected syntax for @import link at index " + index);
+				logger.error("Unexpected syntax for @imports link at index " + index);
 			}
 			return index;
 		}

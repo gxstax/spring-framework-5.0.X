@@ -19,7 +19,7 @@ package org.springframework.beans.factory.parsing;
 import java.util.EventListener;
 
 /**
- * Interface that receives callbacks for component, alias and import
+ * Interface that receives callbacks for component, alias and imports
  * registrations during a bean definition reading process.
  *
  * @author Rob Harrop
@@ -50,8 +50,8 @@ public interface ReaderEventListener extends EventListener {
 	void aliasRegistered(AliasDefinition aliasDefinition);
 
 	/**
-	 * Notification that the given import has been processed.
-	 * @param importDefinition a descriptor for the import
+	 * Notification that the given imports has been processed.
+	 * @param importDefinition a descriptor for the imports
 	 */
 	void importProcessed(ImportDefinition importDefinition);
 

@@ -63,7 +63,7 @@ import org.springframework.util.Assert;
  *
  * <pre class="code">package a.b.c;
  *
- * import org.springframework.beans.factory.ObjectFactory;
+ * imports org.springframework.beans.factory.ObjectFactory;
  *
  * public class MyClientBean {
  *

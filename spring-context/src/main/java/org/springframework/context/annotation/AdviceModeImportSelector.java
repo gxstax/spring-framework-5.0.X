@@ -89,7 +89,7 @@ public abstract class AdviceModeImportSelector<A extends Annotation> implements 
 	 * should be thrown.
 	 * @param adviceMode the value of the {@linkplain #getAdviceModeAttributeName()
 	 * advice mode attribute} for the annotation specified via generics.
-	 * @return array containing classes to import (empty array if none;
+	 * @return array containing classes to imports (empty array if none;
 	 * {@code null} if the given {@code AdviceMode} is unknown)
 	 */
 	@Nullable

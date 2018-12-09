@@ -46,7 +46,7 @@ public abstract class AbstractCircularImportDetectionTests {
 			assertTrue("Wrong message. Got: " + ex.getMessage(),
 					ex.getMessage().contains(
 						"Illegal attempt by @Configuration class 'AbstractCircularImportDetectionTests.B' " +
-						"to import class 'AbstractCircularImportDetectionTests.A'"));
+						"to imports class 'AbstractCircularImportDetectionTests.A'"));
 			threw = true;
 		}
 		assertTrue(threw);
@@ -62,7 +62,7 @@ public abstract class AbstractCircularImportDetectionTests {
 			assertTrue("Wrong message. Got: " + ex.getMessage(),
 					ex.getMessage().contains(
 						"Illegal attempt by @Configuration class 'AbstractCircularImportDetectionTests.Z2' " +
-						"to import class 'AbstractCircularImportDetectionTests.Z'"));
+						"to imports class 'AbstractCircularImportDetectionTests.Z'"));
 			threw = true;
 		}
 		assertTrue(threw);

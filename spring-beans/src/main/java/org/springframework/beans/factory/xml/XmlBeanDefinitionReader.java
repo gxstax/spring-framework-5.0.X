@@ -324,7 +324,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		}
 		if (!currentResources.add(encodedResource)) {
 			throw new BeanDefinitionStoreException(
-					"Detected cyclic loading of " + encodedResource + " - check your import definitions!");
+					"Detected cyclic loading of " + encodedResource + " - check your imports definitions!");
 		}
 		try {
 			InputStream inputStream = encodedResource.getResource().getInputStream();

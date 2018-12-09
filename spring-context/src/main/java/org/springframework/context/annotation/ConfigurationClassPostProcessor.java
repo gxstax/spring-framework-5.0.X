@@ -231,6 +231,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		}
 		this.registriesPostProcessed.add(registryId);
 		//进去看下它是怎么处理的
+		//其实这个方法才是处理我们appconfig加的所有注解的东西，报错@ComponetScan扫描包，@Import注解,
+		//以及@configuration等等等等.....
 		processConfigBeanDefinitions(registry);
 	}
 
@@ -252,7 +254,11 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			processConfigBeanDefinitions((BeanDefinitionRegistry) beanFactory);
 		}
 
+		//这行代码是对加了FULL属性的做CGLIB动态代理
+		// （还记得我们在解析AppConfig的时候判断是否有@Configurantion注解吧，如果有则给了它FULL属性，没有给了LITE属性）
+		// 产生cglib代理，为什么要产生代理呢？
 		enhanceConfigurationClasses(beanFactory);
+
 		beanFactory.addBeanPostProcessor(new ImportAwareBeanPostProcessor(beanFactory));
 	}
 
@@ -286,6 +292,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			}
 		}
 
+		//如果没有找到@Configration注解的类，则直接返回
 		// Return immediately if no @Configuration classes were found
 		if (configCandidates.isEmpty()) {
 			return;
@@ -338,6 +345,13 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			parser.parse(candidates);
 			parser.validate();
 
+			//来看下parser.getConfigurationClasses()方法
+			/*
+			 * public Set<ConfigurationClass> getConfigurationClasses() {
+			 *		return this.configurationClasses.keySet();
+			 *	}
+			 */
+			//configurationClasses这个集合是不是就是我们解析import类后，把import类放到这里面了？
 			Set<ConfigurationClass> configClasses = new LinkedHashSet<>(parser.getConfigurationClasses());
 
 			configClasses.removeAll(alreadyParsed);
@@ -348,7 +362,10 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 						registry, this.sourceExtractor, this.resourceLoader, this.environment,
 						this.importBeanNameGenerator, parser.getImportRegistry());
 			}
+
+			//这里是把我们通过Import(包括3种方法)进来的类注册到map中去
 			this.reader.loadBeanDefinitions(configClasses);
+
 			alreadyParsed.addAll(configClasses);
 
 			candidates.clear();
@@ -375,7 +392,6 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		}
 		while (!candidates.isEmpty());
 
-		//注册我们import进来的类对象
 		// Register the ImportRegistry as a bean in order to support ImportAware @Configuration classes
 		if (sbr != null && !sbr.containsSingleton(IMPORT_REGISTRY_BEAN_NAME)) {
 			sbr.registerSingleton(IMPORT_REGISTRY_BEAN_NAME, parser.getImportRegistry());
@@ -398,6 +414,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		Map<String, AbstractBeanDefinition> configBeanDefs = new LinkedHashMap<>();
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
 			BeanDefinition beanDef = beanFactory.getBeanDefinition(beanName);
+			//还记得我们之前在处理我们的AppConfig类的时候如果加了@Configuratio则它了一个FUll属性，没有则给了一个LITE属性
+			//这里就是对这个的处理
 			if (ConfigurationClassUtils.isFullConfigurationClass(beanDef)) {
 				if (!(beanDef instanceof AbstractBeanDefinition)) {
 					throw new BeanDefinitionStoreException("Cannot enhance @Configuration bean definition '" +
@@ -412,6 +430,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 				configBeanDefs.put(beanName, (AbstractBeanDefinition) beanDef);
 			}
 		}
+		//这里判断如果它不是一个FULL的，configBeanDefs里面则没有元素，则直接返回
+		//可以先告诉你，如果是FULL，则后面的代码就是CGLIG代理
 		if (configBeanDefs.isEmpty()) {
 			// nothing to enhance -> return immediately
 			return;
@@ -423,9 +443,11 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			// If a @Configuration class gets proxied, always proxy the target class
 			beanDef.setAttribute(AutoProxyUtils.PRESERVE_TARGET_CLASS_ATTRIBUTE, Boolean.TRUE);
 			try {
+				//完成全注解（FULL）类的cglib代理
 				// Set enhanced subclass of the user-specified bean class
 				Class<?> configClass = beanDef.resolveBeanClass(this.beanClassLoader);
 				if (configClass != null) {
+					//cglib代理
 					Class<?> enhancedClass = enhancer.enhance(configClass, this.beanClassLoader);
 					if (configClass != enhancedClass) {
 						if (logger.isDebugEnabled()) {

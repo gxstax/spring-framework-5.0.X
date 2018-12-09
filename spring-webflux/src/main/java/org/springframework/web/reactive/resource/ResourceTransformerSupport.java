@@ -41,7 +41,7 @@ public abstract class ResourceTransformerSupport implements ResourceTransformer 
 
 	/**
 	 * Configure a {@link ResourceUrlProvider} to use when resolving the public
-	 * URL of links in a transformed resource (e.g. import links in a CSS file).
+	 * URL of links in a transformed resource (e.g. imports links in a CSS file).
 	 * This is required only for links expressed as full paths and not for
 	 * relative links.
 	 * @param resourceUrlProvider the URL provider to use

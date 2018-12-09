@@ -66,12 +66,12 @@
 
 
 <!--
-	Specifies an XML bean definition resource to import.
+	Specifies an XML bean definition resource to imports.
 -->
 <!ELEMENT import EMPTY>
 
 <!--
-	The relative resource location of the XML bean definition file to import,
+	The relative resource location of the XML bean definition file to imports,
 	for example "myImport.xml" or "includes/myImport.xml" or "../myImport.xml".
 -->
 <!ATTLIST import resource CDATA #REQUIRED>

@@ -189,7 +189,7 @@ import org.springframework.stereotype.Component;
  * <h3>With the {@code @Import} annotation</h3>
  *
  * <p>{@code @Configuration} classes may be composed using the {@link Import @Import} annotation,
- * not unlike the way that {@code <import>} works in Spring XML. Because
+ * not unlike the way that {@code <imports>} works in Spring XML. Because
  * {@code @Configuration} objects are managed as Spring beans within the container,
  * imported configurations may be injected the usual way (e.g. via constructor injection):
  *
@@ -275,7 +275,7 @@ import org.springframework.stereotype.Component;
  *
  * As mentioned above, {@code @Configuration} classes may be declared as regular Spring
  * {@code <bean>} definitions within Spring XML files. It is also possible to
- * import Spring XML configuration files into {@code @Configuration} classes using
+ * imports Spring XML configuration files into {@code @Configuration} classes using
  * the {@link ImportResource @ImportResource} annotation. Bean definitions imported from
  * XML can be injected the usual way (e.g. using the {@code Inject} annotation):
  *

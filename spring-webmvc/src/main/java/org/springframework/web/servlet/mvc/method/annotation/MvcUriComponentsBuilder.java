@@ -239,7 +239,7 @@ public class MvcUriComponentsBuilder {
 	 * </pre>
 	 * A UriComponentsBuilder can be created:
 	 * <pre class="code">
-	 * // Inline style with static import of "MvcUriComponentsBuilder.on"
+	 * // Inline style with static imports of "MvcUriComponentsBuilder.on"
 	 *
 	 * MvcUriComponentsBuilder.fromMethodCall(
 	 * 		on(AddressController.class).getAddressesForCountry("US")).buildAndExpand(1);
@@ -567,7 +567,7 @@ public class MvcUriComponentsBuilder {
 	 * and the result can then be used to create a {@code UriComponentsBuilder}
 	 * via {@link #fromMethodCall(Object)}.
 	 * <p>Note that this is a shorthand version of {@link #controller(Class)} intended
-	 * for inline use (with a static import), for example:
+	 * for inline use (with a static imports), for example:
 	 * <pre class="code">
 	 * MvcUriComponentsBuilder.fromMethodCall(on(FooController.class).getFoo(1)).build();
 	 * </pre>

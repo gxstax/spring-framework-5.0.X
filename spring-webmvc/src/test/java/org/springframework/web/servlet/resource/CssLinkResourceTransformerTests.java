@@ -85,11 +85,11 @@ public class CssLinkResourceTransformerTests {
 		TransformedResource actual = (TransformedResource) this.transformerChain.transform(this.request, css);
 
 		String expected = "\n" +
-				"@import url(\"/static/bar-11e16cf79faee7ac698c805cf28248d2.css?#iefix\");\n" +
-				"@import url('/static/bar-11e16cf79faee7ac698c805cf28248d2.css#bla-normal');\n" +
-				"@import url(/static/bar-11e16cf79faee7ac698c805cf28248d2.css);\n\n" +
-				"@import \"/static/foo-e36d2e05253c6c7085a91522ce43a0b4.css\";\n" +
-				"@import '/static/foo-e36d2e05253c6c7085a91522ce43a0b4.css';\n\n" +
+				"@imports url(\"/static/bar-11e16cf79faee7ac698c805cf28248d2.css?#iefix\");\n" +
+				"@imports url('/static/bar-11e16cf79faee7ac698c805cf28248d2.css#bla-normal');\n" +
+				"@imports url(/static/bar-11e16cf79faee7ac698c805cf28248d2.css);\n\n" +
+				"@imports \"/static/foo-e36d2e05253c6c7085a91522ce43a0b4.css\";\n" +
+				"@imports '/static/foo-e36d2e05253c6c7085a91522ce43a0b4.css';\n\n" +
 				"body { background: url(\"/static/images/image-f448cd1d5dba82b774f3202c878230b3.png?#iefix\") }\n";
 
 		String result = new String(actual.getByteArray(), StandardCharsets.UTF_8);
@@ -116,7 +116,7 @@ public class CssLinkResourceTransformerTests {
 		Resource resource = transformerChain.transform(this.request, externalCss);
 		TransformedResource transformedResource = (TransformedResource) resource;
 
-		String expected = "@import url(\"http://example.org/fonts/css\");\n" +
+		String expected = "@imports url(\"http://example.org/fonts/css\");\n" +
 				"body { background: url(\"file:///home/spring/image.png\") }\n" +
 				"figure { background: url(\"//example.org/style.css\")}";
 		String result = new String(transformedResource.getByteArray(), StandardCharsets.UTF_8);

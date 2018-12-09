@@ -135,6 +135,8 @@ class ConfigurationClassBeanDefinitionReader {
 			return;
 		}
 
+		//如果一个类是被import进来的，会被spring标注
+		//在这里被注册进来
 		if (configClass.isImported()) {
 			registerBeanDefinitionForImportedConfigurationClass(configClass);
 		}
@@ -143,10 +145,13 @@ class ConfigurationClassBeanDefinitionReader {
 		}
 
 		loadBeanDefinitionsFromImportedResources(configClass.getImportedResources());
+
+		//注册Refistrar类型的
 		loadBeanDefinitionsFromRegistrars(configClass.getImportBeanDefinitionRegistrars());
 	}
 
 	/**
+	 * 注册一个被import进来的类
 	 * Register the {@link Configuration} class itself as a bean definition.
 	 */
 	private void registerBeanDefinitionForImportedConfigurationClass(ConfigurationClass configClass) {
@@ -160,7 +165,10 @@ class ConfigurationClassBeanDefinitionReader {
 
 		BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(configBeanDef, configBeanName);
 		definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
+		//看到没，看到没，是不是被注册进去了，至于里面的代码
+		//至于里面的代码我们已经看了很多遍了，不会的自行进去读
 		this.registry.registerBeanDefinition(definitionHolder.getBeanName(), definitionHolder.getBeanDefinition());
+
 		configClass.setBeanName(configBeanName);
 
 		if (logger.isDebugEnabled()) {

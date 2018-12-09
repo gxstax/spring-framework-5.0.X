@@ -42,9 +42,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * <h3>Example</h3>
  *
  * <pre class="code">
- * import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
- * import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
- * import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
+ * imports static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+ * imports static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+ * imports static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
  *
  * // ...
  *

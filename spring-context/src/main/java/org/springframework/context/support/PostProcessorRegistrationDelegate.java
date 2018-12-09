@@ -71,10 +71,20 @@ final class PostProcessorRegistrationDelegate {
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
 					BeanDefinitionRegistryPostProcessor registryProcessor =
 							(BeanDefinitionRegistryPostProcessor) postProcessor;
+					/*
+					 * 如果这个地方定义了一个处理器，则会调用registryProcessor的postProcessBeanDefinitionRegistry(registry)
+					 * 方法，这个地方是调用我们程序员自己定义的registryProcessor的postProcessBeanDefinitionRegistry回掉方法，
+					 * 如果我们没有定义这样一个后置处理器，则会跳过
+					 */
 					registryProcessor.postProcessBeanDefinitionRegistry(registry);
+
 					registryProcessors.add(registryProcessor);
 				}
 				else {
+					//这里大家有没有疑问？为什么上面会判断是否是BeanDefinitionRegistryPostProcessor这个类，
+					//而且执行了postProcessBeanDefinitionRegistry(registry)方法
+					//但是不判断是否是属于BeanFactoryPostProcessor这个类？？而是直接放到集合中去
+					//甭急，咱们先往下看......
 					regularPostProcessors.add(postProcessor);
 				}
 			}
@@ -111,16 +121,21 @@ final class PostProcessorRegistrationDelegate {
 
 
 			/**
+			 * 重中之重
 			 * 1.最重要，注意这里是调用方法,注意这里的参数currentRegistryProcessors，
 			 *   它传过来的是spring自己的BeanFactoryPostProcessor，
-			 *   并没有把程序员自己定义的传过去处理，
-			 *   后面我们看为什么要这么做
+			 *   为什么没有把我们程序员自己定义的传进去那？
+			 *   （因为我们程序员自己定义的上面已经处理过了）
 			 */
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
 
-			//因为currentRegistryProcessors已经合并到了registryProcessors，所以这里可以清理调了
+			//好了，到此为止，包括我们程序员自己定义的以及spring的所有的BeanFactoryPostProcessor都已经执行完成了
+
+			//因为currentRegistryProcessors已经合并到了registryProcessors，
+			//并且也已经执行完了，也是为后面判断排序做处理，所以这里清理了
 			currentRegistryProcessors.clear();
 
+			//如果有排序，则执行
 			// Next, invoke the BeanDefinitionRegistryPostProcessors that implement Ordered.
 			postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {
@@ -129,11 +144,14 @@ final class PostProcessorRegistrationDelegate {
 					processedBeans.add(ppName);
 				}
 			}
+			//这里和上面的方法一模一样，只是如果上面判断有排序
+			//currentRegistryProcessors这个结果集才有内容
 			sortPostProcessors(currentRegistryProcessors, beanFactory);
 			registryProcessors.addAll(currentRegistryProcessors);
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
 			currentRegistryProcessors.clear();
 
+			//这个是判断是否有新注入进来的，如果有新注入进来的则再执行一遍
 			// Finally, invoke all other BeanDefinitionRegistryPostProcessors until no further ones appear.
 			boolean reiterate = true;
 			while (reiterate) {
@@ -155,8 +173,18 @@ final class PostProcessorRegistrationDelegate {
 				currentRegistryProcessors.clear();
 			}
 
+
+
+
+			//上面的执行完了程序员自己定义的以及spring自己的实现了BeanDefinitionRegistryPostProcessor的后置处理器
+			//这里就是spring执行实现了BeanDefinitionRegistryPostProcessor父类BeanFactoryPostProcessor的后置处理器类
 			// Now, invoke the postProcessBeanFactory callback of all processors handled so far.
+			//因为BeanFactoryPostProcessor中有一个postProcessBeanFactory
+			//所以实现了继承BeanFactoryPostProcessor子类BeanDefinitionRegistryPostProcessor的后置处理器类也要执行BeanFactoryPostProcessor中的postProcessBeanFactory方法
+			//比较绕，慢慢理解
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
+
+			//自己是处理实现了BeanFactoryPostProcessor类的后置处理器类
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
 		}
 
