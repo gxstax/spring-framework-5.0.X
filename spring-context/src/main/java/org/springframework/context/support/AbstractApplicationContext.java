@@ -514,20 +514,17 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
-			/*
-			 *初始化工厂类准备工作：包括设置启动时间，是否激活标志位，初始化属性源（property source）配置，
-			 */
+
+			//初始化工厂类准备工作：包括设置启动时间，是否激活标志位，初始化属性源（property source）配置，
 			// Prepare this context for refreshing.
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
-			/*
-			 * 返回一个工厂beanFactory
-			 * 为什么要返回一个工厂？ 因为要对工厂进行初始化设置（相当于生产前添加设备以及员工）
-			 *
-			 * 前面我们再register方法中，已经把我们要生产的对象（相当于工厂要生产的产品）放进了类定义中（BeanDifinitionMap），
-			 * 下一步要产生这些类（产品），我们必须要初始化我们的工厂，并且要在工厂里面添加处理器（工厂工具和工人）才能生产出类对象
-			 */
+
+			//返回一个工厂beanFactory
+			//为什么要返回一个工厂？ 因为要对工厂进行初始化设置（相当于生产前添加设备以及员工）
+			//前面我们再register方法中，已经把我们要生产的对象（相当于工厂要生产的产品）放进了类定义中（BeanDifinitionMap），
+			//下一步要产生这些类（产品），我们必须要初始化我们的工厂，并且要在工厂里面添加处理器（工厂工具和工人）才能生产出类对象
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
@@ -541,16 +538,16 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Allows post-processing of the bean factory in context subclasses.
 				postProcessBeanFactory(beanFactory);
 
-				/*
-				 * 最最最重要的一个类
-				 * 在spring的环境中去执行已经被注册的 factory processors
-				 * 设置执行自定义的BeanFactoryPostProcessors和spring内部自己定义的
-				 */
+
+				//最最最重要的一个类
+				//在spring的环境中去执行已经被注册的 factory processors
+				//设置执行自定义的BeanFactoryPostProcessors和spring内部自己定义的
 				// Invoke factory processors registered as beans in the context.
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 
 
+				//注册拦截器
 				// Register bean processors that intercept bean creation.
 				registerBeanPostProcessors(beanFactory);
 
@@ -733,14 +730,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * <p>Must be called before singleton instantiation.
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
-		/*
-		 * 1. getBeanFactoryPostProcessors()这个方法是获取程序员自己定义的后置处理器，没有交给spring管理，
-		 *    也就是这个后置处理器没有加@Component
-		 *
-		 * 2. invokeBeanFactoryPostProcessors则是得到spring内部自己维护的BeanDefinitionRegistryPostProcessor
-		 */
+		// 1. getBeanFactoryPostProcessors()这个方法是获取程序员自己定义的后置处理器，没有交给spring管理，
+		//    也就是这个后置处理器没有加@Component
+		// 2. invokeBeanFactoryPostProcessors则是得到spring内部自己维护的BeanDefinitionRegistryPostProcessor
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
 
+		//把我们上面定义的后置处理器放到beanFactory中去
 		// Detect a LoadTimeWeaver and prepare for weaving, if found in the meantime
 		// (e.g. through an @Bean method registered by ConfigurationClassPostProcessor)
 		if (beanFactory.getTempClassLoader() == null && beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
