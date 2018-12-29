@@ -1,7 +1,6 @@
-package com.ant.imports;
+package com.ant.context.imports;
 
-import com.ant.dao.IndexDao;
-import com.ant.dao.IndexDao3;
+import com.ant.context.dao.IndexDao3;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
 

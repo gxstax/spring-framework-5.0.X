@@ -1,13 +1,9 @@
-package com.ant.dao;
+package com.ant.context.dao;
 
-import com.ant.invocationhandler.MyInvocationHandler;
+import com.ant.context.invocationhandler.MyInvocationHandler;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.Proxy;
 
 /**

@@ -470,6 +470,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			mbdToUse.setBeanClass(resolvedClass);
 		}
 
+		// 后面再看
 		// Prepare method overrides.
 		try {
 			mbdToUse.prepareMethodOverrides();
@@ -480,8 +481,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		try {
+			// 如果你想要你的bean返回一个寡对象，则可以通过实现InstantiationAwareBeanPostProcessor
+			// 这个接口来自定义一个后置处理器，然后返回你要的对象直接返回，这样你的这个对象就不会执行后面的
+			// 实例化过程了，不过一般不会有人这么做，除非是有比较特殊的业务场景
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
+			// 如果你上面是要返回一个寡对象，这里的bean就不是null, 然后再这里直接返回出去了
+			// 如果你实现了一个寡对象，则这个的bean就是null,它就会继续执行后续操作
 			if (bean != null) {
 				return bean;
 			}

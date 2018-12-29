@@ -125,7 +125,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * Create a ClassPathScanningCandidateComponentProvider with a {@link StandardEnvironment}.
 	 * @param useDefaultFilters whether to register the default filters for the
 	 * {@link Component @Component}, {@link Repository @Repository},
-	 * {@link Service @Service}, and {@link Controller @Controller}
+	 * {@link Service @service}, and {@link Controller @Controller}
 	 * stereotype annotations
 	 * @see #registerDefaultFilters()
 	 */
@@ -137,7 +137,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * Create a ClassPathScanningCandidateComponentProvider with the given {@link Environment}.
 	 * @param useDefaultFilters whether to register the default filters for the
 	 * {@link Component @Component}, {@link Repository @Repository},
-	 * {@link Service @Service}, and {@link Controller @Controller}
+	 * {@link Service @service}, and {@link Controller @Controller}
 	 * stereotype annotations
 	 * @param environment the Environment to use
 	 * @see #registerDefaultFilters()
@@ -180,7 +180,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * Reset the configured type filters.
 	 * @param useDefaultFilters whether to re-register the default filters for
 	 * the {@link Component @Component}, {@link Repository @Repository},
-	 * {@link Service @Service}, and {@link Controller @Controller}
+	 * {@link Service @service}, and {@link Controller @Controller}
 	 * stereotype annotations
 	 * @see #registerDefaultFilters()
 	 */
@@ -196,7 +196,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * Register the default filter for {@link Component @Component}.
 	 * <p>This will implicitly register all annotations that have the
 	 * {@link Component @Component} meta-annotation including the
-	 * {@link Repository @Repository}, {@link Service @Service}, and
+	 * {@link Repository @Repository}, {@link Service @service}, and
 	 * {@link Controller @Controller} stereotype annotations.
 	 * <p>Also supports Java EE 6's {@link javax.annotation.ManagedBean} and
 	 * JSR-330's {@link javax.inject.Named} annotations, if available.

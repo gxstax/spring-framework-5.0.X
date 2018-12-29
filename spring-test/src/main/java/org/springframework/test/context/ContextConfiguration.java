@@ -57,7 +57,7 @@ import org.springframework.core.annotation.AliasFor;
  * <li>A class annotated with {@link org.springframework.context.annotation.Configuration @Configuration}</li>
  * <li>A component (i.e., a class annotated with
  * {@link org.springframework.stereotype.Component @Component},
- * {@link org.springframework.stereotype.Service @Service},
+ * {@link org.springframework.stereotype.Service @service},
  * {@link org.springframework.stereotype.Repository @Repository}, etc.)</li>
  * <li>A JSR-330 compliant class that is annotated with {@code javax.inject} annotations</li>
  * <li>Any other class that contains {@link org.springframework.context.annotation.Bean @Bean}-methods</li>

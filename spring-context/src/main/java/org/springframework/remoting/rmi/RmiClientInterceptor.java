@@ -47,7 +47,7 @@ import org.springframework.remoting.support.RemoteInvocationUtils;
  * (e.g. "rmi://localhost:1099/myservice").
  *
  * <p>RMI invokers work at the RmiInvocationHandler level, needing only one stub for
- * any service. Service interfaces do not have to extend {@code java.rmi.Remote}
+ * any service. service interfaces do not have to extend {@code java.rmi.Remote}
  * or throw {@code java.rmi.RemoteException}. Spring's unchecked
  * RemoteAccessException will be thrown on remote invocation failure.
  * Of course, in and out parameters have to be serializable.
@@ -206,7 +206,7 @@ public class RmiClientInterceptor extends RemoteInvocationBasedAccessor
 			return stub;
 		}
 		catch (MalformedURLException ex) {
-			throw new RemoteLookupFailureException("Service URL [" + getServiceUrl() + "] is invalid", ex);
+			throw new RemoteLookupFailureException("service URL [" + getServiceUrl() + "] is invalid", ex);
 		}
 		catch (NotBoundException ex) {
 			throw new RemoteLookupFailureException(

@@ -224,7 +224,7 @@ public class AnnotatedBeanDefinitionReader {
 		AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(annotatedClass);
 
 		/**
-		 * 这句话判断类是否加了注解（查看类中是否有@Compotent @Service  @Repository诸如此类的注解）
+		 * 这句话判断类是否加了注解（查看类中是否有@Compotent @service  @Repository诸如此类的注解）
 		 * 通过判断有无注解，spring来判断是否需要解析，如果没有加注解，则Spring会跳过解析
 		 */
 		if (this.conditionEvaluator.shouldSkip(abd.getMetadata())) {

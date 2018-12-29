@@ -30,7 +30,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
 
 /**
- * Service exporter which binds RMI services to JNDI.
+ * service exporter which binds RMI services to JNDI.
  * Typically used for RMI-IIOP (CORBA).
  *
  * <p>Exports services via the {@link javax.rmi.PortableRemoteObject} class.
@@ -42,7 +42,7 @@ import org.springframework.util.ReflectionUtils;
  * automatic detection of such invokers.
  *
  * <p>With an RMI invoker, RMI communication works on the {@link RmiInvocationHandler}
- * level, needing only one stub for any service. Service interfaces do not have to
+ * level, needing only one stub for any service. service interfaces do not have to
  * extend {@code java.rmi.Remote} or throw {@code java.rmi.RemoteException}
  * on all methods, but in and out parameters have to be serializable.
  *

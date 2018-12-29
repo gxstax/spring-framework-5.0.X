@@ -1,8 +1,7 @@
-package com.ant.beanpostporcessor;
+package com.ant.context.beanpostporcessor;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.stereotype.Component;
 
 /**
  * @author gaoxx gaoxx@fxiaoke.com

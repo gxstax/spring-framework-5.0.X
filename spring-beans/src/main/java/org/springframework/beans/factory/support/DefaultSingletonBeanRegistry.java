@@ -77,12 +77,14 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
 
 	/** Cache of early singleton objects: bean name --> bean instance */
+	// 早期单例缓存对象
 	private final Map<String, Object> earlySingletonObjects = new HashMap<>(16);
 
 	/** Set of registered singletons, containing the bean names in registration order */
 	private final Set<String> registeredSingletons = new LinkedHashSet<>(256);
 
 	/** Names of beans that are currently in creation */
+	// 存放正在穿件的bean的beanName
 	private final Set<String> singletonsCurrentlyInCreation =
 			Collections.newSetFromMap(new ConcurrentHashMap<>(16));
 
@@ -175,6 +177,14 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 		Object singletonObject = this.singletonObjects.get(beanName);
+		// 判断当前为bean是否已经创建，如果没有创建则判断是否是在正在创建中的bean
+		// 判断是否是正在创建，时间上就是判断singletonsCurrentlyInCreation这个
+		// Set集合中是否有这个beanName
+		// 如果这两个条件都不成立，则直接返回 null
+		//
+		// 实际上，我们的普通类在第一次调用getBean(),这个方法的时候是肯定为空的，
+		// 这里得到的实际上一些spring的特殊类，以及我们自己定义的内置处理类会在这个地方得到
+		// 这个地方并不是我们普通类真正要创建实例的地方，后面还有一个getBean()的方法
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			synchronized (this.singletonObjects) {
 				singletonObject = this.earlySingletonObjects.get(beanName);
@@ -188,6 +198,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				}
 			}
 		}
+		//直接返回
 		return singletonObject;
 	}
 
@@ -201,6 +212,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
 		Assert.notNull(beanName, "Bean name must not be null");
+		// 做一些线程安全判断
 		synchronized (this.singletonObjects) {
 			Object singletonObject = this.singletonObjects.get(beanName);
 			if (singletonObject == null) {
@@ -212,7 +224,12 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				if (logger.isDebugEnabled()) {
 					logger.debug("Creating shared instance of singleton bean '" + beanName + "'");
 				}
+
+				// 这行代码是将我们正在穿件的bean的beanName放到一个Set集合当中去，
+				// 这个集合的名字就是singletonsCurrentlyInCreation,后面会根据
+				// 这个集合去做一些逻辑判断
 				beforeSingletonCreation(beanName);
+
 				boolean newSingleton = false;
 				boolean recordSuppressedExceptions = (this.suppressedExceptions == null);
 				if (recordSuppressedExceptions) {

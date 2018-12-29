@@ -1,6 +1,6 @@
-package com.ant.test.enhancer;
+package com.ant.context.test.enhancer;
 
-import com.ant.dao.IndexDao;
+import com.ant.context.dao.IndexDao;
 import org.springframework.cglib.core.SpringNamingPolicy;
 import org.springframework.cglib.proxy.Enhancer;
 

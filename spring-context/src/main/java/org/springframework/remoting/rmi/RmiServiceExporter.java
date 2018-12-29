@@ -39,7 +39,7 @@ import org.springframework.lang.Nullable;
  * of such invokers.
  *
  * <p>With an RMI invoker, RMI communication works on the {@link RmiInvocationHandler}
- * level, needing only one stub for any service. Service interfaces do not have to
+ * level, needing only one stub for any service. service interfaces do not have to
  * extend {@code java.rmi.Remote} or throw {@code java.rmi.RemoteException}
  * on all methods, but in and out parameters have to be serializable.
  *

@@ -242,6 +242,8 @@ final class PostProcessorRegistrationDelegate {
 			ConfigurableListableBeanFactory beanFactory, AbstractApplicationContext applicationContext) {
 
 		// 从bean工厂中拿到后置处理器的名称
+		// 后面会根据名称循环找到继承了BeanPostProcessor的类，
+		// 然后把它放到后置处理器的list中去
 		String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanPostProcessor.class, true, false);
 
 		// 注册BeanPostProcessorChecker，这个意思是bean在BeanPostProcessor实例化过程中创建时，

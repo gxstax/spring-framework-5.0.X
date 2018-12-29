@@ -547,22 +547,28 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 
 
-				//注册拦截器
+				//注册后置处理器
 				// Register bean processors that intercept bean creation.
 				registerBeanPostProcessors(beanFactory);
 
+
+				//对一些国际化的处理
 				// Initialize message source for this context.
 				initMessageSource();
 
+				//spring的Event事件
 				// Initialize event multicaster for this context.
 				initApplicationEventMulticaster();
 
+				//空壳方法，应该是spring后期的扩展点
 				// Initialize other special beans in specific context subclasses.
 				onRefresh();
 
 				// Check for listener beans and register them.
 				registerListeners();
 
+
+				//这里是bean的实例化过程，相当重要
 				// Instantiate all remaining (non-lazy-init) singletons.
 				finishBeanFactoryInitialization(beanFactory);
 
@@ -665,7 +671,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
 
-		//添加一个后置处理器
+		// 添加一个后置处理器，第1个
 		// Configure the bean factory with context callbacks.
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 
@@ -689,7 +695,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.registerResolvableDependency(ApplicationContext.class, this);
 
 
-		//TODO 这个代码不知道是干吗的
+		// 注册一个后置处理器，第2个
 		// Register early post-processor for detecting inner beans as ApplicationListeners.
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
 
@@ -908,6 +914,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// Allow for caching all bean definition metadata, not expecting further changes.
 		beanFactory.freezeConfiguration();
 
+		// 预处理实例化单例
 		// Instantiate all remaining (non-lazy-init) singletons.
 		beanFactory.preInstantiateSingletons();
 	}

@@ -239,9 +239,15 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected <T> T doGetBean(final String name, @Nullable final Class<T> requiredType,
 			@Nullable final Object[] args, boolean typeCheckOnly) throws BeansException {
 
+		// 通过name 获取 beanName, 这里不使用name 直接作为beanName 有两个原因
+		// 1. name可能会以 & 开头，表明调用者想获取FactoryBean本身，而非实现类
+		// 2. 有可能会设置别名
+		// 处理一些factoryBean类型的bean和一些使用了别名的bean
 		final String beanName = transformedBeanName(name);
 		Object bean;
 
+		// 首先去单例缓存中去取，如果取不到，则使用singletonFactory单例工厂去get一个
+		// 然后再放到缓存中去，其实这里的缓存有两个，一个是singletonObjects，一个是earlySingletonObjects
 		// Eagerly check singleton cache for manually registered singletons.
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null && args == null) {
@@ -257,6 +263,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
 		}
 
+		// 如果没有取到，进行以下处理
 		else {
 			// Fail if we're already creating this bean instance:
 			// We're assumably within a circular reference.
@@ -283,6 +290,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 			}
 
+			// 类型检查什么的，不知道，没看
 			if (!typeCheckOnly) {
 				markBeanAsCreated(beanName);
 			}
@@ -291,6 +299,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
 				checkMergedBeanDefinition(mbd, beanName, args);
 
+				// 检查依赖
 				// Guarantee initialization of beans that the current bean depends on.
 				String[] dependsOn = mbd.getDependsOn();
 				if (dependsOn != null) {

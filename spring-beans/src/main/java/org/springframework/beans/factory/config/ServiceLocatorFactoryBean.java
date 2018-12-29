@@ -236,7 +236,7 @@ public class ServiceLocatorFactoryBean implements FactoryBean<Object>, BeanFacto
 
 	/**
 	 * Set mappings between service ids (passed into the service locator)
-	 * and bean names (in the bean factory). Service ids that are not defined
+	 * and bean names (in the bean factory). service ids that are not defined
 	 * here will be treated as bean names as-is.
 	 * <p>The empty string as service id key defines the mapping for {@code null} and
 	 * empty string, and for factory methods without parameter. If not defined,
@@ -296,7 +296,7 @@ public class ServiceLocatorFactoryBean implements FactoryBean<Object>, BeanFacto
 				}
 				catch (NoSuchMethodException ex3) {
 					throw new IllegalArgumentException(
-							"Service locator exception [" + exceptionClass.getName() +
+							"service locator exception [" + exceptionClass.getName() +
 							"] neither has a (String, Throwable) constructor nor a (String) constructor");
 				}
 			}
@@ -361,7 +361,7 @@ public class ServiceLocatorFactoryBean implements FactoryBean<Object>, BeanFacto
 				return System.identityHashCode(proxy);
 			}
 			else if (ReflectionUtils.isToStringMethod(method)) {
-				return "Service locator: " + serviceLocatorInterface;
+				return "service locator: " + serviceLocatorInterface;
 			}
 			else {
 				return invokeServiceLocatorMethod(method, args);
@@ -374,11 +374,11 @@ public class ServiceLocatorFactoryBean implements FactoryBean<Object>, BeanFacto
 				String beanName = tryGetBeanName(args);
 				Assert.state(beanFactory != null, "No BeanFactory available");
 				if (StringUtils.hasLength(beanName)) {
-					// Service locator for a specific bean name
+					// service locator for a specific bean name
 					return beanFactory.getBean(beanName, serviceLocatorMethodReturnType);
 				}
 				else {
-					// Service locator for a bean type
+					// service locator for a bean type
 					return beanFactory.getBean(serviceLocatorMethodReturnType);
 				}
 			}

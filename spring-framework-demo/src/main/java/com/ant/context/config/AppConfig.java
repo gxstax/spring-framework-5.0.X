@@ -1,9 +1,6 @@
-package com.ant.config;
+package com.ant.context.config;
 
-import com.ant.anno.AntEnable;
-import com.ant.beanfactoryfostprocessor.MyBeanFactoryPostProcessor;
-import com.ant.beanpostporcessor.MyBeanPostPorcessor;
-import com.ant.imports.MyImportSelector;
+import com.ant.context.imports.MyImportSelector;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -16,7 +13,7 @@ import org.springframework.context.annotation.Import;
  * @Version 1.0
  */
 @Configuration
-@ComponentScan("com.ant")
+@ComponentScan("com.ant.context")
 @Import(MyImportSelector.class)
 //@AntEnable
 public class AppConfig {

@@ -47,7 +47,7 @@ import java.lang.annotation.Target;
  * &#064;Retention(RetentionPolicy.RUNTIME)
  * &#064;Documented
  * &#064;Indexed
- * &#064;Service
+ * &#064;service
  * public @interface PrivilegedService { ... }
  * </pre>
  *

@@ -221,7 +221,7 @@ public class HessianClientInterceptor extends UrlBasedRemoteAccessor implements 
 			this.hessianProxy = createHessianProxy(this.proxyFactory);
 		}
 		catch (MalformedURLException ex) {
-			throw new RemoteLookupFailureException("Service URL [" + getServiceUrl() + "] is invalid", ex);
+			throw new RemoteLookupFailureException("service URL [" + getServiceUrl() + "] is invalid", ex);
 		}
 	}
 

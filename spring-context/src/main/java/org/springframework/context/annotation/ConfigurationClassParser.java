@@ -320,7 +320,7 @@ class ConfigurationClassParser {
 				// The config class is annotated with @ComponentScan -> perform the scan immediately
 				//很重要 扫描普通类 何为普通类？
 				//就是我们@ComponentScan属性配置的包里面的所有加了诸如：
-				//@Component、@Service、@Resposity等注解的类
+				//@Component、@service、@Resposity等注解的类
 				//扫描出来后直接放到了map中去
 				Set<BeanDefinitionHolder> scannedBeanDefinitions =
 						this.componentScanParser.parse(componentScan, sourceClass.getMetadata().getClassName());
@@ -345,7 +345,7 @@ class ConfigurationClassParser {
 			}
 		}
 
-		/** -------------到这里为止，上面的代码即是扫描所有的普通类就是加了@Component、@Service、@Resposity等注解的类，并且放到map中-----------   */
+		/** -------------到这里为止，上面的代码即是扫描所有的普通类就是加了@Component、@service、@Resposity等注解的类，并且放到map中-----------   */
 
 
 		/*

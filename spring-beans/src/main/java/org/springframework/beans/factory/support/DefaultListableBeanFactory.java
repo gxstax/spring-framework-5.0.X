@@ -734,11 +734,15 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		// While this may not be part of the regular factory bootstrap, it does otherwise work fine.
 		List<String> beanNames = new ArrayList<>(this.beanDefinitionNames);
 
+		// 触发所有非延迟加载的单例bean的初始化，主要是下面的getBean(beanName)这个方法
 		// Trigger initialization of all non-lazy singleton beans...
 		for (String beanName : beanNames) {
+			// 合并父BeanDefinition,这个只有在使用xml中会用到，不重要
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
 				if (isFactoryBean(beanName)) {
+					//判断是否是FactoryBean,如果是FactroyBean,则在前面加上一个&符号
+					//至于为什么要加上&符号，请自行恶补FactoryBean的类生成规则（去看源码）
 					Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
 					if (bean instanceof FactoryBean) {
 						final FactoryBean<?> factory = (FactoryBean<?>) bean;
@@ -758,6 +762,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 					}
 				}
 				else {
+					// getBean
 					getBean(beanName);
 				}
 			}

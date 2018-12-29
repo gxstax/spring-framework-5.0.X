@@ -19,7 +19,7 @@ package org.springframework.test.context.junit4.orm.service;
 import org.springframework.test.context.junit4.orm.domain.Person;
 
 /**
- * Person Service API.
+ * Person service API.
  *
  * @author Sam Brannen
  * @since 3.0

@@ -1,15 +1,8 @@
-package com.ant.test;
+package com.ant.context.test;
 
-import com.ant.beanfactoryfostprocessor.MyBeanDefinitionRegistryPostProcessor;
-import com.ant.beanfactoryfostprocessor.MyBeanFactoryPostProcessor;
-import com.ant.config.AppConfig;
-import com.ant.dao.Dao;
-import com.ant.dao.IndexDao;
-import com.ant.dao.IndexDao3;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import com.ant.context.config.AppConfig;
+import com.ant.context.dao.Dao;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import java.lang.reflect.InvocationHandler;
 
 /**
  * @author gaoxx gaoxx@fxiaoke.com
@@ -39,7 +32,7 @@ public class TestDemo {
 		 * 这行代码是把我们自己定义的AppConfig.class的class类转换成bd,
 		 * 然后put到我们的beanDifinitionMap当中去;
 		 * beanDifinitonMap实际上是我们的DefaultListableBeanFactory的属性
-		 * 那么我们的DefaultListableBeanFactory是怎么来的呢？在工厂中的什么位置呢？
+				* 那么我们的DefaultListableBeanFactory是怎么来的呢？在工厂中的什么位置呢？
 		 **/
 		annotationConfigApplicationContext.register(AppConfig.class);
 
@@ -49,8 +42,8 @@ public class TestDemo {
 		 */
 		annotationConfigApplicationContext.refresh();
 
-		Dao dao = (Dao) annotationConfigApplicationContext.getBean("indexDao");
-		dao.query();
+//		Dao dao = (Dao) annotationConfigApplicationContext.getBean("indexDao");
+//		dao.query();
 
 //		annotationConfigApplicationContext.getBean(IndexDao3.class).query();
 

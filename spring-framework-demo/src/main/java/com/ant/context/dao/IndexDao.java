@@ -1,10 +1,6 @@
-package com.ant.dao;
+package com.ant.context.dao;
 
-import org.springframework.context.annotation.Description;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-
-import javax.annotation.PostConstruct;
 
 /**
  * @author gaoxx gaoxx@fxiaoke.com

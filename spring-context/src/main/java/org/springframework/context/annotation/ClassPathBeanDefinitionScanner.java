@@ -43,7 +43,7 @@ import org.springframework.util.PatternMatchUtils;
  * default filters include classes that are annotated with Spring's
  * {@link org.springframework.stereotype.Component @Component},
  * {@link org.springframework.stereotype.Repository @Repository},
- * {@link org.springframework.stereotype.Service @Service}, or
+ * {@link org.springframework.stereotype.Service @service}, or
  * {@link org.springframework.stereotype.Controller @Controller} stereotype.
  *
  * <p>Also supports Java EE 6's {@link javax.annotation.ManagedBean} and
@@ -103,7 +103,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 * @param useDefaultFilters whether to include the default filters for the
 	 * {@link org.springframework.stereotype.Component @Component},
 	 * {@link org.springframework.stereotype.Repository @Repository},
-	 * {@link org.springframework.stereotype.Service @Service}, and
+	 * {@link org.springframework.stereotype.Service @service}, and
 	 * {@link org.springframework.stereotype.Controller @Controller} stereotype annotations
 	 * @see #setResourceLoader
 	 * @see #setEnvironment
@@ -126,7 +126,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 * @param useDefaultFilters whether to include the default filters for the
 	 * {@link org.springframework.stereotype.Component @Component},
 	 * {@link org.springframework.stereotype.Repository @Repository},
-	 * {@link org.springframework.stereotype.Service @Service}, and
+	 * {@link org.springframework.stereotype.Service @service}, and
 	 * {@link org.springframework.stereotype.Controller @Controller} stereotype annotations
 	 * @param environment the Spring {@link Environment} to use when evaluating bean
 	 * definition profile metadata
@@ -148,7 +148,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 * @param useDefaultFilters whether to include the default filters for the
 	 * {@link org.springframework.stereotype.Component @Component},
 	 * {@link org.springframework.stereotype.Repository @Repository},
-	 * {@link org.springframework.stereotype.Service @Service}, and
+	 * {@link org.springframework.stereotype.Service @service}, and
 	 * {@link org.springframework.stereotype.Controller @Controller} stereotype annotations
 	 * @param environment the Spring {@link Environment} to use when evaluating bean
 	 * definition profile metadata

@@ -150,7 +150,7 @@ public class LocalJaxWsServiceFactory {
 
 
 	/**
-	 * Create a JAX-WS Service according to the parameters of this factory.
+	 * Create a JAX-WS service according to the parameters of this factory.
 	 * @see #setServiceName
 	 * @see #setWsdlDocumentUrl
 	 */

@@ -106,7 +106,7 @@ public class SimpleHttpInvokerRequestExecutor extends AbstractHttpInvokerRequest
 		URLConnection con = new URL(config.getServiceUrl()).openConnection();
 		if (!(con instanceof HttpURLConnection)) {
 			throw new IOException(
-					"Service URL [" + config.getServiceUrl() + "] does not resolve to an HTTP connection");
+					"service URL [" + config.getServiceUrl() + "] does not resolve to an HTTP connection");
 		}
 		return (HttpURLConnection) con;
 	}

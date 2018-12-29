@@ -365,10 +365,10 @@ public enum HttpStatus {
 	 */
 	BAD_GATEWAY(502, "Bad Gateway"),
 	/**
-	 * {@code 503 Service Unavailable}.
+	 * {@code 503 service Unavailable}.
 	 * @see <a href="http://tools.ietf.org/html/rfc7231#section-6.6.4">HTTP/1.1: Semantics and Content, section 6.6.4</a>
 	 */
-	SERVICE_UNAVAILABLE(503, "Service Unavailable"),
+	SERVICE_UNAVAILABLE(503, "service Unavailable"),
 	/**
 	 * {@code 504 Gateway Timeout}.
 	 * @see <a href="http://tools.ietf.org/html/rfc7231#section-6.6.5">HTTP/1.1: Semantics and Content, section 6.6.5</a>
