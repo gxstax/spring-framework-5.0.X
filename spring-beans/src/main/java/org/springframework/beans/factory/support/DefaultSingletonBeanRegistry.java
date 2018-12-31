@@ -225,7 +225,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					logger.debug("Creating shared instance of singleton bean '" + beanName + "'");
 				}
 
-				// 这行代码是将我们正在穿件的bean的beanName放到一个Set集合当中去，
+				// 这行代码是将我们正在创建的bean的beanName放到一个Set集合当中去，
 				// 这个集合的名字就是singletonsCurrentlyInCreation,后面会根据
 				// 这个集合去做一些逻辑判断
 				beforeSingletonCreation(beanName);
@@ -236,6 +236,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					this.suppressedExceptions = new LinkedHashSet<>();
 				}
 				try {
+
+					// 最终会执行这个方法，去getObject()
 					singletonObject = singletonFactory.getObject();
 					newSingleton = true;
 				}

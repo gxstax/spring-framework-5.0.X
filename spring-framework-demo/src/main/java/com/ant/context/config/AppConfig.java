@@ -1,9 +1,9 @@
 package com.ant.context.config;
 
 import com.ant.context.imports.MyImportSelector;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import com.ant.context.service.CityService;
+import com.ant.context.service.UserService;
+import org.springframework.context.annotation.*;
 
 /**
  * @author gaoxx gaoxx@fxiaoke.com
@@ -14,7 +14,8 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @ComponentScan("com.ant.context")
-@Import(MyImportSelector.class)
+//@Import(MyImportSelector.class)
+//@ImportResource("classpath:spring.xml")
 //@AntEnable
 public class AppConfig {
 

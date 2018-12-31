@@ -111,10 +111,16 @@ class ConstructorResolver {
 	public BeanWrapper autowireConstructor(String beanName, RootBeanDefinition mbd,
 			@Nullable Constructor<?>[] chosenCtors, @Nullable Object[] explicitArgs) {
 
+		// 初始化一个BeanWrapperImpl的对象
+		// 这个对象是实现了BeanWrapper接口
+		// 因为我么要返回一个BeanWrapper，所以想初始化一下
 		BeanWrapperImpl bw = new BeanWrapperImpl();
+
 		this.beanFactory.initBeanWrapper(bw);
 
+		// 这个是确定你实例化对象的时候具体要使用哪个构造方法
 		Constructor<?> constructorToUse = null;
+		// 这个是确定你构造方法要使用哪些值
 		ArgumentsHolder argsHolderToUse = null;
 		Object[] argsToUse = null;
 
@@ -124,6 +130,9 @@ class ConstructorResolver {
 		else {
 			Object[] argsToResolve = null;
 			synchronized (mbd.constructorArgumentLock) {
+				// 获取已解析的构造方法
+				// 一般不会有，因为构造方法一般只会提供一个
+				// 除非有多个，那么它才会存在已经解析完的构造方法
 				constructorToUse = (Constructor<?>) mbd.resolvedConstructorOrFactoryMethod;
 				if (constructorToUse != null && mbd.constructorArgumentsResolved) {
 					// Found a cached constructor...
@@ -138,17 +147,24 @@ class ConstructorResolver {
 			}
 		}
 
+		// 如果没有已经解析的构造方法
+		// 则需要去解析构造方法
 		if (constructorToUse == null) {
+			// 判断构造方法是否为空或者是否根据构造方法自动注入
 			// Need to resolve the constructor.
 			boolean autowiring = (chosenCtors != null ||
 					mbd.getResolvedAutowireMode() == AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR);
 			ConstructorArgumentValues resolvedValues = null;
 
+			// 定义一个最少的参数个数
 			int minNrOfArgs;
 			if (explicitArgs != null) {
 				minNrOfArgs = explicitArgs.length;
 			}
 			else {
+				// 这里的ConstructorArgumentValues 是存放构造方法的值的
+				// 它里面定义了两个数据结构，一个map,一个list
+				// Map<Integer, ValueHolder>，List<ValueHolder>
 				ConstructorArgumentValues cargs = mbd.getConstructorArgumentValues();
 				resolvedValues = new ConstructorArgumentValues();
 				minNrOfArgs = resolveConstructorArguments(beanName, mbd, bw, cargs, resolvedValues);

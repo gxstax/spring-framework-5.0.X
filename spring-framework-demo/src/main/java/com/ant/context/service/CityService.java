@@ -1,5 +1,6 @@
 package com.ant.context.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,14 +11,13 @@ import org.springframework.stereotype.Service;
  * @Version 1.0
  */
 @Service
-public class UserService {
+public class CityService {
 
-	public UserService(Ant ant) {
-
-	}
+	@Autowired()
+	private UserService userService;
 
 	public void query() {
-		System.out.println("query");
+		System.out.println("cityService query");
 	}
 
 //	public static Object query() {

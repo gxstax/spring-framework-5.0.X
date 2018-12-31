@@ -75,8 +75,11 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 									(PrivilegedExceptionAction<Constructor<?>>) clazz::getDeclaredConstructor);
 						}
 						else {
+							// 得到我们默认的构造方法
+							// constructorToUse这个就是告诉spring要用哪个构造方法是实例化我们的对象
 							constructorToUse =	clazz.getDeclaredConstructor();
 						}
+						// 这里就是我们前面的快捷方式 shortcut 如果已经解析过，则直接把constructorToUse 赋值给resolvedConstructorOrFactoryMethod
 						bd.resolvedConstructorOrFactoryMethod = constructorToUse;
 					}
 					catch (Throwable ex) {

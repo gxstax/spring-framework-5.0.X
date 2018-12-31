@@ -140,10 +140,12 @@ class ConfigurationClassBeanDefinitionReader {
 		if (configClass.isImported()) {
 			registerBeanDefinitionForImportedConfigurationClass(configClass);
 		}
+		// 处理一个加了@Bean注解的类
 		for (BeanMethod beanMethod : configClass.getBeanMethods()) {
 			loadBeanDefinitionsForBeanMethod(beanMethod);
 		}
 
+		// 处理xml，也就是@ImportResource注解引入的
 		loadBeanDefinitionsFromImportedResources(configClass.getImportedResources());
 
 		//注册Refistrar类型的
@@ -220,7 +222,27 @@ class ConfigurationClassBeanDefinitionReader {
 		beanDef.setResource(configClass.getResource());
 		beanDef.setSource(this.sourceExtractor.extractSource(metadata, configClass.getResource()));
 
+
+
+		// 比如：
+		//		public class AppConfig {
+		//
+		//			@Bean
+		//			public static UserService userService () {
+		//				return new UserService();
+		//			}
+		//
+		//			@Bean
+		//			public CityService cityService() {
+		//				userService();
+		//				return new CityService();
+		//			}
+		//		}
+		// 如果你 userService()方法是加了static,这个时候你的UserService将会实例化两次
+		// 如果你 userService()不加static,则只会实例化一次，这里就是处理这个问题的
 		if (metadata.isStatic()) {
+			// 如果你的方法是加了static 则默认是在你的这个方法上加了 factory-method="userService"
+			// 那么它在每次实例化的时候都会new一个新对象，所以会产生多个实例化对象
 			// static @Bean method
 			beanDef.setBeanClassName(configClass.getMetadata().getClassName());
 			beanDef.setFactoryMethodName(methodName);
@@ -230,6 +252,8 @@ class ConfigurationClassBeanDefinitionReader {
 			beanDef.setFactoryBeanName(configClass.getBeanName());
 			beanDef.setUniqueFactoryMethodName(methodName);
 		}
+
+
 		beanDef.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 		beanDef.setAttribute(RequiredAnnotationBeanPostProcessor.SKIP_REQUIRED_CHECK_ATTRIBUTE, Boolean.TRUE);
 

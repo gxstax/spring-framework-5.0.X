@@ -2,6 +2,7 @@ package com.ant.context.test;
 
 import com.ant.context.config.AppConfig;
 import com.ant.context.dao.Dao;
+import com.ant.context.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -15,7 +16,7 @@ public class TestDemo {
 	public static void main(String[] args) {
 		// 把spring的所有前提环境准备好
 		// 1、准备工厂 == DefaultListableBeanFactory
-		// 2、实例化一个bdReader 和一个scanner
+		// 2、实例化一个bdReader 和一个 scanner
 		AnnotationConfigApplicationContext annotationConfigApplicationContext
 				= new AnnotationConfigApplicationContext();
 
@@ -41,6 +42,8 @@ public class TestDemo {
 		 * 初始化Spring的环境
 		 */
 		annotationConfigApplicationContext.refresh();
+
+//		System.out.println(annotationConfigApplicationContext.getBean("user"));
 
 //		Dao dao = (Dao) annotationConfigApplicationContext.getBean("indexDao");
 //		dao.query();
