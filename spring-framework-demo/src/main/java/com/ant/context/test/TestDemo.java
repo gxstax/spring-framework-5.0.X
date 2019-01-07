@@ -1,8 +1,10 @@
 package com.ant.context.test;
 
+import com.ant.context.beanfactoryfostprocessor.MyBeanFactoryPostProcessor;
 import com.ant.context.config.AppConfig;
 import com.ant.context.dao.Dao;
 import com.ant.context.service.UserService;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**

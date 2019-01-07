@@ -183,6 +183,7 @@ public class AnnotationConfigUtils {
 		 * 2.第二个
 		 */
 		if (!registry.containsBeanDefinition(AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME)) {
+			// 这个后置处理器就是来处理我们的@Autowired注解的
 			RootBeanDefinition def = new RootBeanDefinition(AutowiredAnnotationBeanPostProcessor.class);
 			def.setSource(source);
 			beanDefs.add(registerPostProcessor(registry, def, AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME));
@@ -238,6 +239,7 @@ public class AnnotationConfigUtils {
 		 * 6.第六个
 		 */
 		if (!registry.containsBeanDefinition(EVENT_LISTENER_FACTORY_BEAN_NAME)) {
+			// 处理Spring监听事件的后置处理器
 			RootBeanDefinition def = new RootBeanDefinition(DefaultEventListenerFactory.class);
 			def.setSource(source);
 			beanDefs.add(registerPostProcessor(registry, def, EVENT_LISTENER_FACTORY_BEAN_NAME));
@@ -267,11 +269,16 @@ public class AnnotationConfigUtils {
 		}
 	}
 
+	// 处理一些特殊的注解，比如@Lazy、@Primary、@DependsOn
 	public static void processCommonDefinitionAnnotations(AnnotatedBeanDefinition abd) {
 		processCommonDefinitionAnnotations(abd, abd.getMetadata());
 	}
 
+	// 处理一些特殊的注解，比如@Lazy、@Primary、@DependsOn
 	static void processCommonDefinitionAnnotations(AnnotatedBeanDefinition abd, AnnotatedTypeMetadata metadata) {
+
+		// 处理@Lazy注解，如果有@Lazy注解，则设置注解为为@Lazy注解的值，
+		// 如果没有写value,则为true,如果没有写@Lazy注解，则spring默认为false
 		AnnotationAttributes lazy = attributesFor(metadata, Lazy.class);
 		if (lazy != null) {
 			abd.setLazyInit(lazy.getBoolean("value"));
@@ -283,9 +290,12 @@ public class AnnotationConfigUtils {
 			}
 		}
 
+		// 处理@Primary注解，如果有@Primary注解，则设置Primary属性为true
 		if (metadata.isAnnotated(Primary.class.getName())) {
 			abd.setPrimary(true);
 		}
+
+		// 处理@DependsOn注解
 		AnnotationAttributes dependsOn = attributesFor(metadata, DependsOn.class);
 		if (dependsOn != null) {
 			abd.setDependsOn(dependsOn.getStringArray("value"));

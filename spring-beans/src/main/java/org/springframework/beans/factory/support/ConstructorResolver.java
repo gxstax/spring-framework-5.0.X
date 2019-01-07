@@ -116,18 +116,30 @@ class ConstructorResolver {
 		// 因为我么要返回一个BeanWrapper，所以想初始化一下
 		BeanWrapperImpl bw = new BeanWrapperImpl();
 
+
+		// 初始化bw,主要是进行了一系列的classLoader的操作，具体没细看，后面再看
 		this.beanFactory.initBeanWrapper(bw);
 
 		// 这个是确定你实例化对象的时候具体要使用哪个构造方法
+		// 代码执行到这里，spring已经决定要采用一个特殊构造方法来实例化bean
+		// 但是类里面可能会提供多个构造方法，spring怎么决定具体要用哪一个呢？
+		// 这里spring有它自己的一套特别牛逼的机制
+		// 当它用这一套非常牛逼的机制找到这个构造方法后，就会把这个构造方法赋值给constructorToUse
 		Constructor<?> constructorToUse = null;
-		// 这个是确定你构造方法要使用哪些值
+
+		// 这个是确定你构造方法要使用哪些值，注意不是构造参数，而是值
+		// 连非洲土著大酋长都晓得实例化一个对象是通过构造方法的反射机制
+		// 在调用反射来实例化对象的时候，需要用到具体的值，这样才能进行反射
+		// 这个变量就是用来记录这些值的，后面有证明
+		// 但是值得注意的是，这里的argsHolderToUse是一个数据结构
+		// 所以这里会按照构造函数的不同，会选择使用的方式然后赋值给argsToUse[].
 		ArgumentsHolder argsHolderToUse = null;
 		Object[] argsToUse = null;
 
+
 		if (explicitArgs != null) {
 			argsToUse = explicitArgs;
-		}
-		else {
+		} else {
 			Object[] argsToResolve = null;
 			synchronized (mbd.constructorArgumentLock) {
 				// 获取已解析的构造方法
@@ -154,9 +166,11 @@ class ConstructorResolver {
 			// Need to resolve the constructor.
 			boolean autowiring = (chosenCtors != null ||
 					mbd.getResolvedAutowireMode() == AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR);
+			// 构造方法的参数值，(包含一个map和一个list)
+			// 注意这里也是值，而不是参数
 			ConstructorArgumentValues resolvedValues = null;
 
-			// 定义一个最少的参数个数
+			// 定义一个最少的参数个数（一个差异值）
 			int minNrOfArgs;
 			if (explicitArgs != null) {
 				minNrOfArgs = explicitArgs.length;
@@ -167,6 +181,7 @@ class ConstructorResolver {
 				// Map<Integer, ValueHolder>，List<ValueHolder>
 				ConstructorArgumentValues cargs = mbd.getConstructorArgumentValues();
 				resolvedValues = new ConstructorArgumentValues();
+				// 获取构造函数参数个数的一个最小数（这只是一个初始值）
 				minNrOfArgs = resolveConstructorArguments(beanName, mbd, bw, cargs, resolvedValues);
 			}
 
@@ -177,14 +192,23 @@ class ConstructorResolver {
 				try {
 					candidates = (mbd.isNonPublicAccessAllowed() ?
 							beanClass.getDeclaredConstructors() : beanClass.getConstructors());
-				}
-				catch (Throwable ex) {
+				} catch (Throwable ex) {
 					throw new BeanCreationException(mbd.getResourceDescription(), beanName,
 							"Resolution of declared constructors on bean Class [" + beanClass.getName() +
 							"] from ClassLoader [" + beanClass.getClassLoader() + "] failed", ex);
 				}
 			}
+			// 对构造函数进行排序,一般是根据方法属性以及参数个数来进行的排序
+			/**
+			 *  public Construts(Object 1,Object 2, Object 3)
+			 *	public Construts(Object 1,Object 2)
+			 *	public Construts(Object 1)
+			 *	private Construts(Object 1,Object 2, Object 3)
+			 *  private Construts(Object 1,Object 2)
+			 *  private Construts(Object 1)
+			 */
 			AutowireUtils.sortConstructors(candidates);
+			// 初始化一个最小的差异值变量
 			int minTypeDiffWeight = Integer.MAX_VALUE;
 			Set<Constructor<?>> ambiguousConstructors = null;
 			LinkedList<UnsatisfiedDependencyException> causes = null;
@@ -197,6 +221,8 @@ class ConstructorResolver {
 					// do not look any further, there are only less greedy constructors left.
 					break;
 				}
+				// 如果构造函数的参数小于最小参数个数，则跳过
+
 				if (paramTypes.length < minNrOfArgs) {
 					continue;
 				}
@@ -204,6 +230,10 @@ class ConstructorResolver {
 				ArgumentsHolder argsHolder;
 				if (resolvedValues != null) {
 					try {
+						// 检查构造函数是否加了@ConstructorProperties注解
+	 					// @ConstructorProperties这个注解可以修改构造函数的参数名，
+	 					// 如果有这个注解，则返回修改后的参数名称，
+						// 然鹅并没什么吊用
 						String[] paramNames = ConstructorPropertiesChecker.evaluate(candidate, paramTypes.length);
 						if (paramNames == null) {
 							ParameterNameDiscoverer pnd = this.beanFactory.getParameterNameDiscoverer();
@@ -213,8 +243,7 @@ class ConstructorResolver {
 						}
 						argsHolder = createArgumentArray(beanName, mbd, resolvedValues, bw, paramTypes, paramNames,
 								getUserDeclaredConstructor(candidate), autowiring);
-					}
-					catch (UnsatisfiedDependencyException ex) {
+					} catch (UnsatisfiedDependencyException ex) {
 						if (logger.isTraceEnabled()) {
 							logger.trace("Ignoring constructor [" + candidate + "] of bean '" + beanName + "': " + ex);
 						}
@@ -234,6 +263,7 @@ class ConstructorResolver {
 					argsHolder = new ArgumentsHolder(explicitArgs);
 				}
 
+				// 根据参数值计算出一个差异值变量
 				int typeDiffWeight = (mbd.isLenientConstructorResolution() ?
 						argsHolder.getTypeDifferenceWeight(paramTypes) : argsHolder.getAssignabilityWeight(paramTypes));
 				// Choose this constructor if it represents the closest match.
@@ -920,6 +950,9 @@ class ConstructorResolver {
 
 
 	/**
+	 * 检查构造函数是否加了@ConstructorProperties注解
+	 * ，@ConstructorProperties这个注解可以修改构造函数的参数名，
+	 * 没什么吊用
 	 * Delegate for checking Java 6's {@link ConstructorProperties} annotation.
 	 */
 	private static class ConstructorPropertiesChecker {

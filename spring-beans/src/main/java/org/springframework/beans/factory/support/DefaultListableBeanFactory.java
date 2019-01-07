@@ -168,6 +168,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	/** 存储我们的bd的所有bean的名字,也就是beanDefinitionMap的key值 */
 	private volatile List<String> beanDefinitionNames = new ArrayList<>(256);
 
+	/** 按注册顺序手动注册的单例的名称列表，这里存储的是我们注册到beanDefinitionMap的所有的bean的beanName;
 	/** List of names of manually registered singletons, in registration order */
 	private volatile Set<String> manualSingletonNames = new LinkedHashSet<>(16);
 
@@ -730,6 +731,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			logger.debug("Pre-instantiating singletons in " + this);
 		}
 
+		// 这里是取出我们之前扫描出来的所有bean的beanName,注意只是beanName
 		// Iterate over a copy to allow for init methods which in turn register new bean definitions.
 		// While this may not be part of the regular factory bootstrap, it does otherwise work fine.
 		List<String> beanNames = new ArrayList<>(this.beanDefinitionNames);
@@ -795,11 +797,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition)
 			throws BeanDefinitionStoreException {
 
-		//前面这些不重要，往后看，后面才是一行代码才是精髓（严肃脸）
+		// 前面这些不重要，往后看，后面才是一行代码才是精髓（严肃脸）
 		Assert.hasText(beanName, "Bean name must not be empty");
 		Assert.notNull(beanDefinition, "BeanDefinition must not be null");
 
-		//这里是什么不知道，判断是否是什么抽象的类定义，只是加了一重过滤，不重要
+		// 这里是什么不知道，判断是否是什么抽象的类定义，只是加了一重过滤，不重要
 		if (beanDefinition instanceof AbstractBeanDefinition) {
 			try {
 				((AbstractBeanDefinition) beanDefinition).validate();
@@ -809,9 +811,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			}
 		}
 
-		//这里spring自己还判断了一下是否这个bd已经存在map中，
-		//spring还是牛逼，做的很严谨（spring作者跪求我要把这句话加上）
+		// 这里spring自己还判断了一下是否这个bd已经存在map中，
+		// spring还是牛逼，做的很严谨（spring作者跪求我要把这句话加上）
 		BeanDefinition existingDefinition = this.beanDefinitionMap.get(beanName);
+		// 判断bean是否已经存在beanDefinitionMap容器中，
+		// 讲道理一般是不会存在里面的，所以可以直接去看下面的else语句就可以了
 		if (existingDefinition != null) {
 			if (!isAllowBeanDefinitionOverriding()) {
 				throw new BeanDefinitionStoreException(beanDefinition.getResourceDescription(), beanName,
@@ -839,12 +843,15 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			}
 			this.beanDefinitionMap.put(beanName, beanDefinition);
 		} else {
-			if (hasBeanCreationStarted()) {//判断一下我们用于注册bd的组件是否准备好
+			// 判断这个bean是否已经实例化过了
+			// 后面我们的实例化过程会把每个实例化过的bean的beanName放入到alreadyCreated
+			// 这个集合中去，这个地方就是加了一个这个判断
+			if (hasBeanCreationStarted()) {
 				// Cannot modify startup-time collection elements anymore (for stable iteration)
-				//咦，还加了个同步锁，spring真的是戏多
+				// 咦，还加了个同步锁，spring真的是戏多
 				synchronized (this.beanDefinitionMap) {
-					//这行代码就是把我们的定义的bd注册到或者是放到我们的beanDifinitionMap当中去，是不是非常的easy?
-					//当秘密的面纱被揭下，哇，so他妈easy,对不对？
+					// 这行代码就是把我们的定义的bd注册到或者是放到我们的beanDifinitionMap当中去，是不是非常的easy?
+					// 当Spring的神秘面纱被揭下，哇，原来so他妈easy,对不对？
 					this.beanDefinitionMap.put(beanName, beanDefinition);
 					List<String> updatedDefinitions = new ArrayList<>(this.beanDefinitionNames.size() + 1);
 					updatedDefinitions.addAll(this.beanDefinitionNames);
@@ -857,13 +864,14 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 					}
 				}
 			} else {
-				//如果注册器没有准备好，spring还有一套处理机制，就是先放到beanDefinitionMap，后面根据beanDefinitionNames再注册
-				//同时把manualSingletonNames属性中去掉这个
-				//大家别当真，以上注释纯属虚构，如有雷同，那是我牛逼，
-				// 因为是我猜的，哈哈
+				// 如果这个bean已经被实例化过了
+				// spring认为是特殊的操作，它还是会把它放进到beanDefinitionMap
+				// 后面实例化的时候spring会重新实例化一遍
 				// Still in startup registration phase
 				this.beanDefinitionMap.put(beanName, beanDefinition);
 				this.beanDefinitionNames.add(beanName);
+				// 把当前这个bean从已经注册的容器中删除，至于为什么要把它剔除，
+				// 有待我们后续证明
 				this.manualSingletonNames.remove(beanName);
 			}
 			this.frozenBeanDefinitionNames = null;

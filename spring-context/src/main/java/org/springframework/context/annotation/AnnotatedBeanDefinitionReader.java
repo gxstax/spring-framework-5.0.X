@@ -31,6 +31,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.EnvironmentCapable;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 /**
@@ -220,6 +221,10 @@ public class AnnotatedBeanDefinitionReader {
 		/**
 		 * 根据指定的bean创建一个AnnotatedGenericBeanDefinition
 		 * 这个AnnotatedGenericBeanDefinition可以理解为一个数据结构
+		 *
+		 * BeanDefinition分为几个种类，前面初始化的spring的6个后置处理器的类型为RootBeanDefinition
+		 * 这里是我们自己定义的Appconfig配置类，这里使用的是AnnotatedGenericBeanDefinition类型
+		 * 但是他们都是BeanDefinition的子类
 		 */
 		AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(annotatedClass);
 
@@ -232,12 +237,15 @@ public class AnnotatedBeanDefinitionReader {
 		}
 
 		/**
-		 *
+		 * 判读是否有方法回调
 		 */
 		abd.setInstanceSupplier(instanceSupplier);
 
 		/**
-		 * 得到bean类的作用域
+		 * 得到bean类的作用域，默认为singleton
+		 * 如果Appconfig上面加了@Scope(value = "prototype")
+		 * 则spring会设定scopeMetadata的scopeName="prototype"
+		 * 表示是使用原型，而不是使用单例
 		 */
 		ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(abd);
 
@@ -249,12 +257,18 @@ public class AnnotatedBeanDefinitionReader {
 		/**
 		 * 通过beanNameGenerator生成一个BeanName
 		 */
+		// 查看是否Bean有定义自己的beanName；如：@Configuration(value = "appConfig")、@Component(value = "appConfig")
+	    // 如果有，则把程序员自己定义的beanName返回出去，否则则使用spring的默认规则（类名的首字母小写）
 		String beanName = (name != null ? name : this.beanNameGenerator.generateBeanName(abd, this.registry));
 
+		// 处理一些特殊的注解，比如@Lazy、@Primary、@DependsOn
 		AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);
 
+		// 这个不知道，应该是处理一些手动添加进去的特殊注解
 		if (qualifiers != null) {
 			for (Class<? extends Annotation> qualifier : qualifiers) {
+				// @Primary注解的作用是当spring扫描到一个接口的两个实现类的时候，
+				// 加了@Primary的bean将作为首选
 				if (Primary.class == qualifier) {
 					abd.setPrimary(true);
 				}
@@ -266,6 +280,7 @@ public class AnnotatedBeanDefinitionReader {
 				}
 			}
 		}
+		// 处理spring和客户自定义的bean 暂时不知道是个什么鬼东西
 		for (BeanDefinitionCustomizer customizer : definitionCustomizers) {
 			customizer.customize(abd);
 		}
@@ -285,9 +300,9 @@ public class AnnotatedBeanDefinitionReader {
 		/** -------   从这一行往上的代码就是把一个bean为一个bd（BeanDefinition）过程   --------- **/
 
 
-		/**
-		 *
-		 */
+
+		// 这里是把我们前面的bean放入到BeanDefinition中去
+		// 很重要
 		BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, this.registry);
 	}
 

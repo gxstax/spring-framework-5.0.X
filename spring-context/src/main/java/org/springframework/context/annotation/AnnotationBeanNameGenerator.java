@@ -80,6 +80,8 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 	}
 
 	/**
+	 * 查看是否Bean有定义自己的beanName；如：@Configuration(value = "appConfig")、@Component(value = "appConfig")
+	 * 如果有，则把程序员自己定义的beanName返回出去，否则则使用spring的默认规则（类名的首字母小写）
 	 * Derive a bean name from one of the annotations on the class.
 	 * @param annotatedDef the annotation-aware bean definition
 	 * @return the bean name, or {@code null} if none is found

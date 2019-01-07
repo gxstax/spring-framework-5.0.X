@@ -12,12 +12,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
+	private String ant;
+
 	public UserService(Ant ant) {
 
 	}
 
 	public void query() {
 		System.out.println("query");
+	}
+
+	public String getAnt() {
+		return ant;
+	}
+
+	public void setAnt(String ant) {
+		this.ant = ant;
 	}
 
 //	public static Object query() {
