@@ -523,7 +523,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			//返回一个工厂beanFactory
 			//为什么要返回一个工厂？ 因为要对工厂进行初始化设置（相当于生产前添加设备以及员工）
-			//前面我们再register方法中，已经把我们要生产的对象（相当于工厂要生产的产品）放进了类定义中（BeanDifinitionMap），
+			//我们后面会把我们要生产的对象（相当于工厂要生产的产品）放进了类定义中（BeanDifinitionMap），
 			//下一步要产生这些类（产品），我们必须要初始化我们的工厂，并且要在工厂里面添加处理器（工厂工具和工人）才能生产出类对象
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
@@ -639,14 +639,16 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
-	 * 返回一个初始化一个工厂
+	 * 初始化一个工厂
 	 * Tell the subclass to refresh the internal bean factory.
 	 * @return the fresh BeanFactory instance
 	 * @see #refreshBeanFactory()
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+		// 刷新BeanFactory,实际上就是给该工厂设置了一个序列号ID
 		refreshBeanFactory();
+		// 得到一个beanFactory,实际上就是返回了一个DefaultListableBeanFactory
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
 		if (logger.isDebugEnabled()) {
 			logger.debug("Bean factory for " + getDisplayName() + ": " + beanFactory);

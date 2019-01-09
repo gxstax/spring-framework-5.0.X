@@ -5,7 +5,7 @@ import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
 
 /**
- * @author gaoxx gaoxx@fxiaoke.com
+ * @author Ant
  * @ClassName: MyImportSelector
  * @Description: TODO
  * @datetime 2018/12/6 8:08

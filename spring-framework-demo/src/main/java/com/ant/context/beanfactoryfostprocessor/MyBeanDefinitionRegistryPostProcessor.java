@@ -6,7 +6,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 
 /**
- * @author gaoxx gaoxx@fxiaoke.com
+ * @author Ant
  * @ClassName: MyBeanDefinitionRegistryPostProcessor
  * @Description: TODO
  * @datetime 2018/12/8 15:42

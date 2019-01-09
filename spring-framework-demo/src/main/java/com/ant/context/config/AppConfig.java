@@ -7,7 +7,7 @@ import org.springframework.context.annotation.*;
 //import org.springframework.web.context.WebApplicationContext;
 
 /**
- * @author gaoxx gaoxx@fxiaoke.com
+ * @author Ant
  * @ClassName: AppConfig
  * @Description: TODO
  * @datetime 2018/11/8 19:51

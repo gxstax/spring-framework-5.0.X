@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 /**
- * @author gaoxx gaoxx@fxiaoke.com
+ * @author Ant
  * @ClassName: MyInvocationHandler
  * @Description: TODO
  * @datetime 2018/12/6 8:17

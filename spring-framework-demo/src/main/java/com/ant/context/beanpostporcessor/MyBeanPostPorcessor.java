@@ -4,7 +4,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
 /**
- * @author gaoxx gaoxx@fxiaoke.com
+ * @author Ant
  * @ClassName: MyBeanPostPorcessor
  * @Description: 自定义一个BeanPostPorcessor
  * @datetime 2018/11/18 11:39

@@ -5,7 +5,7 @@ import org.springframework.cglib.core.SpringNamingPolicy;
 import org.springframework.cglib.proxy.Enhancer;
 
 /**
- * @author gaoxx gaoxx@fxiaoke.com
+ * @author Ant
  * @ClassName: EnhancerTest
  * @Description: TODO
  * @datetime 2018/12/9 13:48

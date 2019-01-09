@@ -1,7 +1,7 @@
 package com.ant.webmvc.appconfig;
 
 /**
- * @author gaoxx gaoxx@fxiaoke.com
+ * @author Ant
  * @ClassName: AppConfig
  * @Description: webmvc配置类
  * @datetime 2018/12/18 19:13

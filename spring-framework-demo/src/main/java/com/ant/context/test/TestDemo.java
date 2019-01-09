@@ -8,7 +8,7 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
- * @author gaoxx gaoxx@fxiaoke.com
+ * @author Ant
  * @ClassName: TestDemo
  * @Description: 读取spring5.源码入口
  * @datetime 2018/11/8 19:50

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.support.GenericBeanDefinition;
 import java.util.Iterator;
 
 /**
- * @author gaoxx gaoxx@fxiaoke.com
+ * @author Ant
  * @ClassName: MyBeanFactoryPostProcessor
  * @Description: TODO
  * @datetime 2018/12/3 8:24

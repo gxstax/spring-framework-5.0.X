@@ -5,7 +5,7 @@ import org.springframework.cglib.proxy.MethodProxy;
 import java.lang.reflect.Method;
 
 /**
- * @author gaoxx gaoxx@fxiaoke.com
+ * @author Ant
  * @ClassName: MyCallback
  * @Description: TODO
  * @datetime 2018/12/9 13:51
