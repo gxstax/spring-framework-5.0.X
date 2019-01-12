@@ -115,7 +115,7 @@ import org.springframework.util.StringUtils;
  * @see Autowired
  * @see Value
  *
- * 这个后置处理器类就是主要负责处理@Autowired注解的
+ * 主要负责处理@Autowired注解的后置处理器
  *
  */
 public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBeanPostProcessorAdapter

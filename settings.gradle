@@ -31,4 +31,5 @@ rootProject.children.each {project ->
 }
 include 'spring-framework-demo'
 include 'spring-event-demo'
+include 'spring-mvc-demo'
 

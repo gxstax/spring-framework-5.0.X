@@ -21,6 +21,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.lang.Nullable;
 
 /**
+ * 确定hander类型
+ *
+ * 1 ：Method
+ * 2 : Object
+ *
  * Interface to be implemented by objects that define a mapping between
  * requests and handler objects.
  *

@@ -29,8 +29,10 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 /**
+ * HandlerExecutionChain 只能通过HandlerMapping#getHandler方法获取的到
+ *
  * Handler execution chain, consisting of handler object and any handler interceptors.
- * Returned by HandlerMapping's {@link HandlerMapping#getHandler} method.
+ * Returned by HandlerMapping's {@link HandlerMapping#getHandler} method.a
  *
  * @author Juergen Hoeller
  * @since 20.06.2003

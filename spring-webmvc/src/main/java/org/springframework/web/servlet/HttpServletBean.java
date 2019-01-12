@@ -139,6 +139,9 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 	}
 
 	/**
+	 * 映射配置参数，执行子类的初始化方法；
+	 * 这个类其实是DispatcherServletde父类，
+	 * 当我们tomcat容器启动加载的时候，会调用父类的这个方法，然后初始化一些参数
 	 * Map config parameters onto bean properties of this servlet, and
 	 * invoke subclass initialization.
 	 * @throws ServletException if bean properties are invalid (or required

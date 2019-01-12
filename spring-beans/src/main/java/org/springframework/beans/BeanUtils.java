@@ -167,7 +167,7 @@ public abstract class BeanUtils {
 		try {
 			// 设置构造方法为可访问
 			ReflectionUtils.makeAccessible(ctor);
-			// 利用反射来创建对象
+			// 利用反射来构造对象
 			return (KotlinDetector.isKotlinType(ctor.getDeclaringClass()) ?
 					KotlinDelegate.instantiateClass(ctor, args) : ctor.newInstance(args));
 		}
