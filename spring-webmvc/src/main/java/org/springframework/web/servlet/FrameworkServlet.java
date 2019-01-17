@@ -277,6 +277,8 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * @see org.springframework.web.WebApplicationInitializer
 	 */
 	public FrameworkServlet(WebApplicationContext webApplicationContext) {
+		// webApplicationContext在这个地方初始化的
+		// 是你自己传进来的一个webApplicationContext
 		this.webApplicationContext = webApplicationContext;
 	}
 
@@ -445,6 +447,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * (as required for an OPTIONS response).
 	 */
 	public void setDispatchOptionsRequest(boolean dispatchOptionsRequest) {
+		// 设置是否拦截请求
 		this.dispatchOptionsRequest = dispatchOptionsRequest;
 	}
 
@@ -497,6 +500,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		long startTime = System.currentTimeMillis();
 
 		try {
+			// 初始化webApplication容器
 			this.webApplicationContext = initWebApplicationContext();
 			initFrameworkServlet();
 		}

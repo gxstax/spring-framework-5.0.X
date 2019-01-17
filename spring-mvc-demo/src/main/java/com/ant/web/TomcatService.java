@@ -33,6 +33,7 @@ public class TomcatService {
 		Context context = tomcat.addContext("/", base.getAbsolutePath());
 		AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
 		applicationContext.register(Appconfig.class);
+		applicationContext.refresh();
 
 		DispatcherServlet servlet = new DispatcherServlet(applicationContext);
 		// tomcat启动的过程就会调用DispatcherServlet#init方法
@@ -46,8 +47,6 @@ public class TomcatService {
 		tomcat.start();
 		// tomcat服务保持
 		tomcat.getServer().await();
-
-
 
 	}
 }

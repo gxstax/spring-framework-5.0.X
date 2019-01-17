@@ -111,6 +111,7 @@ public abstract class PropertiesLoaderUtils {
 	}
 
 	/**
+	 * 从aresources目录下的DispatcherServlet.properties中读取配置信息
 	 * Load properties from the given resource (in ISO-8859-1 encoding).
 	 * @param resource the resource to load from
 	 * @return the populated Properties instance
@@ -124,6 +125,7 @@ public abstract class PropertiesLoaderUtils {
 	}
 
 	/**
+	 * 从aresources目录下的DispatcherServlet.properties中读取配置信息
 	 * Fill the given properties from the given resource (in ISO-8859-1 encoding).
 	 * @param props the Properties instance to fill
 	 * @param resource the resource to load from
@@ -137,10 +139,12 @@ public abstract class PropertiesLoaderUtils {
 				props.loadFromXML(is);
 			}
 			else {
+				// 把properties的文件内容load到Properties对象中去
 				props.load(is);
 			}
 		}
 		finally {
+			// 关闭流信息
 			is.close();
 		}
 	}

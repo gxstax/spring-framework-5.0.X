@@ -291,7 +291,9 @@ public class DispatcherServlet extends FrameworkServlet {
 		// by application developers.
 		try {
 			ClassPathResource resource = new ClassPathResource(DEFAULT_STRATEGIES_PATH, DispatcherServlet.class);
-			// 这里是把我们
+			// 这里是把我们配置在DispatcherServlet.properties的配置信息读取出来
+			// 这个配置文件中就配有我们默认的两个处理请求的handlerMapping的className;
+			// 读取到配置文件中的内容，然后放到defaultStrategies集合中去
 			defaultStrategies = PropertiesLoaderUtils.loadProperties(resource);
 		}
 		catch (IOException ex) {
@@ -416,7 +418,9 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * @see org.springframework.web.WebApplicationInitializer
 	 */
 	public DispatcherServlet(WebApplicationContext webApplicationContext) {
+		// 调用父类的方法，初始化webApplicationContext
 		super(webApplicationContext);
+		// 设置拦截请求方式为拦截
 		setDispatchOptionsRequest(true);
 	}
 
@@ -502,6 +506,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
+	 * 初始化servlet必须的对象
 	 * Initialize the strategy objects that this servlet uses.
 	 * <p>May be overridden in subclasses in order to initialize further strategy objects.
 	 */
@@ -594,9 +599,13 @@ public class DispatcherServlet extends FrameworkServlet {
 		this.handlerMappings = null;
 
 		if (this.detectAllHandlerMappings) {
+			// 从我们spring容器的singtonObjects中去拿对象
+			// 就是我们自己可以定义自己的handerMapping对象，
+			// 如果有我们自己定义的，这里会取出来放进handlerMappings对象中去
 			// Find all HandlerMappings in the ApplicationContext, including ancestor contexts.
 			Map<String, HandlerMapping> matchingBeans =
 					BeanFactoryUtils.beansOfTypeIncludingAncestors(context, HandlerMapping.class, true, false);
+			// 判断是否有匹配的
 			if (!matchingBeans.isEmpty()) {
 				this.handlerMappings = new ArrayList<>(matchingBeans.values());
 				// We keep HandlerMappings in sorted order.
@@ -617,6 +626,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		// a default HandlerMapping if no other mappings are found.
 		// 通过配置文件中配置的信息得到handerMapping
 		if (this.handlerMappings == null) {
+			// 从配置文件中获取默认的handlerMapping
 			this.handlerMappings = getDefaultStrategies(context, HandlerMapping.class);
 			if (logger.isDebugEnabled()) {
 				logger.debug("No HandlerMappings found in servlet '" + getServletName() + "': using default");
@@ -1217,6 +1227,8 @@ public class DispatcherServlet extends FrameworkServlet {
 					logger.trace(
 							"Testing handler map [" + hm + "] in DispatcherServlet with name '" + getServletName() + "'");
 				}
+				// 把请求传过去看能不能得到一个handler
+				//
 				HandlerExecutionChain handler = hm.getHandler(request);
 				if (handler != null) {
 					return handler;

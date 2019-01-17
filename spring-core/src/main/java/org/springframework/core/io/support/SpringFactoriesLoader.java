@@ -105,6 +105,7 @@ public abstract class SpringFactoriesLoader {
 	}
 
 	/**
+	 * 这一部分知识是属于springboot中的知识
 	 * Load the fully qualified class names of factory implementations of the
 	 * given type from {@value #FACTORIES_RESOURCE_LOCATION}, using the given
 	 * class loader.
@@ -116,6 +117,9 @@ public abstract class SpringFactoriesLoader {
 	 */
 	public static List<String> loadFactoryNames(Class<?> factoryClass, @Nullable ClassLoader classLoader) {
 		String factoryClassName = factoryClass.getName();
+		// 从spring的配置文件中加载出用于初始化springboot环境的加载类的类名
+		// 这些类名是被spring配置在META-INF/spring.factories路径下面的
+		// 这些是spring在初始化环境的过程中用到的
 		return loadSpringFactories(classLoader).getOrDefault(factoryClassName, Collections.emptyList());
 	}
 
@@ -126,14 +130,37 @@ public abstract class SpringFactoriesLoader {
 		}
 
 		try {
+			// 使用jdk的加载器去加载META-INF/spring.factories路径下的文件内容
+			// 主要是去加载springboot源码包的spring.factories文件
 			Enumeration<URL> urls = (classLoader != null ?
 					classLoader.getResources(FACTORIES_RESOURCE_LOCATION) :
 					ClassLoader.getSystemResources(FACTORIES_RESOURCE_LOCATION));
 			result = new LinkedMultiValueMap<>();
+			// 循环遍历，依次解析
 			while (urls.hasMoreElements()) {
 				URL url = urls.nextElement();
 				UrlResource resource = new UrlResource(url);
+				/* 这里只举第一次加载，spring-boot项目下的META-INF下的spring.factoriers文件，实际上spring-boot下面有很多个spring.factoriers文件 */
+
+				// 加载spring-boot下META-INF路径下的spring.factoriers文件内容
+				// 这里我们会有8个，具体内容大致如下,我下的是spring-boot2.0x的源码包
+				//0 = {Hashtable$Entry@659} "org.springframework.boot.diagnostics.FailureAnalyzer" -> "org.springframework.boot.diagnostics.analyzer.BeanCurrentlyInCreationFailureAnalyzer,org.springframework.boot.diagnostics.analyzer.BeanNotOfRequiredTypeFailureAnalyzer,org.springframework.boot.diagnostics.analyzer.BindFailureAnalyzer,org.springframework.boot.diagnostics.analyzer.BindValidationFailureAnalyzer,org.springframework.boot.diagnostics.analyzer.UnboundConfigurationPropertyFailureAnalyzer,org.springframework.boot.diagnostics.analyzer.ConnectorStartFailureAnalyzer,org.springframework.boot.diagnostics.analyzer.NoSuchMethodFailureAnalyzer,org.springframework.boot.diagnostics.analyzer.NoUniqueBeanDefinitionFailureAnalyzer,org.springframework.boot.diagnostics.analyzer.PortInUseFailureAnalyzer,org.springframework.boot.diagnostics.analyzer.ValidationExceptionFailureAnalyzer,org.springframework.boot.diagnostics.analyzer.InvalidConfigurationPropertyNameFailureAnalyzer,org.springframework.boot.diagnostics.analyzer.InvalidConfigur
+				//1 = {Hashtable$Entry@660} "org.springframework.boot.env.EnvironmentPostProcessor" -> "org.springframework.boot.cloud.CloudFoundryVcapEnvironmentPostProcessor,org.springframework.boot.env.SpringApplicationJsonEnvironmentPostProcessor,org.springframework.boot.env.SystemEnvironmentPropertySourceEnvironmentPostProcessor"
+				//2 = {Hashtable$Entry@661} "org.springframework.boot.SpringApplicationRunListener" -> "org.springframework.boot.context.event.EventPublishingRunListener"
+				//3 = {Hashtable$Entry@662} "org.springframework.context.ApplicationContextInitializer" -> "org.springframework.boot.context.ConfigurationWarningsApplicationContextInitializer,org.springframework.boot.context.ContextIdApplicationContextInitializer,org.springframework.boot.context.config.DelegatingApplicationContextInitializer,org.springframework.boot.web.context.ServerPortInfoApplicationContextInitializer"
+				//4 = {Hashtable$Entry@663} "org.springframework.boot.env.PropertySourceLoader" -> "org.springframework.boot.env.PropertiesPropertySourceLoader,org.springframework.boot.env.YamlPropertySourceLoader"
+				//5 = {Hashtable$Entry@664} "org.springframework.context.ApplicationListener" -> "org.springframework.boot.ClearCachesApplicationListener,org.springframework.boot.builder.ParentContextCloserApplicationListener,org.springframework.boot.context.FileEncodingApplicationListener,org.springframework.boot.context.config.AnsiOutputApplicationListener,org.springframework.boot.context.config.ConfigFileApplicationListener,org.springframework.boot.context.config.DelegatingApplicationListener,org.springframework.boot.context.logging.ClasspathLoggingApplicationListener,org.springframework.boot.context.logging.LoggingApplicationListener,org.springframework.boot.liquibase.LiquibaseServiceLocatorApplicationListener"
+				//6 = {Hashtable$Entry@665} "org.springframework.boot.diagnostics.FailureAnalysisReporter" -> "org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter"
+				//7 = {Hashtable$Entry@666} "org.springframework.boot.SpringBootExceptionReporter" -> "org.springframework.boot.diagnostics.FailureAnalyzers"
 				Properties properties = PropertiesLoaderUtils.loadProperties(resource);
+
+				// 依次对取到的内容进行解析，以congtext初始化为例,这里有4个，会对这4个依次进行解析
+				//# Application Context Initializers
+				//org.springframework.context.ApplicationContextInitializer=\
+				//org.springframework.boot.context.ConfigurationWarningsApplicationContextInitializer,\
+				//org.springframework.boot.context.ContextIdApplicationContextInitializer,\
+				//org.springframework.boot.context.config.DelegatingApplicationContextInitializer,\
+				//org.springframework.boot.web.context.ServerPortInfoApplicationContextInitializer
 				for (Map.Entry<?, ?> entry : properties.entrySet()) {
 					List<String> factoryClassNames = Arrays.asList(
 							StringUtils.commaDelimitedListToStringArray((String) entry.getValue()));
