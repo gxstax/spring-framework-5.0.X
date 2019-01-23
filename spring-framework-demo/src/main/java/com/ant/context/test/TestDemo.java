@@ -1,11 +1,11 @@
 package com.ant.context.test;
 
-import com.ant.context.beanfactoryfostprocessor.MyBeanFactoryPostProcessor;
 import com.ant.context.config.AppConfig;
-import com.ant.context.dao.Dao;
-import com.ant.context.service.UserService;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import com.ant.context.config.DemoConfig;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Ant
@@ -35,9 +35,12 @@ public class TestDemo {
 		 * 这行代码是把我们自己定义的AppConfig.class的class类转换成bd,
 		 * 然后put到我们的beanDifinitionMap当中去;
 		 * beanDifinitonMap实际上是我们的DefaultListableBeanFactory的属性
-				* 那么我们的DefaultListableBeanFactory是怎么来的呢？在工厂中的什么位置呢？
+		 * 那么我们的DefaultListableBeanFactory是怎么来的呢？在工厂中的什么位置呢？
 		 **/
-		annotationConfigApplicationContext.register(AppConfig.class);
+		List<Object> configLst = new ArrayList<>();
+		configLst.add(AppConfig.class);
+		configLst.add(DemoConfig.class);
+		annotationConfigApplicationContext.register(configLst.getClass());
 
 
 		/**

@@ -39,6 +39,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.MultiValueMap;
 
 /**
+ * 这个类是用来处理我们@注解的类
  * Internal class used to evaluate {@link Conditional} annotations.
  *
  * @author Phillip Webb
@@ -130,9 +131,18 @@ class ConditionEvaluator {
 
 
 	/**
+	 * 处理@注解的实现类方法
 	 * Implementation of a {@link ConditionContext}.
 	 */
 	private static class ConditionContextImpl implements ConditionContext {
+		/**
+		 * 我们可以看到很多类里面都定义了 registry, beanFactory, environment, classLoader这几个属性
+		 *
+		 * 我理解的方式：在spring工厂中有很多待加工的零件（也就是我们的bean）,我们的这些处理类就像是一些给bean赋能
+		 * 的车间，那么我们在给bean赋能的时候怎么获取这些bean零件呢，就需要借助registry, beanFactory, environment, classLoader
+		 * 这些类，他们如同工厂的机械臂一样，把我们要处理的bean,运送到我们的处理车间。
+		 *
+		 * **/
 
 		@Nullable
 		private final BeanDefinitionRegistry registry;

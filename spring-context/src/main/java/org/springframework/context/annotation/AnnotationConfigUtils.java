@@ -62,6 +62,14 @@ import org.springframework.util.ClassUtils;
  */
 public class AnnotationConfigUtils {
 
+
+	/**
+	 * 这个类定义个6+1（一个特殊的处理jpa）个处理我们不同bean的BeanDefinition
+	 * 其实BeanDefinitioon是分种类的，比如RootBeanDefinition,GenricBeanDefinition,AbstractGenricBeanDefinition.....
+	 *
+	 * 其中最重要的一个就是ConfigurationAnnotationProcessor这个类型的，他是处理我们程序员定义的普通bean
+	 */
+
 	/**
 	 * The bean name of the internally managed Configuration annotation processor.
 	 */
@@ -251,7 +259,10 @@ public class AnnotationConfigUtils {
 	private static BeanDefinitionHolder registerPostProcessor(
 			BeanDefinitionRegistry registry, RootBeanDefinition definition, String beanName) {
 
+		// 定义角色什么的鬼，不清楚干啥的
 		definition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
+		// 把bean定义到我们的beanDefinition中去，这步就会注册到一个
+		// BeanDefinition到我们spring工厂的BeanDefinitionMap中去
 		registry.registerBeanDefinition(beanName, definition);
 		return new BeanDefinitionHolder(definition, beanName);
 	}

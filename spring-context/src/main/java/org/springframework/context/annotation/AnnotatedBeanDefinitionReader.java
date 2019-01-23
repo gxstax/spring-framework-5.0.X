@@ -54,6 +54,7 @@ public class AnnotatedBeanDefinitionReader {
 
 	private ScopeMetadataResolver scopeMetadataResolver = new AnnotationScopeMetadataResolver();
 
+	// 用来处理@注解的类
 	private ConditionEvaluator conditionEvaluator;
 
 
@@ -82,9 +83,13 @@ public class AnnotatedBeanDefinitionReader {
 	 */
 	public AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry, Environment environment) {
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
-		Assert.notNull(environment, "Environment must not be null");
+
+		// registry实际上是我们传过来的AnnotationConfigApplicationContext（spring容器）
+		// 它继承了BeanDefinitionRegistry接口；
+		// 这里把它赋值给当前类定义的BeanDefinitionRegistry，用来做容器的初始化
 		this.registry = registry;
 		this.conditionEvaluator = new ConditionEvaluator(registry, environment, null);
+		// 这个方法会定义6+1个处理我们bean的类，也就是注册6个BeanDefinition到spring工厂的BeanDefinitionMap中去
 		AnnotationConfigUtils.registerAnnotationConfigProcessors(this.registry);
 	}
 

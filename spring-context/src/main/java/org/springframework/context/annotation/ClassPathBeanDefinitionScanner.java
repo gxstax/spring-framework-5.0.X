@@ -109,6 +109,8 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 * @see #setEnvironment
 	 */
 	public ClassPathBeanDefinitionScanner(BeanDefinitionRegistry registry, boolean useDefaultFilters) {
+		// getOrCreateEnvironment(registry)这个方法是获取我们的环境配置的
+		// 这里面包括比如jvm,cpu,idea,的各种环境配置，这个方法不重要，可以跳过不看
 		this(registry, useDefaultFilters, getOrCreateEnvironment(registry));
 	}
 
@@ -164,7 +166,9 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		if (useDefaultFilters) {
 			registerDefaultFilters();
 		}
+		// 设置环境配置
 		setEnvironment(environment);
+		// 设置资源加载
 		setResourceLoader(resourceLoader);
 	}
 
@@ -380,12 +384,14 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 
 
 	/**
+	 * 从穿过来的registry工厂获取我们的环境变量，如果穿过来的和我们需要的不匹配，则返回一个标准的环境
 	 * Get the Environment from the given registry if possible, otherwise return a new
 	 * StandardEnvironment.
 	 */
 	private static Environment getOrCreateEnvironment(BeanDefinitionRegistry registry) {
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
 		if (registry instanceof EnvironmentCapable) {
+			// 返回我们spring工厂的环境配置，这里面包括，我们的配置，jvm,cpu,idea,的各种环境配置
 			return ((EnvironmentCapable) registry).getEnvironment();
 		}
 		return new StandardEnvironment();
