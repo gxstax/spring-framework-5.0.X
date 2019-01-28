@@ -5,6 +5,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
+import org.springframework.beans.factory.support.MethodOverrides;
 
 import java.util.Iterator;
 
@@ -22,8 +23,11 @@ public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
 
 //
-		GenericBeanDefinition beanDefinition1 = (GenericBeanDefinition) beanFactory.getBeanDefinition("indexDao");
-		beanDefinition1.removeAttribute("ant");
+		GenericBeanDefinition beanDefinition = (GenericBeanDefinition) beanFactory.getBeanDefinition("indexDao");
+		beanDefinition.setBeanClassName("myIndexDao");
+
+		beanFactory.registerSingleton("myIndexDao", beanDefinition);
+//		beanDefinition1.removeAttribute("ant");
 
 //		System.out.println("MyBeanFactoryPostProcessor");
 	}

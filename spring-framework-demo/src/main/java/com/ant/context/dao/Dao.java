@@ -8,5 +8,5 @@ package com.ant.context.dao;
  * @Version 1.0
  */
 public interface Dao {
-	public void query();
+	public String query();
 }

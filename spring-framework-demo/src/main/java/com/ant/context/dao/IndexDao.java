@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class IndexDao implements Dao{
 
 	@Override
-	public void query () {
-		System.out.println("indexDao");
+	public String query () {
+		return "this is xiao xie de ";
 	}
 }

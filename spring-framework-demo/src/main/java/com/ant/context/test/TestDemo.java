@@ -2,6 +2,10 @@ package com.ant.context.test;
 
 import com.ant.context.config.AppConfig;
 import com.ant.context.config.DemoConfig;
+import com.ant.context.dao.Dao;
+import com.ant.context.dao.IndexDao;
+import com.ant.context.dao.IndexDao3;
+import com.ant.context.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.ArrayList;
@@ -37,11 +41,8 @@ public class TestDemo {
 		 * beanDifinitonMap实际上是我们的DefaultListableBeanFactory的属性
 		 * 那么我们的DefaultListableBeanFactory是怎么来的呢？在工厂中的什么位置呢？
 		 **/
-		List<Object> configLst = new ArrayList<>();
-		configLst.add(AppConfig.class);
-		configLst.add(DemoConfig.class);
-		annotationConfigApplicationContext.register(configLst.getClass());
 
+		annotationConfigApplicationContext.register(AppConfig.class);
 
 		/**
 		 * 初始化Spring的环境
@@ -49,11 +50,14 @@ public class TestDemo {
 		annotationConfigApplicationContext.refresh();
 
 //		System.out.println(annotationConfigApplicationContext.getBean("user"));
-
+//
 //		Dao dao = (Dao) annotationConfigApplicationContext.getBean("indexDao");
 //		dao.query();
 
 //		annotationConfigApplicationContext.getBean(IndexDao3.class).query();
+
+		Dao indexDao = (Dao) annotationConfigApplicationContext.getBean("indexDao");
+		System.out.println(indexDao.query());
 
 //		UserService service = annotationConfigApplicationContext.getBean(UserService.class);
 //		service.query();

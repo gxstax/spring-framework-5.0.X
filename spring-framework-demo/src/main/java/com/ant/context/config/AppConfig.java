@@ -1,5 +1,7 @@
 package com.ant.context.config;
 
+import com.ant.context.beanfactoryfostprocessor.MyBeanFactoryPostProcessor;
+import com.ant.context.dao.IndexDao3;
 import com.ant.context.imports.MyImportSelector;
 import com.ant.context.service.CityService;
 import com.ant.context.service.UserService;
@@ -19,6 +21,7 @@ import org.springframework.context.annotation.*;
 //@ImportResource("classpath:spring.xml")
 //@AntEnable
 //@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Import(IndexDao3.class)
 public class AppConfig {
 
 }

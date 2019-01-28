@@ -19,7 +19,7 @@ public class MyInvocationHandler implements InvocationHandler{
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-		System.out.println("我是代理增强");
-		return method.invoke(obj,args);
+		String result = method.invoke(obj,args).toString().toUpperCase();
+		return result;
 	}
 }
