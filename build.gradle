@@ -12,17 +12,23 @@ buildscript {
 
 // 3rd party plugin repositories can be configured in settings.gradle
 plugins {
-	id "com.gradle.build-scan" version "1.8"
+	id "com.gradle.build-scan" version "2.1"
 	id "io.spring.dependency-management" version "1.0.3.RELEASE" apply false
 	id "org.jetbrains.kotlin.jvm" version "1.2.51" apply false
 	id "org.jetbrains.dokka" version "0.9.17"
 	id "org.asciidoctor.convert" version "1.5.6"
 }
-
 buildScan {
-	licenseAgreementUrl = "https://gradle.com/terms-of-service"
-	licenseAgree = "yes"
+	termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+	termsOfServiceAgree = 'yes'
+
+	publishAlways()
 }
+
+//buildScan {
+//	licenseAgreementUrl = "https://gradle.com/terms-of-service"
+//	licenseAgree = "yes"
+//}
 
 ext {
 	linkHomepage = "https://projects.spring.io/spring-framework"
@@ -289,7 +295,7 @@ configure(rootProject) {
 		archives distZip
 	}
 
-	task wrapper(type: Wrapper) {
+	task wrapper(type: Wrapper,overwrite:true) {
 		description = "Generates gradlew[.bat] scripts"
 		gradleVersion = "4.4.1"
 
