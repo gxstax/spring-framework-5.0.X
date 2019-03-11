@@ -130,6 +130,7 @@ public class AnnotatedBeanDefinitionReader {
 
 
 	/**
+	 * 循环注册要处理的加了@Configuration的配置类
 	 * Register one or more annotated classes to be processed.
 	 * <p>Calls to {@code register} are idempotent; adding the same
 	 * annotated class more than once has no additional effect.
@@ -302,7 +303,7 @@ public class AnnotatedBeanDefinitionReader {
 		 */
 		definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
 
-		/** -------   从这一行往上的代码就是把一个bean为一个bd（BeanDefinition）过程   --------- **/
+		/** -------   从这一行往上的代码就是把一个bean变为一个bd（BeanDefinition）过程   --------- **/
 
 
 

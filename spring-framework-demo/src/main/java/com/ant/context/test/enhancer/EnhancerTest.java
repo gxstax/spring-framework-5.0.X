@@ -14,7 +14,7 @@ import org.springframework.cglib.proxy.Enhancer;
 public class EnhancerTest {
 	public static void main(String[] args) {
 		Enhancer enhancer = new Enhancer();
-		//增强父类，地球人都知道cglib是基于继承来的
+		//增强父类，
 		enhancer.setSuperclass(IndexDao.class);
 
 		enhancer.setNamingPolicy(SpringNamingPolicy.INSTANCE);

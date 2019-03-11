@@ -176,7 +176,8 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	//---------------------------------------------------------------------
 
 	/**
-	 *
+	 * 注册要处理的配置类（注意这个注解类是@Configuration的类），
+	 * 这里的配置类可以是多个
 	 * Register one or more annotated classes to be processed.
 	 * <p>Note that {@link #refresh()} must be called in order for the context
 	 * to fully process the new classes.
