@@ -81,7 +81,6 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 		 */
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 
-
 		/**
 		 * 可以用来扫描包或者类，来转换为bd(BeanDefinition)
 		 * 但是实际上我们调用refresh()方法扫描我们的包的时候并不是用的这个对象，
