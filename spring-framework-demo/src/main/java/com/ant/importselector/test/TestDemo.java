@@ -2,6 +2,7 @@ package com.ant.importselector.test;
 
 import com.ant.importselector.config.Appconfig;
 import com.ant.importselector.dao.IndexDao;
+import com.ant.importselector.dao.UserDao;
 import com.ant.importselector.selector.MyInvocationHandler;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -37,14 +38,14 @@ public class TestDemo {
 
 		annotationConfigApplicationContext.refresh();
 
-//		IndexDao bean = annotationConfigApplicationContext.getBean(IndexDao.class);
-//		System.out.println(bean.query());
+		UserDao userDao = annotationConfigApplicationContext.getBean(UserDao.class);
+		System.out.println(userDao.getName());
 
 
 
-		IndexDao indexDao = (IndexDao) Proxy.newProxyInstance(TestDemo.class.getClassLoader(), new Class[]{IndexDao.class}, new MyInvocationHandler());
-
-		indexDao.query();
+//		IndexDao indexDao = (IndexDao) Proxy.newProxyInstance(TestDemo.class.getClassLoader(), new Class[]{IndexDao.class}, new MyInvocationHandler());
+//
+//		indexDao.query();
 
 
 

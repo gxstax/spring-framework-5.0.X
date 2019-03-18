@@ -14,9 +14,9 @@ import java.lang.reflect.Method;
  */
 public class MyInvocationHandler<T> implements InvocationHandler {
 
-	T target;
+	Object target;
 
-	public MyInvocationHandler(T target) {
+	public MyInvocationHandler(Object target) {
 		this.target=target;
 	}
 
@@ -29,6 +29,8 @@ public class MyInvocationHandler<T> implements InvocationHandler {
 		// 输出sql语句
 		System.out.println(select.value()[0]);
 		// 返回执行结果
-		return "";
+		proxy.getClass().getConstructors();
+		String invokeRst = method.invoke(target, args).toString();
+		return invokeRst;
 	}
 }

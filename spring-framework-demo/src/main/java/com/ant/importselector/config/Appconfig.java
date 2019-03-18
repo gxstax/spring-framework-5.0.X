@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan("com.ant.importselector")
 @AntEnable
-@MapperScan("com.ant.importselector")
+//@MapperScan("com.ant.importselector")
 public class Appconfig {
 
 	@Bean

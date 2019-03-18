@@ -28,7 +28,10 @@ public class Test {
 
 		annotationConfigApplicationContext.refresh();
 
-		UserService userService = annotationConfigApplicationContext.getBean(UserService.class);
-		userService.query();
+//		UserService userService = annotationConfigApplicationContext.getBean(UserService.class);
+//		userService.query();
+
+		UserDao dao = annotationConfigApplicationContext.getBean(UserDao.class);
+		dao.query();
 	}
 }

@@ -27,7 +27,7 @@ public class MyFactoryBean implements FactoryBean {
 	public Object getObject() throws Exception {
 		Class[] clazzs = new Class[]{clazz};
 
-		UserDao proxy = (UserDao) Proxy.newProxyInstance(MyFactoryBean.class.getClassLoader(), clazzs, new MyInvocationHandler<>());
+		Object proxy = Proxy.newProxyInstance(MyFactoryBean.class.getClassLoader(), clazzs, new MyInvocationHandler<>(this));
 
 		return proxy;
 	}
