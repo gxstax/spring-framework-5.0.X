@@ -12,13 +12,15 @@ import java.util.Set;
  */
 public class Test {
 	public static void main(String[] args) {
-		Set<String> set1 = new HashSet<>();
-		Set<String> set2 = new HashSet<>();
-		set1.add("1");
-		set2.add("1");
-		set1.add("2");
-		set2.add("2");
-		ttest(set1, set2);
+//		Set<String> set1 = new HashSet<>();
+//		Set<String> set2 = new HashSet<>();
+//		set1.add("1");
+//		set2.add("1");
+//		set1.add("2");
+//		set2.add("2");
+//		ttest(set1, set2);
+
+
 	}
 
 

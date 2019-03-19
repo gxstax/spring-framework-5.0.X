@@ -85,18 +85,23 @@ abstract class ConfigurationClassUtils {
 			return false;
 		}
 
+		/** 判断bean是什么类型的bean，通过不同的bean使用构造方法，来生成不同的bd */
+
+		// 1.如果beanDef是AnnotatedBeanDefinition类型的实例，则取出metedata赋值给AnnotationMetadata
 		AnnotationMetadata metadata;
 		if (beanDef instanceof AnnotatedBeanDefinition &&
 				className.equals(((AnnotatedBeanDefinition) beanDef).getMetadata().getClassName())) {
 			// Can reuse the pre-parsed metadata from the given BeanDefinition...
 			metadata = ((AnnotatedBeanDefinition) beanDef).getMetadata();
 		}
+		// 2.生成AbstractBeanDefinition类型的bd
 		else if (beanDef instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) beanDef).hasBeanClass()) {
 			// Check already loaded Class if present...
 			// since we possibly can't even load the class file for this Class.
 			Class<?> beanClass = ((AbstractBeanDefinition) beanDef).getBeanClass();
 			metadata = new StandardAnnotationMetadata(beanClass, true);
 		}
+		// 3.特殊类型bean处理
 		else {
 			try {
 				MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(className);
@@ -110,10 +115,18 @@ abstract class ConfigurationClassUtils {
 			}
 		}
 
-		//判断当前这个bd中存放的类是否加了@Configurantion注解
+		//如果这个bean是加了@Configurantion注解，那么这里spring会给它一个FULL属性，这个后面会有用到（cglib相关）
 		if (isFullConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
+		// 如果这个bean不是加了@Configuration注解，那么就会判断是否加了下面这些属性，加了则直接给他赋予lite
+		/* static {
+			candidateIndicators.add(Component.class.getName());
+			candidateIndicators.add(ComponentScan.class.getName());
+			candidateIndicators.add(Import.class.getName());
+			candidateIndicators.add(ImportResource.class.getName());
+		*/
+
 		else if (isLiteConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}
@@ -122,6 +135,7 @@ abstract class ConfigurationClassUtils {
 		}
 
 		// It's a full or lite configuration candidate... Let's determine the order value, if any.
+		// 排序
 		Integer order = getOrder(metadata);
 		if (order != null) {
 			beanDef.setAttribute(ORDER_ATTRIBUTE, order);
@@ -162,11 +176,21 @@ abstract class ConfigurationClassUtils {
 	 */
 	public static boolean isLiteConfigurationCandidate(AnnotationMetadata metadata) {
 		// Do not consider an interface or an annotation...
+		// 如果是一个接口返回不判断
 		if (metadata.isInterface()) {
 			return false;
 		}
 
 		// Any of the typical annotations found?
+		/* candidateIndicators:
+			  static {
+				candidateIndicators.add(Component.class.getName());
+				candidateIndicators.add(ComponentScan.class.getName());
+				candidateIndicators.add(Import.class.getName());
+				candidateIndicators.add(ImportResource.class.getName());
+			} */
+		// 如果不是加了@Configuration注解，则判断是否是加了上面这些注解
+		// 如果是加了上面这四种注解的，则直接判定要加lite属性
 		for (String indicator : candidateIndicators) {
 			if (metadata.isAnnotated(indicator)) {
 				return true;

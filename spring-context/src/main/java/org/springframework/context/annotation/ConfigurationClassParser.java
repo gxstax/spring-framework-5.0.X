@@ -167,11 +167,12 @@ class ConfigurationClassParser {
 	public void parse(Set<BeanDefinitionHolder> configCandidates) {
 		this.deferredImportSelectors = new LinkedList<>();
 
+		// 这里还是循环解析我们之前扫描出来的类
 		for (BeanDefinitionHolder holder : configCandidates) {
 			BeanDefinition bd = holder.getBeanDefinition();
 			try {
 				if (bd instanceof AnnotatedBeanDefinition) {
-					// 进行类型的封装
+					// 解析过程，这里就包括spring扩展点的3个类，其中就包括那个贼拉牛逼的明星类
 					parse(((AnnotatedBeanDefinition) bd).getMetadata(), holder.getBeanName());
 				}
 				else if (bd instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) bd).hasBeanClass()) {
@@ -352,12 +353,12 @@ class ConfigurationClassParser {
 		 * 处理所有的@Import,如果我们的类中加了@Import注解就是在这个地方处理，其中@Import有三种引入情况
 		 * 1. 实现ImportSelector接口的
 		 * 2. 普通类
-		 * 3. 实现ImportBeanDefinitionRegistrar接口的
+		 * 3. 实现ImportBeanDefinitionRegistrar接口的（spring中牛逼的一个类），动态添加bd
 		 */
 		/**
 		 * 这里处理的import是需要判断我们的类当中有@Import注解的时候
 		 * 如果有@Import注解，则把当中的值拿出来，@Import当中的值是一个类
-		 * 比如@Import(xxxxx.class),那么这里便是吧xxxxx穿进去进行解析
+		 * 比如@Import(xxxxx.class),那么这里便是吧xxxxx传进去进行解析
 		 * 在解析的过程中如果发觉是一个@ImportSelector，那么就会调用selector的方法
 		 * 返回一个字符串（类名），通过这个字符串得到一个类
 		 * 继而在递归调用本方法来load出来这个类
@@ -694,7 +695,12 @@ class ConfigurationClassParser {
 							processImports(configClass, currentSourceClass, importSourceClasses, false);
 						}
 					}
-					//判断这个类是否是实现了ImportBeanDefinitionRegistrar的类
+					// 判断这个类是否是实现了ImportBeanDefinitionRegistrar的类
+					// 这里就是去解析那个贼拉牛逼的那个类，为什么牛逼？这个类几乎囊括mybaties整个框架原理
+
+					/** 如果其它的扩展点是你在成年后找到陪你渡过后续人生另一半，那么这个是bean的生命早期就开始插手她的人生
+					  * 是真的的青梅竹马，两小无猜
+					 * */
 					else if (candidate.isAssignable(ImportBeanDefinitionRegistrar.class)) {
 						// Candidate class is an ImportBeanDefinitionRegistrar ->
 						// delegate to it to register additional bean definitions

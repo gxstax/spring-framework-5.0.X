@@ -81,7 +81,6 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 		 */
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 
-
 		/**
 		 * 可以用来扫描包或者类，来转换为bd(BeanDefinition)
 		 * 但是实际上我们调用refresh()方法扫描我们的包的时候并不是用的这个对象，
@@ -176,7 +175,8 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	//---------------------------------------------------------------------
 
 	/**
-	 *
+	 * 注册要处理的配置类（注意这个注解类是@Configuration的类），
+	 * 这里的配置类可以是多个
 	 * Register one or more annotated classes to be processed.
 	 * <p>Note that {@link #refresh()} must be called in order for the context
 	 * to fully process the new classes.

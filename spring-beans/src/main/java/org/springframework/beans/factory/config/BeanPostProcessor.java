@@ -21,16 +21,35 @@ import org.springframework.lang.Nullable;
 
 /**
  * BeanPostProcessor是spring框架的一个扩展的类点-后置处理器（有很多个）
+ * 通过实现BeanPostProcessor接口，程序员自己可以插手bean的实例化过程
  *
- * 我们再写代码的过程中可以通过实现BeanPostProcessor这个接口，在Spring对bean进行实例化的过程中，
- * 实现对Bean的一系列操作，从而真正实现插手“她”的人生。进而减轻BeanFactory的负担；
+ * 我们再写代码的过程中可以通过实现BeanPostProcessor这个接口，
+ * 在Spring对bean进行实例化的过程中，实现对Bean的一系列操作，
+ * 从而真正实现插手“她”的人生。进而减轻BeanFactory的负担；
  * 特别注意的一点是这个接口可以实现多个，实现一个列表，然后依次执行；
- * 比如SpringAOP就是通过Spring对bean实例化的后期，对bean进行一些横切逻辑的织入处理的；
+ * 比如SpringAOP就是通过Spring对bean实例化的后期，
+ * 对bean进行一些横切逻辑的织入处理的，从而和IOC容器建立联系。
+ *
+ * spring默认给我们提供了很多postProcessor实现，下面是spring初始化给我们实例化的7个(
+ *    5.x的高版本中去掉了1个,剩下了6了）
+ *
+ * 接口用起来很简单，但是底层的实现原理和源码实现是及其复杂的，初看会令人头皮发麻，
+ * 后面我们来一一看这些接口到底是做什么用的，以及它的底层实现原理到底是什么？
  *
  * 常见的内置处理器如下：
- * 0 = {ApplicationContextAwareProcessor@2005}:
- * 1 = {ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor@2006}
- * 2 = {PostProcessorRegistrationDelegate$BeanPostProcessorChecker@2007}
+ * 0 = {ApplicationContextAwareProcessor}:
+ *     这个处理的功能是，当应用程序定义的Bean实现ApplicationContextAware
+ *     接口时注入ApplicationContext对象；
+ *     Application是spring的上下文，这里几乎涵盖所有的配置信息，
+ *     环境变量，还有spring以及我们程序员自己定义的
+ *     各种类的对象；
+ * 1 = {InitDestroyAnnotationBeanPostProcessor}
+ *     用来处理自定义的的的初始化方法和销毁方法,spring提供了3种自定义初始化和销毁方法：
+ *     a: 通过@Bean指定init-method和destory-method属性
+ *     b: Bean实现InitialzingBean接口和实现DisposableBean
+ *     c: @PostConstruct , @PreDestroy
+ * 2 = {InstantiationAwareBeanPostProcessor}
+ *
  * 3 = {CommonAnnotationBeanPostProcessor@2008}
  * 4 = {AutowiredAnnotationBeanPostProcessor@2009}
  * 5 = {RequiredAnnotationBeanPostProcessor@2010}

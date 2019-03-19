@@ -285,14 +285,16 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 					logger.debug("Bean definition has already been processed as a configuration class: " + beanDef);
 				}
 			}
-			//判断是否加了Configration注解，加了则设定他的configrationclass 为full
+			// 判断是否加了某些特殊注解，比如@Configration、@Componet,@ComponentScan、@Import、@ImportResource注解，
+			// 如果加了@configrationclass，spring会为这个bean设置一个full
+			// 其它的类型的spring则会为这个bean加上一个lite属性
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
 				//如果加了则放进我们定义的set<bd>集合中去
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
 			}
 		}
 
-		//如果没有找到@Configration注解的类，则直接返回
+		//如果没有找到加了特殊注解的类，则直接返回
 		// Return immediately if no @Configuration classes were found
 		if (configCandidates.isEmpty()) {
 			return;
@@ -325,7 +327,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		}
 
 
-		//初始化一个解析器
+		// 初始化一个解析器，主要是解析我们上面扫描出来的加了@Configuration注解以及
+		// @Component、@ComponentScan、@Import、@ImportResource
 		// Parse each @Configuration class
 		ConfigurationClassParser parser = new ConfigurationClassParser(
 				this.metadataReaderFactory, this.problemReporter, this.environment,
@@ -351,7 +354,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			 *		return this.configurationClasses.keySet();
 			 *	}
 			 */
-			//configurationClasses这个集合是不是就是我们解析import类后，把import类放到这里面了？
+			// configurationClasses这个集合是不是就是我们解析import类后，把import类放到这里面了？
 			Set<ConfigurationClass> configClasses = new LinkedHashSet<>(parser.getConfigurationClasses());
 
 			configClasses.removeAll(alreadyParsed);

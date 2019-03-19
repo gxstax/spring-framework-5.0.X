@@ -1,5 +1,7 @@
 package com.ant.context.invocationhandler;
 
+import com.ant.importregistrar.dao.UserDao;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
@@ -20,6 +22,8 @@ public class MyInvocationHandler implements InvocationHandler{
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		String result = method.invoke(obj,args).toString().toUpperCase();
+
+
 		return result;
 	}
 }
