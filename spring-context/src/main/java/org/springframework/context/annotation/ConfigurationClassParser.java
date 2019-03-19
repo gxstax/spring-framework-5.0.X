@@ -228,7 +228,7 @@ class ConfigurationClassParser {
 
 	/**
 	 * 处理注解类
-	 * @param configClass
+	 * @param configClass 这个是我们的注解类的一个数据结构
 	 * @throws IOException
 	 */
 	protected void processConfigurationClass(ConfigurationClass configClass) throws IOException {

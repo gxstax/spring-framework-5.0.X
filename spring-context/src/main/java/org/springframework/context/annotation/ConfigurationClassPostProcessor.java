@@ -231,7 +231,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		}
 		this.registriesPostProcessed.add(registryId);
 		//进去看下它是怎么处理的
-		//其实这个方法才是处理我们appconfig加的所有注解的东西，报错@ComponetScan扫描包，@Import注解,
+		//其实这个方法才是处理我们appconfig加的所有注解的东西，包括@ComponetScan扫描包，@Import注解,
 		//以及@configuration等等等等.....
 		processConfigBeanDefinitions(registry);
 	}
@@ -289,8 +289,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			// 如果加了@configrationclass，spring会为这个bean设置一个full
 			// 其它的类型的spring则会为这个bean加上一个lite属性
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
-				//如果加了则放进我们定义的set<bd>集合中去
-				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
+					// 如果加了则放进我们定义的set<bd>集合中去
+					configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
 			}
 		}
 
@@ -308,7 +308,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			return Integer.compare(i1, i2);
 		});
 
-		//TODO 不知道，没看，不重要
+		// TODO 不知道，没看，不重要
 		// Detect any custom bean name generation strategy supplied through the enclosing application context
 		SingletonBeanRegistry sbr = null;
 		if (registry instanceof SingletonBeanRegistry) {
@@ -334,6 +334,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 				this.metadataReaderFactory, this.problemReporter, this.environment,
 				this.resourceLoader, this.componentScanBeanNameGenerator, registry);
 
+		// 集合转换：configCandidates里面是我们Spring初始化的6个bdprocessor和我们的注解类
+		// 后面spring将会依次对这几个类进行解析
 		Set<BeanDefinitionHolder> candidates = new LinkedHashSet<>(configCandidates);
 
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());

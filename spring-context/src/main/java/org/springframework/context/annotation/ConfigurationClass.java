@@ -173,6 +173,7 @@ final class ConfigurationClass {
 	 * @since 4.0.5
 	 */
 	public void mergeImportedBy(ConfigurationClass otherConfigClass) {
+		// importedBy是一个Set集合，记录了这个类被引用关系的所有集合
 		this.importedBy.addAll(otherConfigClass.importedBy);
 	}
 
