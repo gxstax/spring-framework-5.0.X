@@ -86,6 +86,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 		 * 但是实际上我们调用refresh()方法扫描我们的包的时候并不是用的这个对象，
 		 * 而是在里面重新定义了一个对象，那么这个scanner是什么呢？
 		 * 这里的scanner是为了完成程序员在外部调用annotationConfigApplicationContext.scan()方法的时候用来扫描包；
+		 * 如果我们程序员没有自己要扫描的包，那么它其实就没有任何卵用
 		 */
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}

@@ -16,7 +16,8 @@ import org.springframework.context.annotation.*;
  * @Version 1.0
  */
 @Configuration(value = "appConfig")
-@ComponentScan("com.ant.context")
+@ComponentScan(value = "com.ant.context",
+		excludeFilters = @ComponentScan.Filter(DemoConfig.class))
 //@Import(MyImportSelector.class)
 //@ImportResource("classpath:spring.xml")
 //@AntEnable
