@@ -294,7 +294,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			}
 		}
 
-		//如果没有找到加了特殊注解的类，则直接返回
+		// 如果没有找到加了特殊注解的类，则直接返回
 		// Return immediately if no @Configuration classes were found
 		if (configCandidates.isEmpty()) {
 			return;

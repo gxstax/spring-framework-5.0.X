@@ -270,7 +270,7 @@ public class AnnotatedBeanDefinitionReader {
 		// 处理一些特殊的注解，比如@Lazy、@Primary、@DependsOn
 		AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);
 
-		// 这个不知道，应该是处理一些手动添加进去的特殊注解
+
 		if (qualifiers != null) {
 			for (Class<? extends Annotation> qualifier : qualifiers) {
 				// @Primary注解的作用是当spring扫描到一个接口的两个实现类的时候，
