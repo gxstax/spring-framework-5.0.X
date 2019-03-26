@@ -1,11 +1,13 @@
 package com.ant.importselector.config;
 
 import com.ant.importselector.anno.AntEnable;
+import com.ant.importselector.selector.Myselector;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
@@ -20,8 +22,8 @@ import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan("com.ant.importselector")
-@AntEnable
-//@MapperScan("com.ant.importselector")
+//@AntEnable
+@Import(Myselector.class)
 public class Appconfig {
 
 	@Bean
