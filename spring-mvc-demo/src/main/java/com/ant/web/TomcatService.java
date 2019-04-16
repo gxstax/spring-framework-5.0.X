@@ -30,6 +30,13 @@ public class TomcatService {
 		// contextPath：tomcat的访问路径
 		// docbase: 项目的web目录
 //		tomcat.addWebapp("/", base.getAbsolutePath());
+		// tomcat 在添加容器的时候会初始化一个服务
+		// 大概的代码如下：
+		//Service service = new StandardService();
+		//        service.setName("Tomcat");
+		//        server.addService(service);
+		//        return server;
+
 		Context context = tomcat.addContext("/", base.getAbsolutePath());
 		AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
 		applicationContext.register(Appconfig.class);
@@ -38,12 +45,17 @@ public class TomcatService {
 		DispatcherServlet servlet = new DispatcherServlet(applicationContext);
 		// tomcat启动的过程就会调用DispatcherServlet#init方法
 		// 初始化tomcat请求以及请求映射
+		// 把我们定义的DispatcherServlet添加到tomcat中去
 		tomcat.addServlet(context, "ant", servlet).setLoadOnStartup(0);
 		// 设置映射拦截路径
 		context.addServletMapping("/", "ant");
 
 
 		// 启动tomcat
+		// 这里需要说明的是，tomcat启动的时候会去调用LifecycleBase.start()方法
+		// 然后这个start方法中去调用了startInternal();这个方法(这里其实会经过很多层调用，涉及tomcat源码，不一一去看)
+		// 最终会去调用DispatcherServlet的父类的父类HttpServletBean.init()
+		// 所以我们直接把断点打在HttpServletBean.init()这个方法上去调试
 		tomcat.start();
 		// tomcat服务保持
 		tomcat.getServer().await();

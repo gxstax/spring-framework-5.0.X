@@ -6,6 +6,7 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.beans.factory.support.MethodOverrides;
+import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 
@@ -16,7 +17,6 @@ import java.util.Iterator;
  * @datetime 2018/12/3 8:24
  * @Version 1.0
  */
-
 public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {

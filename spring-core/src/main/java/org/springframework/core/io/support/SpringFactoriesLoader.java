@@ -124,6 +124,8 @@ public abstract class SpringFactoriesLoader {
 	}
 
 	private static Map<String, List<String>> loadSpringFactories(@Nullable ClassLoader classLoader) {
+		// MultiValueMap是一个一键多值的Map,这个是spring继承Map实现的一个类，它的值是一个list列表
+		// cache 是一个ConcurrentReferenceHashMap key值是类加载器
 		MultiValueMap<String, String> result = cache.get(classLoader);
 		if (result != null) {
 			return result;
@@ -132,6 +134,7 @@ public abstract class SpringFactoriesLoader {
 		try {
 			// 使用jdk的加载器去加载META-INF/spring.factories路径下的文件内容
 			// 主要是去加载springboot源码包的spring.factories文件
+			// 我们去springboot源码中可以看到 spring.factories中一共有8大类的配置信息
 			Enumeration<URL> urls = (classLoader != null ?
 					classLoader.getResources(FACTORIES_RESOURCE_LOCATION) :
 					ClassLoader.getSystemResources(FACTORIES_RESOURCE_LOCATION));

@@ -15,11 +15,11 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 public class MyBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegistryPostProcessor{
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-
+		System.out.println("MyBeanDefinitionRegistryPostProcessor.postProcessBeanDefinitionRegistry");
 	}
 
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-
+		System.out.println("MyBeanDefinitionRegistryPostProcessor.postProcessBeanFactory");
 	}
 }

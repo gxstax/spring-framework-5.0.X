@@ -19,6 +19,7 @@ import java.lang.reflect.Proxy;
  * @datetime 2019/3/16 19:35
  * @Version 1.0
  */
+// &MyFactoryBean
 public class MyFactoryBean implements FactoryBean {
 
 	Class clazz;

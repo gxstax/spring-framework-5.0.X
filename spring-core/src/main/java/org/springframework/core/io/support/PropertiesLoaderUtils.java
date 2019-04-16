@@ -125,7 +125,28 @@ public abstract class PropertiesLoaderUtils {
 	}
 
 	/**
-	 * 从aresources目录下的DispatcherServlet.properties中读取配置信息
+	 * 从resources目录下的DispatcherServlet.properties中读取配置信息,这里我把内容拷过来看下:
+	 * org.springframework.web.servlet.LocaleResolver=org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver
+	 *
+	 * org.springframework.web.servlet.ThemeResolver=org.springframework.web.servlet.theme.FixedThemeResolver
+	 *
+	 * org.springframework.web.servlet.HandlerMapping=org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping,\
+	 * 	org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
+	 *
+	 * org.springframework.web.servlet.HandlerAdapter=org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter,\
+	 * 	org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter,\
+	 * 	org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
+	 *
+	 * org.springframework.web.servlet.HandlerExceptionResolver=org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver,\
+	 * 	org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver,\
+	 * 	org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver
+	 *
+	 * org.springframework.web.servlet.RequestToViewNameTranslator=org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator
+	 *
+	 * org.springframework.web.servlet.ViewResolver=org.springframework.web.servlet.view.InternalResourceViewResolver
+	 *
+	 * org.springframework.web.servlet.FlashMapManager=org.springframework.web.servlet.support.SessionFlashMapManager
+	 *
 	 * Fill the given properties from the given resource (in ISO-8859-1 encoding).
 	 * @param props the Properties instance to fill
 	 * @param resource the resource to load from

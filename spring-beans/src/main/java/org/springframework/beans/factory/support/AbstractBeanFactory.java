@@ -247,7 +247,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		final String beanName = transformedBeanName(name);
 		Object bean;
 
-		// 首先去单例缓存中去取，如果取不到，则使用singletonFactory单例工厂去get一个
+		// 首先去单例池缓存中去取，如果取不到，则使用singletonFactory单例工厂去get一个
 		// 然后再放到缓存中去，其实这里的缓存有两个，一个是singletonObjects，一个是earlySingletonObjects
 		// Eagerly check singleton cache for manually registered singletons.
 		Object sharedInstance = getSingleton(beanName);
