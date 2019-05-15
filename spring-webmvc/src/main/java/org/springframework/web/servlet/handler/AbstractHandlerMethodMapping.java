@@ -305,6 +305,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	// Handler method lookup
 
 	/**
+	 * 根据请求去找具体的处理器
 	 * Look up a handler method for the given request.
 	 */
 	@Override

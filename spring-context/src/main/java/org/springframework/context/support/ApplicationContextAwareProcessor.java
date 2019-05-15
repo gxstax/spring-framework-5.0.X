@@ -93,6 +93,7 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 			}, acc);
 		}
 		else {
+			// 我们的@Controller的bean会在这个地方处理
 			invokeAwareInterfaces(bean);
 		}
 
@@ -117,6 +118,7 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 				((MessageSourceAware) bean).setMessageSource(this.applicationContext);
 			}
 			if (bean instanceof ApplicationContextAware) {
+				// 处理@Controller就是在这里处理的
 				((ApplicationContextAware) bean).setApplicationContext(this.applicationContext);
 			}
 		}
