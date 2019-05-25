@@ -135,8 +135,8 @@ class ConfigurationClassBeanDefinitionReader {
 			return;
 		}
 
-		//如果一个类是被import进来的，会被spring标注
-		//在这里被注册进来
+		// 如果一个类是被import进来的，会被spring标注
+		// 在这里被注册进来
 		if (configClass.isImported()) {
 			registerBeanDefinitionForImportedConfigurationClass(configClass);
 		}

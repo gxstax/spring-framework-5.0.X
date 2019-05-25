@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Configuration;
  * @datetime 2019/1/23 18:03
  * @Version 1.0
  */
-@Configuration
+//@Configuration
 public class DemoConfig {
 }

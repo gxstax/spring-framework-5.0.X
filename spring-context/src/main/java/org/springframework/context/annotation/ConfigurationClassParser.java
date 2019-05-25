@@ -129,12 +129,15 @@ class ConfigurationClassParser {
 
 	private final ConditionEvaluator conditionEvaluator;
 
+	// configuration引用另外一个configuration会在这里保存引用关系
 	private final Map<ConfigurationClass, ConfigurationClass> configurationClasses = new LinkedHashMap<>();
 
 	private final Map<String, ConfigurationClass> knownSuperclasses = new HashMap<>();
 
+	// 这里存储我们configuration类引入的配置文件信息
 	private final List<String> propertySourceNames = new ArrayList<>();
 
+	// 保存我们@import进来的类
 	private final ImportStack importStack = new ImportStack();
 
 	@Nullable
@@ -172,7 +175,8 @@ class ConfigurationClassParser {
 			BeanDefinition bd = holder.getBeanDefinition();
 			try {
 				if (bd instanceof AnnotatedBeanDefinition) {
-					// 解析过程，这里就包括spring扩展点的3个类，其中就包括那个贼拉牛逼的明星类
+					// 解析过程，这里就包括spring扩展点的3个类，
+					// 其中就包括那个贼拉牛逼的明星类
 					parse(((AnnotatedBeanDefinition) bd).getMetadata(), holder.getBeanName());
 				}
 				else if (bd instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) bd).hasBeanClass()) {
@@ -504,7 +508,7 @@ class ConfigurationClassParser {
 			encoding = null;
 		}
 
-		//把你配置的文件放入到一个数字当中
+		//把你配置的文件放入到一个数组当中
 		String[] locations = propertySource.getStringArray("value");
 		Assert.isTrue(locations.length > 0, "At least one @PropertySource(value) location is required");
 		boolean ignoreResourceNotFound = propertySource.getBoolean("ignoreResourceNotFound");

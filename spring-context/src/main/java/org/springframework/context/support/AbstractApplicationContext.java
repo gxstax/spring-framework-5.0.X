@@ -175,6 +175,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	private ConfigurableEnvironment environment;
 
 	/** BeanFactoryPostProcessors to apply on refresh */
+	// 保存后置处理器
 	private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
 
 	/** System time in milliseconds when this context started */
@@ -668,14 +669,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		// Tell the internal bean factory to use the context's class loader etc.
-		//设置一个类加载器，因为后续我们要根据bd去产生类，产生类就必不可少的需要一个类加载器
+		// 设置一个类加载器，因为后续我们要根据bd去产生类，产生类就必不可少的需要一个类加载器
 		beanFactory.setBeanClassLoader(getClassLoader());
 
-		//bean表达式解释器
+		// bean表达式解释器
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
 
 
-		//我猜是添加一个处理我们property或者xml文件的解析器，这个不是很重要，因为现在spring推崇0配置
+		// 我猜是添加一个处理我们property或者xml文件的解析器，这个不是很重要，因为现在spring推崇0配置
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
 
@@ -715,7 +716,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			beanFactory.setTempClassLoader(new ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));
 		}
 
-		//注册默认的环境配置
+		// 注册默认的环境配置
 		// Register default environment beans.
 		if (!beanFactory.containsLocalBean(ENVIRONMENT_BEAN_NAME)) {
 			beanFactory.registerSingleton(ENVIRONMENT_BEAN_NAME, getEnvironment());

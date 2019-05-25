@@ -5,6 +5,8 @@ import com.ant.context.config.DemoConfig;
 import com.ant.context.dao.Dao;
 import com.ant.context.dao.IndexDao;
 import com.ant.context.dao.IndexDao3;
+import com.ant.context.factorybean.TempFactoryBean;
+import com.ant.context.factorybean.TestFactorybean;
 import com.ant.context.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -49,6 +51,10 @@ public class TestDemo {
 		 */
 		annotationConfigApplicationContext.refresh();
 
+		TestFactorybean testFactoryBean = (TestFactorybean) annotationConfigApplicationContext.getBean("&testFactoryBean");
+		TempFactoryBean tempFactoryBean = (TempFactoryBean) annotationConfigApplicationContext.getBean("testFactoryBean");
+		testFactoryBean.testBean();
+		tempFactoryBean.test();
 //		System.out.println(annotationConfigApplicationContext.getBean("user"));
 //
 //		Dao dao = (Dao) annotationConfigApplicationContext.getBean("indexDao");
@@ -56,8 +62,8 @@ public class TestDemo {
 
 //		annotationConfigApplicationContext.getBean(IndexDao3.class).query();
 
-		Dao indexDao = (Dao) annotationConfigApplicationContext.getBean("indexDao");
-		System.out.println(indexDao.query());
+//		Dao indexDao = (Dao) annotationConfigApplicationContext.getBean("indexDao");
+//		System.out.println(indexDao.query());
 
 //		UserService service = annotationConfigApplicationContext.getBean(UserService.class);
 //		service.query();

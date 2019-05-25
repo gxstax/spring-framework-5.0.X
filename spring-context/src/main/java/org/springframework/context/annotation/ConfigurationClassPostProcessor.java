@@ -254,7 +254,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			processConfigBeanDefinitions((BeanDefinitionRegistry) beanFactory);
 		}
 
-		//这行代码是对加了FULL属性的做CGLIB动态代理
+		// 这行代码是对加了FULL属性的做CGLIB动态代理
 		// （还记得我们在解析AppConfig的时候判断是否有@Configurantion注解吧，如果有则给了它FULL属性，没有给了LITE属性）
 		// 产生cglib代理，为什么要产生代理呢？
 		enhanceConfigurationClasses(beanFactory);

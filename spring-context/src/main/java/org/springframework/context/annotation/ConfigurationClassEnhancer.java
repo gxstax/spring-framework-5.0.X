@@ -99,7 +99,7 @@ class ConfigurationClassEnhancer {
 	 */
 	public Class<?> enhance(Class<?> configClass, @Nullable ClassLoader classLoader) {
 
-		//判断是否被代理过
+		// 判断是否被代理过
 		if (EnhancedConfiguration.class.isAssignableFrom(configClass)) {
 			if (logger.isDebugEnabled()) {
 				logger.debug(String.format("Ignoring request to enhance %s as it has " +
@@ -111,7 +111,7 @@ class ConfigurationClassEnhancer {
 			}
 			return configClass;
 		}
-		//cglib代理
+		// cglib代理
 		Class<?> enhancedClass = createClass(newEnhancer(configClass, classLoader));
 		if (logger.isDebugEnabled()) {
 			logger.debug(String.format("Successfully enhanced %s; enhanced class name is: %s",
@@ -370,6 +370,10 @@ class ConfigurationClassEnhancer {
 				}
 			}
 
+			// 判断这个方法是不是第一次调用
+			// 这里spring利用了两个方法的名字，比如说：
+			// query2()调用query 方法，Spring会判断query是否和query2相同，
+			// 如果不相同，说明是代理方法调用方法，如果是相同，则是方法的调用
 			if (isCurrentlyInvokedFactoryMethod(beanMethod)) {
 				// The factory is calling the bean method in order to instantiate and register the bean
 				// (i.e. via a getBean() call) -> invoke the super implementation of the method to actually

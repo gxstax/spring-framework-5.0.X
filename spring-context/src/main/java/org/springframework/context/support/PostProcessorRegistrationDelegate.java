@@ -75,6 +75,7 @@ final class PostProcessorRegistrationDelegate {
 					//如果这个地方定义了一个处理器，则会调用registryProcessor的postProcessBeanDefinitionRegistry(registry)
 					//方法，这个地方是调用我们程序员自己定义的registryProcessor的postProcessBeanDefinitionRegistry回掉方法，
 					//如果我们没有定义这样一个后置处理器，则会跳过
+					// 这里会增强benFactoryProcessor的一些功能
 					registryProcessor.postProcessBeanDefinitionRegistry(registry);
 
 					registryProcessors.add(registryProcessor);
@@ -172,12 +173,12 @@ final class PostProcessorRegistrationDelegate {
 				currentRegistryProcessors.clear();
 			}
 
-			//上面的执行完了程序员自己定义的以及spring自己的实现了BeanDefinitionRegistryPostProcessor的后置处理器
-			//这里就是spring执行实现了BeanDefinitionRegistryPostProcessor父类BeanFactoryPostProcessor的后置处理器类
+			// 上面的执行完了程序员自己定义的以及spring自己的实现了BeanDefinitionRegistryPostProcessor的后置处理器
+			// 这里就是spring执行实现了BeanDefinitionRegistryPostProcessor父类BeanFactoryPostProcessor的后置处理器类
 			// Now, invoke the postProcessBeanFactory callback of all processors handled so far.
-			//因为BeanFactoryPostProcessor中有一个postProcessBeanFactory
-			//所以实现了继承BeanFactoryPostProcessor子类BeanDefinitionRegistryPostProcessor的后置处理器类也要执行BeanFactoryPostProcessor中的postProcessBeanFactory方法
-			//比较绕，慢慢理解
+			// 因为BeanFactoryPostProcessor中有一个postProcessBeanFactory
+			// 所以实现了继承BeanFactoryPostProcessor子类BeanDefinitionRegistryPostProcessor的后置处理器类也要执行BeanFactoryPostProcessor中的postProcessBeanFactory方法
+			// 比较绕，慢慢理解
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
 
 			//处理程序员自己定义的实现了BeanFactoryPostProcessor类的后置处理器类
