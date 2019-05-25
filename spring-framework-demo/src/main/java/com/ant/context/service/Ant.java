@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @Version 1.0
  */
 
-@Component
+@Component("ant")
 public class Ant {
 
 	@Autowired

@@ -275,6 +275,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	private static final Properties defaultStrategies;
 
+	//  这里是个静态块，初始化一个DispatcherServlet的时候，要先执行这个今天快
 	static {
 
 		// 从属性文件中加载默认的策略实现
@@ -283,6 +284,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		// 这个配置文件名称是：DispatcherServlet.properties，
 		// 路径在resource下面，这里一共有8个配置，其中我们的handerMapping就包含在里面
 		// 它这里是把8个全部load到了defaultStrategies对象中去了
+
 		// 还记得我们DispatcherServlet父类中的init()方法中一步一步调用到DispatcherServlet#onRefresh()
 		// 然后onRefresh()调用了initStrategies()这个方法进行实例化的，其中就包括我们的handerMapping
 
@@ -418,8 +420,13 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * @see org.springframework.web.WebApplicationInitializer
 	 */
 	public DispatcherServlet(WebApplicationContext webApplicationContext) {
-		// 调用父类的方法，初始化webApplicationContext
+		// 首先调用父类的方法，初始化webApplicationContext
 		super(webApplicationContext);
+
+		// 在执行下面这个这个方法之前，要先执行这个类的静态块，所以我们先去看它的静态块做了什么
+		// ..........
+		// .......
+
 		// 设置拦截请求方式为拦截
 		setDispatchOptionsRequest(true);
 	}
@@ -502,6 +509,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	@Override
 	protected void onRefresh(ApplicationContext context) {
+		// 这个方法也就是下面的方法就是初始化Servlet的对象信息啦，哈哈哈哈哈呃...，去看看吧
 		initStrategies(context);
 	}
 
@@ -511,10 +519,13 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * <p>May be overridden in subclasses in order to initialize further strategy objects.
 	 */
 	protected void initStrategies(ApplicationContext context) {
+		// 这里有很多初始化的对象信息，但是我们今天主要探究的是initHandlerMappings()
+		// 看一下它是怎么处理我们的请求的
+
 		initMultipartResolver(context);//上传文件的bean
 		initLocaleResolver(context);//国际化的东西
 		initThemeResolver(context);
-		initHandlerMappings(context);
+		initHandlerMappings(context);// 请求映射信息
 		initHandlerAdapters(context);
 		initHandlerExceptionResolvers(context);
 		initRequestToViewNameTranslator(context);
@@ -591,11 +602,15 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
+	 * 初始化HandlerMappings,这里spring告诉我们，如果没有定义HandlerMapping
+	 * 则会定义一个默认的BeanNameUrlHandlerMapping
+	 *
 	 * Initialize the HandlerMappings used by this class.
 	 * <p>If no HandlerMapping beans are defined in the BeanFactory for this namespace,
 	 * we default to BeanNameUrlHandlerMapping.
 	 */
 	private void initHandlerMappings(ApplicationContext context) {
+		// 清空集合
 		this.handlerMappings = null;
 
 		if (this.detectAllHandlerMappings) {
@@ -627,6 +642,9 @@ public class DispatcherServlet extends FrameworkServlet {
 		// 通过配置文件中配置的信息得到handerMapping
 		if (this.handlerMappings == null) {
 			// 从配置文件中获取默认的handlerMapping
+			// 从前面解析配置我们可以知道配置文件中有两个：配置信息如下：
+			//org.springframework.web.servlet.HandlerMapping=org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping,\
+			//	 org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
 			this.handlerMappings = getDefaultStrategies(context, HandlerMapping.class);
 			if (logger.isDebugEnabled()) {
 				logger.debug("No HandlerMappings found in servlet '" + getServletName() + "': using default");
@@ -635,7 +653,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
-	 * Initialize the HandlerAdapters used by this class.
+	 * Initialize the HandlerAdapters used by this class.o
 	 * <p>If no HandlerAdapter beans are defined in the BeanFactory for this namespace,
 	 * we default to SimpleControllerHandlerAdapter.
 	 */

@@ -322,12 +322,17 @@ public abstract class BeanFactoryUtils {
 			ListableBeanFactory lbf, Class<T> type, boolean includeNonSingletons, boolean allowEagerInit)
 			throws BeansException {
 
+		// 校验
 		Assert.notNull(lbf, "ListableBeanFactory must not be null");
+		// 从spring容器中根据class类型去取出匹配的对象
 		Map<String, T> result = new LinkedHashMap<>(4);
 		result.putAll(lbf.getBeansOfType(type, includeNonSingletons, allowEagerInit));
+		// 判断这个容器是否属于分层工厂，WebApplicationContext或者AnnotationConfigApplicationContext
+		// 是从HierarchicalBeanFactory继承过来的，所以这个是属于HierarchicalBeanFactory的
 		if (lbf instanceof HierarchicalBeanFactory) {
 			HierarchicalBeanFactory hbf = (HierarchicalBeanFactory) lbf;
 			if (hbf.getParentBeanFactory() instanceof ListableBeanFactory) {
+				// 这里是一个递归调用，就是一层一层的解析
 				Map<String, T> parentResult = beansOfTypeIncludingAncestors(
 						(ListableBeanFactory) hbf.getParentBeanFactory(), type, includeNonSingletons, allowEagerInit);
 				parentResult.forEach((beanName, beanType) -> {

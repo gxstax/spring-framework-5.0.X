@@ -3,7 +3,11 @@ package com.ant.importregistrar.registrar;
 import com.ant.importregistrar.dao.UserDao;
 import com.ant.importselector.test.TestDemo;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -15,6 +19,7 @@ import java.lang.reflect.Proxy;
  * @datetime 2019/3/16 19:35
  * @Version 1.0
  */
+// &MyFactoryBean
 public class MyFactoryBean implements FactoryBean {
 
 	Class clazz;
@@ -27,7 +32,8 @@ public class MyFactoryBean implements FactoryBean {
 	public Object getObject() throws Exception {
 		Class[] clazzs = new Class[]{clazz};
 
-		Object proxy = Proxy.newProxyInstance(MyFactoryBean.class.getClassLoader(), clazzs, new MyInvocationHandler<>(this));
+		Object proxy;
+		proxy = Proxy.newProxyInstance(MyFactoryBean.class.getClassLoader(), clazzs, new MyInvocationHandler());
 
 		return proxy;
 	}

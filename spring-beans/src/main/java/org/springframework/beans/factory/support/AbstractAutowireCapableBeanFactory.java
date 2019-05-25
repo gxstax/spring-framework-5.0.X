@@ -586,6 +586,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Initialize the bean instance.
 		Object exposedObject = bean;
 		try {
+			/** 这里有个重要的场景是循环依赖，看下循环依赖是怎么设置属性的 **/
 			// 设置属性，非常重要
 			populateBean(beanName, mbd, instanceWrapper);
 			// 执行后置处理器， aop 就是在这里完成的处理

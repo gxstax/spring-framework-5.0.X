@@ -4,10 +4,12 @@ import com.ant.importregistrar.anno.AntMapperScan;
 import com.ant.importregistrar.registrar.MyImportBeanDefinitionRegistrar;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
@@ -25,11 +27,20 @@ import javax.sql.DataSource;
 @AntMapperScan
 //@MapperScan
 public class Appconfig {
+
+//	@Bean("mysqlsession")
+//	@Autowired
+//	public SqlSessionFactoryBean sessionFactoryBean(DataSource dataSource) {
+//		SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
+//		sessionFactoryBean.setDataSource(dataSource);
+//		return sessionFactoryBean;
+//	}
+
 	@Bean
-	public SqlSessionFactoryBean sessionFactoryBean(DataSource dataSource) {
-		SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
-		sessionFactoryBean.setDataSource(dataSource);
-		return sessionFactoryBean;
+	public JdbcTemplate jdbcTemplate (DataSource dataSource) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate();
+		jdbcTemplate.setDataSource(dataSource);
+		return jdbcTemplate;
 	}
 
 	@Bean

@@ -27,11 +27,11 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-		if(beanName.equals("userDao")) {
+		if(beanName.equals("aaa")) {
 			try {
 				Field name = bean.getClass().getDeclaredField("name");
 				Method setName = bean.getClass().getDeclaredMethod("setName", String.class);
-				setName.invoke(bean, "什么鬼东西");
+				setName.invoke(bean, "ljsladjdfljfa");
 			} catch (NoSuchFieldException e) {
 				e.printStackTrace();
 			} catch (NoSuchMethodException e) {

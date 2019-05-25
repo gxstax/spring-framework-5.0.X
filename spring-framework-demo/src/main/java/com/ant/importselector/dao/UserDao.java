@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @datetime 2019/3/18 9:23
  * @Version 1.0
  */
-@Component
+@Component("aaa")
 public class UserDao {
 	private String id;
 	private String name;

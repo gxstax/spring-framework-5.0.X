@@ -279,6 +279,11 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	public FrameworkServlet(WebApplicationContext webApplicationContext) {
 		// webApplicationContext在这个地方初始化的
 		// 是你自己传进来的一个webApplicationContext
+		// 这里我们传过来的是我们自己定义的AnnotationConfigWebApplicationContext
+		// 这里我们可以看到它把我们自己定义的AnnotationConfigWebApplicationContext赋值给了webApplicationContext
+		// 实际上WebApplicationContext 和 AnnotationConfigWebApplicationContext 都继承了ApplicationContext类
+		// 到这里我们的web容器就初始化完成了，通过这行代码，我们可以认为spring的容器和springMvc的容器可以看做是一个web容器
+		// 只不过他们在功能上可能存在一些差异性
 		this.webApplicationContext = webApplicationContext;
 	}
 
@@ -501,7 +506,10 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 		try {
 			// 初始化webApplication容器
+			// 这一步我们会把handlerMappingf放到容器中来
 			this.webApplicationContext = initWebApplicationContext();
+			// 初始化FrameworkServlet，我们看下这步做了什么东西
+			// 纳尼？竟然是个空方法，这个方法是留给子类扩展使用，但是我们的DispatherServlet没有重写这个方法
 			initFrameworkServlet();
 		}
 		catch (ServletException | RuntimeException ex) {
@@ -564,6 +572,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			// Either the context is not a ConfigurableApplicationContext with refresh
 			// support or the context injected at construction time had already been
 			// refreshed -> trigger initial onRefresh manually here.
+			// 这里会调用子类DispatcherServlet的onRefresh()方法
 			onRefresh(wac);
 		}
 
@@ -818,6 +827,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 	/**
+	 * 调用子类DIspatcherServlet#onRefresh方法，去实例化具体的信息
 	 * Template method which can be overridden to add servlet-specific refresh work.
 	 * Called after successful context refresh.
 	 * <p>This implementation is empty.
@@ -826,6 +836,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 */
 	protected void onRefresh(ApplicationContext context) {
 		// For subclasses: do nothing by default.
+		// 跟到子类DispatcherServlet中去看下到底做了什么东西
 	}
 
 	/**

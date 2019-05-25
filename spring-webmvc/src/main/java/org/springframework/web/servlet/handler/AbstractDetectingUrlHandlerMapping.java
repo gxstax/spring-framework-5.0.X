@@ -56,6 +56,7 @@ public abstract class AbstractDetectingUrlHandlerMapping extends AbstractUrlHand
 	@Override
 	public void initApplicationContext() throws ApplicationContextException {
 		super.initApplicationContext();
+		// 找到handler并去处理他们
 		detectHandlers();
 	}
 
@@ -78,9 +79,11 @@ public abstract class AbstractDetectingUrlHandlerMapping extends AbstractUrlHand
 
 		// Take any bean name that we can determine URLs for.
 		for (String beanName : beanNames) {
+			// 判断该请求的url是否是以 "/" 开头
 			String[] urls = determineUrlsForHandler(beanName);
 			if (!ObjectUtils.isEmpty(urls)) {
 				// URL paths found: Let's consider it a handler.
+				// 这里就是去注册我们的handler
 				registerHandler(urls, beanName);
 			}
 			else {

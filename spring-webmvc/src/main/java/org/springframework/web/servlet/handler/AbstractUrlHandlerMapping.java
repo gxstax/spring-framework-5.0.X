@@ -122,7 +122,13 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 	protected Object getHandlerInternal(HttpServletRequest request) throws Exception {
 		String lookupPath = getUrlPathHelper().getLookupPathForRequest(request);
 		// 这个是查找方法，判断该请求到底是要用哪个类或者方法来处理
+		// 上面的方法会从handlerMap 容器中去找处理该路径的服务，但是从前面我们已经知道
+		// handlerMap里面存的是下面这两种方式的Controller
+		//  1：实现HttpRequestHandler的Controller, Controller上的@Compotent("/path")就是路径名
+		//	2：实现Controller接口的Controller，Controller上的@Compotent("/path")就是路径名
 		Object handler = lookupHandler(lookupPath, request);
+		// 但是从上面找不到怎么办，我们通常定义的Controller的方法是加@Controller注解，然后我们把路径定义在方法体上
+		// 这样的请求时从哪里去找呢？ 我们继续往下看，如果这里没有找到怎么办
 		if (handler == null) {
 			// We need to care for the default handler directly, since we need to
 			// expose the PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE for it as well.
@@ -131,6 +137,8 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 				rawHandler = getRootHandler();
 			}
 			if (rawHandler == null) {
+				// 答案找到了这里有个默认的Handler来处理
+				// 进去看下它是如何处理的？ 纳尼？默认的是空的，那么它在哪呢？继续往下看吧
 				rawHandler = getDefaultHandler();
 			}
 			if (rawHandler != null) {
@@ -167,7 +175,7 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 	 */
 	@Nullable
 	protected Object lookupHandler(String urlPath, HttpServletRequest request) throws Exception {
-		// 查找到匹配该请求的方法
+		// 查找到匹配该请求的方法？
 		// Direct match?
 		Object handler = this.handlerMap.get(urlPath);
 		if (handler != null) {
@@ -313,6 +321,7 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 	}
 
 	/**
+	 * // 根据请求路径去注册我们的Controller处理器
 	 * Register the specified handler for the given URL paths.
 	 * @param urlPaths the URLs that the bean should be mapped to
 	 * @param beanName the name of the handler bean
@@ -321,12 +330,14 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 	 */
 	protected void registerHandler(String[] urlPaths, String beanName) throws BeansException, IllegalStateException {
 		Assert.notNull(urlPaths, "URL path array must not be null");
+		// 根据请求路径去注册我们的Controller处理器
 		for (String urlPath : urlPaths) {
 			registerHandler(urlPath, beanName);
 		}
 	}
 
 	/**
+	 * // 注册我们的@Controller的主要方法
 	 * Register the specified handler for the given URL path.
 	 * @param urlPath the URL the bean should be mapped to
 	 * @param handler the handler instance or handler bean name String
@@ -342,8 +353,10 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 		// Eagerly resolve handler if referencing singleton via name.
 		if (!this.lazyInitHandlers && handler instanceof String) {
 			String handlerName = (String) handler;
+			// 获取Spring容器
 			ApplicationContext applicationContext = obtainApplicationContext();
 			if (applicationContext.isSingleton(handlerName)) {
+				// 从spring容器中取出bean实例
 				resolvedHandler = applicationContext.getBean(handlerName);
 			}
 		}
@@ -370,6 +383,7 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 				setDefaultHandler(resolvedHandler);
 			}
 			else {
+				// 这里我们看到，我们的Controller设置的处理路径都会被放入到一个叫handlerMap的LinkedMap中去
 				this.handlerMap.put(urlPath, resolvedHandler);
 				if (logger.isInfoEnabled()) {
 					logger.info("Mapped URL path [" + urlPath + "] onto " + getHandlerDescription(handler));

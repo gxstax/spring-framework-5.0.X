@@ -285,7 +285,10 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 			// 这行代码很重要，它的作用就是扫描我们包里的文件
 			// 扫描basePackage路径下的所有java文件，
 			// 并把他们转换为BeanDefinition类型
+			// 底层实现是使用的asm,有兴趣的同学可以去了解下，反正我是没兴趣
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
+
+
 			for (BeanDefinition candidate : candidates) {
 				//解析scope属性
 				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);

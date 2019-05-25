@@ -230,9 +230,9 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 					"postProcessBeanFactory already called on this post-processor against " + registry);
 		}
 		this.registriesPostProcessed.add(registryId);
-		//进去看下它是怎么处理的
-		//其实这个方法才是处理我们appconfig加的所有注解的东西，包括@ComponetScan扫描包，@Import注解,
-		//以及@configuration等等等等.....
+		// 进去看下它是怎么处理的
+		// 其实这个方法才是处理我们appconfig加的所有注解的东西，包括@ComponetScan扫描包，@Import注解,
+		// 以及@configuration等等等等.....
 		processConfigBeanDefinitions(registry);
 	}
 
@@ -294,7 +294,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			}
 		}
 
-		//如果没有找到加了特殊注解的类，则直接返回
+		// 如果没有找到加了特殊注解的类，则直接返回
 		// Return immediately if no @Configuration classes were found
 		if (configCandidates.isEmpty()) {
 			return;
@@ -334,7 +334,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 				this.metadataReaderFactory, this.problemReporter, this.environment,
 				this.resourceLoader, this.componentScanBeanNameGenerator, registry);
 
-		// 集合转换：configCandidates里面是我们Spring初始化的6个bdprocessor和我们的注解类
+		// 集合转换：把我们的配置类信息进行一个类型转换
 		// 后面spring将会依次对这几个类进行解析
 		Set<BeanDefinitionHolder> candidates = new LinkedHashSet<>(configCandidates);
 
@@ -346,7 +346,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		 * 也就是我们的配置类AppConfig
 		 */
 		do {
-			//这行代码就是具体的bd的解析过程
+			// 这行代码就是具体的bd的解析过程
+			// 说到解析这个方法，便不由自主的流下了两行伤心的泪水
 			parser.parse(candidates);
 			parser.validate();
 

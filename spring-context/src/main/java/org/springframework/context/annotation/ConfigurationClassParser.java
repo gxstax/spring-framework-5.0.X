@@ -241,8 +241,9 @@ class ConfigurationClassParser {
 			return;
 		}
 
-		//处理import的情况
-		//就是判断这个注解类是否被别的类import被引用
+		// 处理import的情况
+		// 就是判断这个注解类是否被别的类import被引用
+		// 这里是处理有循环Import的情况，如果有循环的import,spring会做一个merge操作
 		ConfigurationClass existingClass = this.configurationClasses.get(configClass);
 		if (existingClass != null) {
 			if (configClass.isImported()) {
@@ -304,7 +305,8 @@ class ConfigurationClassParser {
 				sourceClass.getMetadata(), PropertySources.class,
 				org.springframework.context.annotation.PropertySource.class)) {
 			if (this.environment instanceof ConfigurableEnvironment) {
-				//具体处理@PropertySource注解的方法
+				// 具体处理@PropertySource注解的方法
+				// 就是我们定义的静态配置文件，是在这里处理
 				processPropertySource(propertySource);
 			} else {
 				logger.warn("Ignoring @PropertySource annotation on [" + sourceClass.getMetadata().getClassName() +

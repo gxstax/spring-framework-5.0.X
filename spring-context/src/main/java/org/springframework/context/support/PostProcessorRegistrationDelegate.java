@@ -82,7 +82,7 @@ final class PostProcessorRegistrationDelegate {
 				}
 				else {
 					//这里大家有没有疑问？我们程序员自己定义的实现BeanFactoryPostProcessor和BeanDefinitionRegistryPostProcessor这两个接口的类
-					//为什么上面会判断只判断是否BeanDefinitionRegistryPostProcessor这个类，
+					//为什么上面的判断只判断是否BeanDefinitionRegistryPostProcessor这个类，
 					//并且执行了postProcessBeanDefinitionRegistry(registry)方法
 					//但是不判断是否是属于BeanFactoryPostProcessor这个类？？而是直接放到集合中去
 					//甭急，咱们先往下看......
@@ -115,8 +115,8 @@ final class PostProcessorRegistrationDelegate {
 			//排序，不重要
 			sortPostProcessors(currentRegistryProcessors, beanFactory);
 
-			//这里是把spring的和我们定义的（这里是指加了注解交给spring管理的，不包括我们自己通过实现接口不加注解）合并
-			//别问为为啥合并，应为他们都是实现BeanDefinitionRegistryPostProcessor这个接口的
+			// 这里是把spring的和我们定义的（这里是指加了注解交给spring管理的，不包括我们自己通过实现接口不加注解）合并
+			// 别问为为啥合并，应为他们都是实现BeanDefinitionRegistryPostProcessor这个接口的
 			registryProcessors.addAll(currentRegistryProcessors);
 
 
@@ -333,10 +333,9 @@ final class PostProcessorRegistrationDelegate {
 	private static void invokeBeanDefinitionRegistryPostProcessors(
 			Collection<? extends BeanDefinitionRegistryPostProcessor> postProcessors, BeanDefinitionRegistry registry) {
 
-		/**
-		 * 这里循环spring自己定义的beanFactoryProcessor
-		 * 其实循环个屁，只有一个
-		 */
+		 // 这里循环spring自己定义的beanFactoryProcessor，
+		 // 以及我们程序员自己定义的实现了BeanDefinitionRegistryPostProcessor接口的类
+		 // 这里其实就是执行回调函数
 		for (BeanDefinitionRegistryPostProcessor postProcessor : postProcessors) {
 			postProcessor.postProcessBeanDefinitionRegistry(registry);
 		}
@@ -348,6 +347,9 @@ final class PostProcessorRegistrationDelegate {
 	private static void invokeBeanFactoryPostProcessors(
 			Collection<? extends BeanFactoryPostProcessor> postProcessors, ConfigurableListableBeanFactory beanFactory) {
 
+		// 这里就是执行beanFactoryPostProcessors的回调方法
+		// 比如程序员自己写的实现了BeanFactoryPostProcessors的类，
+		// 重写的postProcessBeanFactory方法将会在这里一一执行；
 		for (BeanFactoryPostProcessor postProcessor : postProcessors) {
 			postProcessor.postProcessBeanFactory(beanFactory);
 		}

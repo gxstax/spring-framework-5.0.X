@@ -280,10 +280,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	 * @since 4.0
 	 */
 	@Nullable
-	public Comparator<Object> getDependencyComparator() {
+	public Comparator<Object> getDependencyComparator()
+	{
 		return this.dependencyComparator;
 	}
-
 	/**
 	 * Set a custom autowire candidate resolver for this BeanFactory to use
 	 * when deciding whether a bean definition should be considered as a
@@ -855,11 +855,13 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 					// 这行代码就是把我们的定义的bd注册到或者是放到我们的beanDifinitionMap当中去，是不是非常的easy?
 					// 当Spring的神秘面纱被揭下，哇，原来so他妈easy,对不对？
 					this.beanDefinitionMap.put(beanName, beanDefinition);
+					// 更新我们存储beanName的list集合
 					List<String> updatedDefinitions = new ArrayList<>(this.beanDefinitionNames.size() + 1);
 					updatedDefinitions.addAll(this.beanDefinitionNames);
 					updatedDefinitions.add(beanName);
 					// beanDefinitionNames保存所有bean的beanname
 					this.beanDefinitionNames = updatedDefinitions;
+					// 这里是一个有序的beanName集合
 					if (this.manualSingletonNames.contains(beanName)) {
 						Set<String> updatedSingletons = new LinkedHashSet<>(this.manualSingletonNames);
 						updatedSingletons.remove(beanName);
