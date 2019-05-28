@@ -744,6 +744,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			// 合并父BeanDefinition,这个只有在使用xml中会用到，不重要
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
+				// 这里是实例化我们通过FactoryBean创建出来的对象
 				if (isFactoryBean(beanName)) {
 					//判断是否是FactoryBean,如果是FactroyBean,则在前面加上一个&符号
 					//至于为什么要加上&符号，请自行恶补FactoryBean的类生成规则（去看源码）
@@ -764,8 +765,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 							getBean(beanName);
 						}
 					}
-				}
-				else {
+				} else {
 					// getBean 这里是实例化我们bean的方法
 					getBean(beanName);
 				}

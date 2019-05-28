@@ -104,8 +104,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 					Object alreadyThere = this.factoryBeanObjectCache.get(beanName);
 					if (alreadyThere != null) {
 						object = alreadyThere;
-					}
-					else {
+					} else {
 						if (shouldPostProcess) {
 							if (isSingletonCurrentlyInCreation(beanName)) {
 								// Temporarily return non-post-processed object, not storing it yet..

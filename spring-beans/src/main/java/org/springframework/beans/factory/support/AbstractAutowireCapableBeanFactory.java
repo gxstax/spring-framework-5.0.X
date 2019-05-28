@@ -1146,6 +1146,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		// 判断是否已经解析过了构造函数
+		// 如果是原型的，我们已经解析过一遍之后，下一次再用的时候则直接利用
+		// 之前解析过的构造方法来实例化对象
 		if (resolved) {
 			if (autowireNecessary) {
 				// 通过构造方法自动装配的方式构造 bean 对象
@@ -1326,6 +1328,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @param bw the BeanWrapper with bean instance
 	 */
 	protected void populateBean(String beanName, RootBeanDefinition mbd, @Nullable BeanWrapper bw) {
+		// 判断是否为空，跳过，不重要
 		if (bw == null) {
 			if (mbd.hasPropertyValues()) {
 				throw new BeanCreationException(

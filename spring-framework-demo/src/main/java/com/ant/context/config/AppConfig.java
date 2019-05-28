@@ -18,15 +18,14 @@ import org.springframework.context.annotation.*;
  * @datetime 2018/11/8 19:51
  * @Version 1.0
  */
-@Configuration(value = "appConfig")
-@ComponentScan(value = "com.ant.context",
-		excludeFilters = @ComponentScan.Filter(DemoConfig.class))
+@Configuration
+@ComponentScan(value = "com.ant.context")
 //@Import(MyImportSelector.class)
 //@ImportResource("classpath:spring.xml")
 //@AntEnable
 //@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 //@Import(IndexDao3.class)
-//@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy
 public class AppConfig {
 	@Bean
 	public IndexDao1 indexDao1 () {

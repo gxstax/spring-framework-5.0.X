@@ -1,21 +1,11 @@
 package com.ant.context.test;
 
 import com.ant.context.beanfactoryfostprocessor.MyBeanDefinitionRegistryPostProcessor;
-import com.ant.context.beanfactoryfostprocessor.MyBeanFactoryPostProcessor;
 import com.ant.context.config.AppConfig;
-import com.ant.context.config.DemoConfig;
-import com.ant.context.dao.Dao;
-import com.ant.context.dao.IndexDao;
-import com.ant.context.dao.IndexDao3;
 import com.ant.context.factorybean.TempFactoryBean;
 import com.ant.context.factorybean.TestFactorybean;
-import com.ant.context.service.UserService;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Ant
@@ -30,7 +20,7 @@ public class TestDemo {
 		// 1、准备工厂 == DefaultListableBeanFactory
 		// 2、实例化一个bdReader 和一个 scanner
 		AnnotationConfigApplicationContext annotationConfigApplicationContext
-				= new AnnotationConfigApplicationContext(AppConfig.class);
+				= new AnnotationConfigApplicationContext();
 
 //		ClassPathXmlApplicationContext classPathXmlApplicationContext =
 //				new ClassPathXmlApplicationContext("xxx.xml");
@@ -41,8 +31,8 @@ public class TestDemo {
 //		annotationConfigApplicationContext.addBeanFactoryPostProcessor(beanFactoryPostProcessor);
 
 		//测试我们自己定义的BeanDefinitionRegistryPostProcessor
-		BeanFactoryPostProcessor beanFactoryPostProcessor1 = new MyBeanDefinitionRegistryPostProcessor();
-		annotationConfigApplicationContext.addBeanFactoryPostProcessor(beanFactoryPostProcessor1);
+//		BeanFactoryPostProcessor beanFactoryPostProcessor1 = new MyBeanDefinitionRegistryPostProcessor();
+//		annotationConfigApplicationContext.addBeanFactoryPostProcessor(beanFactoryPostProcessor1);
 
 		/**
 		 * 这行代码是把我们自己定义的AppConfig.class的class类转换成bd,
