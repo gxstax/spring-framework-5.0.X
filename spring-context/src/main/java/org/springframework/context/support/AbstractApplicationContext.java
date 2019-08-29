@@ -537,8 +537,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			prepareBeanFactory(beanFactory);
 
 			try {
-				//这个是个空方法，没有任何的实现，先来看官方注释（允许在上下文子类中对bean工厂进行后处理）
-				//很明显应该是预留的一个bean工厂产生过程中的处理器，后续应该会有扩展
+				// 这个其实不是一个个空方法，在普通的spring容器是没有任何的实现的，
+				// 但是在web容器中就会调用子类AbstractRefreshableWebApplicationContext#postProcessBeanFactory()方法
+				// 来处理一些servlet
+				// 先来看官方注释（允许在上下文子类中对bean工厂进行后处理）
 				// Allows post-processing of the bean factory in context subclasses.
 				postProcessBeanFactory(beanFactory);
 
