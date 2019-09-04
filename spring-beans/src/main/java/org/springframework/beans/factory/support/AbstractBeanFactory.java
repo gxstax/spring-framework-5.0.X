@@ -869,13 +869,16 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		// Remove from old position, if any
 		// 移除旧的
 		this.beanPostProcessors.remove(beanPostProcessor);
+		// 如果有初始化bean的后置处理器，则把初始化后置处理器标志置为true
 		// Track whether it is instantiation/destruction aware
 		if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
 			this.hasInstantiationAwareBeanPostProcessors = true;
 		}
+		// 如果有销毁bean的后置处理器，则把销毁后置处理器标志置为true
 		if (beanPostProcessor instanceof DestructionAwareBeanPostProcessor) {
 			this.hasDestructionAwareBeanPostProcessors = true;
 		}
+		// 把后置处理器放到列表尾部
 		// Add to end of list
 		this.beanPostProcessors.add(beanPostProcessor);
 	}

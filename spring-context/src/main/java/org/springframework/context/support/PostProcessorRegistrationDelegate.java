@@ -59,33 +59,39 @@ final class PostProcessorRegistrationDelegate {
 		 * 并且调用annotationConfigApplicationContext.addBeanFactoryPostProcessor(beanFactoryPostProcessor);这个方法放进来的；
 		 *
 		 */
+		// 注意这里判断beanFactory实例的时候为什么是true，因为beanFactory在前面实例话的时候返回的是一个DefaultListableBeanFactory实例
+		// 而DefaultListableBeanFactory是继承了BeanDefinitionRegistry，所以这里返回是true
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 
-			//存放我们程序员自己定义的实现BeanFactoryPostProcessor接口的beanFactoryPostProcessor
+			// 存放我们程序员自己定义的常规的实现BeanFactoryPostProcessor接口的beanFactoryPostProcessor
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
-			//存放我们程序员自己定义的实现BeanDefinitionRegistryPostProcessor接口的beanFactroyPostProcessor
+			// 存放我们程序员自己定义的实现BeanDefinitionRegistryPostProcessor接口的beanFactroyPostProcessor
+			// 这个后置处理器的作用要远比BeanFactoryPostProcessor要强大,这个后置处理器可以拿到BeanDefinitionRegistry
+			// 拿到这个对象说明我们可以手动的相bean工厂注册自己的对象，mybatis就是利用的这一点去把它的对象注册到spring容器中来交给spring管理的
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
 
+			// 这里循环处理我们程序员自己定义的对bean工厂操作的后置处理器（这里的后置处理器是直接放到spring的容器当中的，它不是放到beanFatory中的）
 			for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
 					BeanDefinitionRegistryPostProcessor registryProcessor =
 							(BeanDefinitionRegistryPostProcessor) postProcessor;
 
-					//如果这个地方定义了一个处理器，则会调用registryProcessor的postProcessBeanDefinitionRegistry(registry)
-					//方法，这个地方是调用我们程序员自己定义的registryProcessor的postProcessBeanDefinitionRegistry回掉方法，
-					//如果我们没有定义这样一个后置处理器，则会跳过
+					// 如果这个地方定义了一个处理器，则会调用registryProcessor的postProcessBeanDefinitionRegistry(registry)
+					// 方法，这个地方是调用我们程序员自己定义的registryProcessor的postProcessBeanDefinitionRegistry回调方法，
+					// 如果我们没有定义这样一个后置处理器，则会跳过
 					// 这里会增强benFactoryProcessor的一些功能
+					// 为什么会在这里执行回调函数，因为BeanDefinitionRegistryPostProcessor这个后置处理器是参与bean工厂的构建的
+					// 而不是参与bean实例话构建，所以这里直接执行了回调函数
 					registryProcessor.postProcessBeanDefinitionRegistry(registry);
 
 					registryProcessors.add(registryProcessor);
-				}
-				else {
-					//这里大家有没有疑问？我们程序员自己定义的实现BeanFactoryPostProcessor和BeanDefinitionRegistryPostProcessor这两个接口的类
-					//为什么上面的判断只判断是否BeanDefinitionRegistryPostProcessor这个类，
-					//并且执行了postProcessBeanDefinitionRegistry(registry)方法
-					//但是不判断是否是属于BeanFactoryPostProcessor这个类？？而是直接放到集合中去
-					//甭急，咱们先往下看......
+				} else {
+					// 这里大家有没有疑问？我们程序员自己定义的实现BeanFactoryPostProcessor和BeanDefinitionRegistryPostProcessor这两个接口的类
+					// 为什么上面的判断只判断是否BeanDefinitionRegistryPostProcessor这个类，
+					// 并且执行了postProcessBeanDefinitionRegistry(registry)方法
+					// 但是不判断是否是属于BeanFactoryPostProcessor这个类？？而是直接放到集合中去
+					// 甭急，咱们先往下看......
 					regularPostProcessors.add(postProcessor);
 				}
 			}
@@ -95,15 +101,18 @@ final class PostProcessorRegistrationDelegate {
 			// Separate between BeanDefinitionRegistryPostProcessors that implement
 			// PriorityOrdered, Ordered, and the rest.
 
-			//这个地方又定义了一个List<BeanDefinitionRegistryPostProcessor>,
-			//这个List主要是维护spring自己实现了BeanDefinitionRegistryPostProcessor接口的对象
-			//其实这里实现BeanDefinitionRegistryPostProcessor接口的只有一个，就是那个最重要的db
-			//这个类ConfigurationClassPostProcessor，名字叫做internalConfigurationAnnotationProcessor
-			//是不是很熟悉？？？哈哈
+			// 这个地方又定义了一个List<BeanDefinitionRegistryPostProcessor>,
+			// 这个List主要是维护spring自己实现了BeanDefinitionRegistryPostProcessor接口的对象
+			// 其实这里实现BeanDefinitionRegistryPostProcessor接口的只有一个，就是那个最重要的db
+			// 这个类ConfigurationClassPostProcessor，名字叫做internalConfigurationAnnotationProcessor
+			// 是不是很熟悉？？？哈哈
 			//ConfigurationClassPostProcessor这个类其实是实现了BeanDefinitionRegistryPostProcessor
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
 
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
+			// 这里我在第一次看到的时候，我认为这个数组肯定是0，因为我们从来没有在beanFactory中放入过后置处理器，其实不然，
+			// 这里我们在初始化容器的时候，就已经放入了6个，就是在最开始new容器的时候；因为spring实在用了太多的类继承和接口继承，
+			// 所以要理清楚这段逻辑，还需要从开始的那段代码再理一下
 			String[] postProcessorNames =
 					beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {
@@ -112,13 +121,12 @@ final class PostProcessorRegistrationDelegate {
 					processedBeans.add(ppName);
 				}
 			}
-			//排序，不重要
+			// 排序，不重要
 			sortPostProcessors(currentRegistryProcessors, beanFactory);
 
 			// 这里是把spring的和我们定义的（这里是指加了注解交给spring管理的，不包括我们自己通过实现接口不加注解）合并
 			// 别问为为啥合并，应为他们都是实现BeanDefinitionRegistryPostProcessor这个接口的
 			registryProcessors.addAll(currentRegistryProcessors);
-
 
 			/**
 			 * 重中之重
@@ -129,10 +137,10 @@ final class PostProcessorRegistrationDelegate {
 			 */
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
 
-			//好了，到此为止，包括我们程序员自己定义的以及spring的所有的BeanFactoryPostProcessor都已经执行完成了
+			// 好了，到此为止，包括我们程序员自己定义的以及spring的所有的BeanFactoryPostProcessor都已经执行完成了
 
-			//因为currentRegistryProcessors已经合并到了registryProcessors，
-			//并且也已经执行完了，也是为后面判断排序做处理，所以这里清理了
+			// 因为currentRegistryProcessors已经合并到了registryProcessors，
+			// 并且也已经执行完了，也是为后面判断排序做处理，所以这里清理了
 			currentRegistryProcessors.clear();
 
 			//如果有排序，则执行

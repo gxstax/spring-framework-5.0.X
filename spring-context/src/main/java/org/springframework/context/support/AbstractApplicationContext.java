@@ -27,10 +27,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.CachedIntrospectionResults;
 import org.springframework.beans.factory.BeanFactory;
@@ -574,7 +572,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Check for listener beans and register them.
 				registerListeners();
 
-
 				/*
 				 * attention: this is a 非常重要的一个方法 too.
 				 *
@@ -679,15 +676,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// bean表达式解释器
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
 
-
 		// 我猜是添加一个处理我们property或者xml文件的解析器，这个不是很重要，因为现在spring推崇0配置
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
-
-		// 添加一个后置处理器，第1个
+		// 添加一个后置处理器，第1个（参与bean实例化过程的后置处理器）
 		// Configure the bean factory with context callbacks.
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
-
 
 		/**
 		 * 设定beanFactory忽略检查配置，意思就是后面解析的时候如果是beanFactroy类，则不进行
@@ -708,13 +702,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.registerResolvableDependency(ApplicationContext.class, this);
 
 
-		// 注册一个后置处理器，第2个
+		// 注册一个后置处理器，第2个（参与bean实例化过程的后置处理器）
 		// Register early post-processor for detecting inner beans as ApplicationListeners.
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
 
-		//TODO 时间编制什么的鬼，不知道是干嘛的，不重要，先跳过
+		// TODO 时间编制什么的鬼，不知道是干嘛的，不重要，先跳过
 		// Detect a LoadTimeWeaver and prepare for weaving, if found.
 		if (beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
+			// 注册一个后置处理器，第3个 （注意这里不一样的一点是这里把beanFatory传入进来的）
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
 			// Set a temporary ClassLoader for type matching.
 			beanFactory.setTempClassLoader(new ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));
@@ -749,15 +744,19 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * <p>Must be called before singleton instantiation.
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
-		// 1. getBeanFactoryPostProcessors()这个方法是获取程序员自己定义的后置处理器，没有交给spring管理，
-		//    也就是这个后置处理器没有加@Component
-		// 2. invokeBeanFactoryPostProcessors则是得到spring内部自己维护的BeanDefinitionRegistryPostProcessor
+		// 1. getBeanFactoryPostProcessors()这个方法是获取程序员自己定义的后置处理器，
+		//    程序员可以自己定义自己的后置处理器，然后手动放到private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
+		//    这个list中去，那么在这里就可以取到，除了程序员自己定义的，这里的后置处理器是拿的容器里的（ApplicationContext里面的）
+		//
+		// 2. invokeBeanFactoryPostProcessors则是得到spring内部自己维护的BeanDefinitionRegistryPostProcessor，
+		//     这其中就包括spring自己注册进去的后置处理器，这其中就包括ApplicationContextAwareProcessor这个处理器
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
 
 		//把我们上面定义的后置处理器放到beanFactory中去
 		// Detect a LoadTimeWeaver and prepare for weaving, if found in the meantime
 		// (e.g. through an @Bean method registered by ConfigurationClassPostProcessor)
 		if (beanFactory.getTempClassLoader() == null && beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
+			// 注册一个后置处理器
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
 			beanFactory.setTempClassLoader(new ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));
 		}
