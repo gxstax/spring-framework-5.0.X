@@ -1,5 +1,8 @@
 package com.ant.aop.aspect;
 
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -22,8 +25,26 @@ public class AntAspect {
 
 	}
 
-	@Before("pointCut()")
-	public void before () {
+//	@Before("pointCut()")
+//	public void before () {
+//		System.out.println("proxy before");
+//	}
+//
+//	@After("pointCut()")
+//	public void after() {
+//		try {
+//			System.out.println(1/0);
+//		} catch (Exception e) {
+//			System.out.println("prox wocao ");
+//		}
+//	}
+
+	@Around("pointCut()")
+	public Object around(ProceedingJoinPoint point) throws Throwable {
 		System.out.println("proxy before");
+		Object proceed = point.proceed();
+		System.out.println(1/0);
+
+		return proceed;
 	}
 }

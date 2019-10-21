@@ -1,5 +1,6 @@
 package com.ant.importselector.dao;
 
+import com.ant.importselector.anno.AntAuto;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,6 +27,7 @@ public class UserDao {
 		return name;
 	}
 
+	@AntAuto
 	public void setName(String name) {
 		this.name = name;
 	}

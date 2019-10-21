@@ -17,7 +17,7 @@ public class Test {
 				= new AnnotationConfigApplicationContext();
 		applicationContext.register(AppConfig.class);
 		applicationContext.refresh();
-		OrderDaoImpl bean = applicationContext.getBean(OrderDaoImpl.class);
+		OrderDaoImpl bean = (OrderDaoImpl) applicationContext.getBean("orderDaoImpl");
 		bean.query();
 	}
 }

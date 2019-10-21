@@ -523,10 +523,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			// Tell the subclass to refresh the internal bean factory.
 
-			//返回一个工厂beanFactory
-			//为什么要返回一个工厂？ 因为要对工厂进行初始化设置（相当于生产前添加设备以及员工）
-			//我们后面会把我们要生产的对象（相当于工厂要生产的产品）放进了类定义中（BeanDifinitionMap），
-			//下一步要产生这些类（产品），我们必须要初始化我们的工厂，并且要在工厂里面添加处理器（工厂工具和工人）才能生产出类对象
+			/**
+			 * 返回一个工厂beanFactory
+			 *
+			 * 为什么要返回一个工厂？ 因为要对工厂进行初始化设置（相当于生产前添加设备以及员工）
+			 * 我们后面会把我们要生产的对象（相当于工厂要生产的产品）放进了类定义中（BeanDifinitionMap），
+			 * 下一步要产生这些类（产品），我们必须要初始化我们的工厂，并且要在工厂里面添加处理器（工厂工具和工人）才能生产出类对象
+			 *
+			 */
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
@@ -744,15 +748,17 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * <p>Must be called before singleton instantiation.
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
-		// 1. getBeanFactoryPostProcessors()这个方法是获取程序员自己定义的后置处理器，
-		//    程序员可以自己定义自己的后置处理器，然后手动放到private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
-		//    这个list中去，那么在这里就可以取到，除了程序员自己定义的，这里的后置处理器是拿的容器里的（ApplicationContext里面的）
-		//
-		// 2. invokeBeanFactoryPostProcessors则是得到spring内部自己维护的BeanDefinitionRegistryPostProcessor，
-		//     这其中就包括spring自己注册进去的后置处理器，这其中就包括ApplicationContextAwareProcessor这个处理器
+		/**
+		 * 1. getBeanFactoryPostProcessors()这个方法是获取程序员自己定义的后置处理器，
+		 *    程序员可以自己定义自己的后置处理器，然后手动放到private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
+		 *    这个list中去，那么在这里就可以取到，除了程序员自己定义的，这里的后置处理器是拿的容器里的（ApplicationContext里面的）
+		 *
+		 * 2. invokeBeanFactoryPostProcessors则是得到spring内部自己维护的BeanDefinitionRegistryPostProcessor，
+		 *     这其中就包括spring自己注册进去的后置处理器，这其中就包括ApplicationContextAwareProcessor这个处理器
+		 */
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
 
-		//把我们上面定义的后置处理器放到beanFactory中去
+		// 把我们上面定义的后置处理器放到beanFactory中去
 		// Detect a LoadTimeWeaver and prepare for weaving, if found in the meantime
 		// (e.g. through an @Bean method registered by ConfigurationClassPostProcessor)
 		if (beanFactory.getTempClassLoader() == null && beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {

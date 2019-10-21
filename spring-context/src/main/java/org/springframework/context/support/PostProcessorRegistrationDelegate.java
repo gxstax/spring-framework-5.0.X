@@ -341,9 +341,11 @@ final class PostProcessorRegistrationDelegate {
 	private static void invokeBeanDefinitionRegistryPostProcessors(
 			Collection<? extends BeanDefinitionRegistryPostProcessor> postProcessors, BeanDefinitionRegistry registry) {
 
-		 // 这里循环spring自己定义的beanFactoryProcessor，
-		 // 以及我们程序员自己定义的实现了BeanDefinitionRegistryPostProcessor接口的类
-		 // 这里其实就是执行回调函数
+		// 这里循环spring自己定义的beanFactoryProcessor
+		// 以及我们程序员自己定义的实现了BeanDefinitionRegistryPostProcessor接口的类
+		// 这里其实就是执行回调函数
+		// 这里的beanFactoryProcessor，如果我们程序员自己没有定义，这里是只有一个：ConfigurationClassPostProcessor
+		// （实际上我们程序员在项目中参与bean工厂的实例化过程的场景比较少，如果是框架开发那就另当别论）
 		for (BeanDefinitionRegistryPostProcessor postProcessor : postProcessors) {
 			postProcessor.postProcessBeanDefinitionRegistry(registry);
 		}

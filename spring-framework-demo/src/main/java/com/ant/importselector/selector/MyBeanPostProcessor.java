@@ -1,5 +1,6 @@
 package com.ant.importselector.selector;
 
+import com.ant.importselector.anno.AntAuto;
 import com.ant.importselector.dao.IndexDao;
 import com.ant.importselector.dao.UserDao;
 import org.springframework.beans.BeansException;
@@ -29,9 +30,15 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		if(beanName.equals("aaa")) {
 			try {
+
+				AntAuto annotation = bean.getClass().getAnnotation(AntAuto.class);
+				if (null != annotation) {
+					System.out.println(bean.getClass().getMethods());
+				}
+
 				Field name = bean.getClass().getDeclaredField("name");
 				Method setName = bean.getClass().getDeclaredMethod("setName", String.class);
-				setName.invoke(bean, "ljsladjdfljfa");
+				setName.invoke(bean, "ljsladjdfljsssssfa");
 			} catch (NoSuchFieldException e) {
 				e.printStackTrace();
 			} catch (NoSuchMethodException e) {

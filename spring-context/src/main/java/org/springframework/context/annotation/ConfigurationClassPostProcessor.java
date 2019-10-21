@@ -221,6 +221,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
 		int registryId = System.identityHashCode(registry);
+		// 判断注册器是否重复加载
 		if (this.registriesPostProcessed.contains(registryId)) {
 			throw new IllegalStateException(
 					"postProcessBeanDefinitionRegistry already called on this post-processor against " + registry);
@@ -269,7 +270,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	 */
 	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
-		//获取所有的bd定义类spring的6个，还有自己定义的（也就是加了@configuration注解的）
+		// 获取所有的bd定义类 spring的6个，还有自己定义的（也就是加了@configuration注解的）
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
 		/*

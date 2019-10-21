@@ -1,7 +1,6 @@
 package com.ant.aop.dao;
 
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 /**
  * @ClassName OrderDaoImpl
@@ -15,6 +14,11 @@ import org.springframework.stereotype.Repository;
 public class OrderDaoImpl implements OrderDao{
 	@Override
 	public void query() {
-		System.out.println("query");
+		try {
+			System.out.println("原始逻辑");
+		} catch (Exception e) {
+			System.out.println("wucoa");
+			e.printStackTrace();
+		}
 	}
 }
