@@ -6,10 +6,13 @@ import com.ant.importselector.dao.UserDao;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.Proxy;
+import java.util.HashMap;
 
 /**
  * @author gaoxx gaoxx@fxiaoke.com
@@ -36,20 +39,58 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 					System.out.println(bean.getClass().getMethods());
 				}
 
-				Field name = bean.getClass().getDeclaredField("name");
-				Method setName = bean.getClass().getDeclaredMethod("setName", String.class);
-				setName.invoke(bean, "ljsladjdfljsssssfa");
-			} catch (NoSuchFieldException e) {
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
+
+				Field[] fields = bean.getClass().getDeclaredFields();
+				for (Field field : fields) {
+					System.out.println(field.getName());
+				}
+
+				Field baiduParamsMap = bean.getClass().getDeclaredField("name");
+				HashMap options = new HashMap(3);
+				// 传入可选参数调用接口
+				options.put("language_type", "CHN_ENG");
+				options.put("detect_direction", "true");
+				options.put("detect_language", "true");
+				baiduParamsMap.setAccessible(true);
+				baiduParamsMap.set(bean, "caojjjjjjs");
+
+
+				Class<?> aClass = bean.getClass();
+
+				Method[] methods = aClass.getMethods();
+				for (Method method : methods) {
+					AntAuto annotation1 = method.getAnnotation(AntAuto.class);
+
+					if (null != annotation1) {
+
+
+//						HashMap map = new HashMap(1);
+//						map.put("key", "扯淡");
+//
+//						Parameter[] parameters = method.getParameters();
+//						Parameter[] newParams;
+//						if (parameters.length > 1) {
+//							newParams = new Parameter[parameters.length-1];
+//							for (int i = 0; i < parameters.length; i++) {
+//
+//							}
+//						} else {
+//							newParams = parameters;
+//						}
+//
+//						Method setName = aClass.getDeclaredMethod(method.getName(), String.class, HashMap.class);
+//
+//						setName.invoke(bean, parameters);
+					}
+
+				}
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (NoSuchFieldException e) {
 				e.printStackTrace();
 			}
 		}
 //		System.out.println("after---");
-		return null;
+		return bean;
 	}
 }
