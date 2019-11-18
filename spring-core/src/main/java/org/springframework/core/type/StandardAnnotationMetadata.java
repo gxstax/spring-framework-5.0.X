@@ -42,6 +42,7 @@ public class StandardAnnotationMetadata extends StandardClassMetadata implements
 
 	private final Annotation[] annotations;
 
+	// 注解是否嵌套注解标志
 	private final boolean nestedAnnotationsAsMap;
 
 

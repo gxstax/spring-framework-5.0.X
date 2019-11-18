@@ -3,6 +3,8 @@ package com.ant.webmvc.test;
 //import org.springframework.web.context.WebApplicationContext;
 //import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import java.util.UUID;
+
 /**
  * @author Ant
  * @ClassName: Test
@@ -12,6 +14,6 @@ package com.ant.webmvc.test;
  */
 public class Test {
 	public static void main(String[] args) {
-
+		System.out.println(UUID.randomUUID());
 	}
 }
