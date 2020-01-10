@@ -38,6 +38,8 @@ import org.springframework.beans.BeansException;
 @FunctionalInterface
 public interface ObjectFactory<T> {
 
+	// ObjectFactory 并没有生成新的bean，而FactoryBean会生成一个新的bean，这就是它俩的区别
+
 	/**
 	 * Return an instance (possibly shared or independent)
 	 * of the object managed by this factory.
