@@ -179,6 +179,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/** System time in milliseconds when this context started */
 	private long startupDate;
 
+	/** beanFactory （Spring容器）是否还处于生存状态 */
 	/** Flag that indicates whether this context is currently active */
 	private final AtomicBoolean active = new AtomicBoolean();
 
@@ -547,6 +548,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				postProcessBeanFactory(beanFactory);
 
 				/*
+				 * 对容器的一些配置操作
 				 * attention: this is a 相当相当重要的一个方法.
 				 *
 				 * 在spring的环境中去执行已经被注册的 factory processors
@@ -557,7 +559,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 
 
-				//注册后置处理器
+				/*
+				 * 对容器中的 Bean 对象的操作
+				 */
 				// Register bean processors that intercept bean creation.
 				registerBeanPostProcessors(beanFactory);
 
@@ -565,7 +569,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Initialize message source for this context.
 				initMessageSource();
 
-				//spring的Event事件
+				// spring初始化一些 Event 事件
 				// Initialize event multicaster for this context.
 				initApplicationEventMulticaster();
 
@@ -573,6 +577,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Initialize other special beans in specific context subclasses.
 				onRefresh();
 
+				/*
+				 * 注册监听器
+				 */
 				// Check for listener beans and register them.
 				registerListeners();
 
@@ -1083,12 +1090,18 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				}
 			}
 
+			// 销毁Beans
 			// Destroy all cached singletons in the context's BeanFactory.
 			destroyBeans();
 
+			// 关闭BeanFactory
 			// Close the state of this context itself.
 			closeBeanFactory();
 
+			/*
+			 * 如果在销毁beans和关闭beanFactory后，你还要在做一些其它的操作，
+			 * 可以继承ApplicationContext，实现onClose()接口去做一些操作
+			 */
 			// Let subclasses do some final clean-up if they wish...
 			onClose();
 

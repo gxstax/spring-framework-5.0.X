@@ -24,5 +24,7 @@ public class TestDemo {
 
 		context.refresh();
 
+		context.close();
+
 	}
 }

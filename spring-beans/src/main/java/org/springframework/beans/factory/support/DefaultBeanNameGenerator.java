@@ -19,6 +19,7 @@ package org.springframework.beans.factory.support;
 import org.springframework.beans.factory.config.BeanDefinition;
 
 /**
+ * 默认的 beanName 生成方案
  * Default implementation of the {@link BeanNameGenerator} interface, delegating to
  * {@link BeanDefinitionReaderUtils#generateBeanName(BeanDefinition, BeanDefinitionRegistry)}.
  *
@@ -27,6 +28,9 @@ import org.springframework.beans.factory.config.BeanDefinition;
  */
 public class DefaultBeanNameGenerator implements BeanNameGenerator {
 
+	/**
+	 * 这里是一个5.0.x的spring版本，到了5.2.x后的版本，spring 写了一个单例来实现
+	 */
 	@Override
 	public String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry) {
 		return BeanDefinitionReaderUtils.generateBeanName(definition, registry);
