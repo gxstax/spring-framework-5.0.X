@@ -22,6 +22,10 @@ public class TomcatService {
 
 		File base = new File(System.getProperty("java.io.tmpdir"));
 
+		System.out.println("base---:"+base);
+
+		System.out.println(base.getAbsolutePath());
+
 		Tomcat tomcat = new Tomcat();
 
 		// 设置端口号
