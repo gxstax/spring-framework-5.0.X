@@ -22,7 +22,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan("com.ant.importselector")
-//@AntEnable
+@AntEnable
 @Import(Myselector.class)
 public class Appconfig {
 

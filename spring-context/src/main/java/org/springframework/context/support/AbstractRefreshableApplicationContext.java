@@ -70,6 +70,11 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	@Nullable
 	private Boolean allowCircularReferences;
 
+	/**
+	 * Application虽然继承了BeanFactory，
+	 * 但是IOC底层的实现是通过这里组合进来的对象来实现的，拿到ApplicationContext后要想获取到IOC容器底层的实现，
+	 * 需要调用application.getBeanFactory()来获取
+	 */
 	/** Bean factory for this context */
 	@Nullable
 	private DefaultListableBeanFactory beanFactory;

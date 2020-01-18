@@ -56,6 +56,13 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.jndi.JndiObjectFactoryBean
  */
 public interface FactoryBean<T> {
+	
+	/**
+	 * <p>
+	 * FactoryBean和ObjectFactory的区别是FactoryBean会生成一个新的对象,
+	 * 默认是在类名前加 &，而ObjectFactory是通过注入的方式添加一个类对象；
+	 * </p>
+	 */
 
 	/**
 	 * Return an instance (possibly shared or independent) of the object

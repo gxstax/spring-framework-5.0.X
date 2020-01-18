@@ -19,22 +19,22 @@ import javax.sql.DataSource;
  **/
 @Configuration
 @ComponentScan("com.ant.aop")
-//@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class AppConfig {
-	@Bean
-	public JdbcTemplate jdbcTemplate (DataSource dataSource) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate();
-		jdbcTemplate.setDataSource(dataSource);
-		return jdbcTemplate;
-	}
-
-	@Bean
-	public DataSource dataSource() {
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/test");
-		dataSource.setUsername("root");
-		dataSource.setPassword("root");
-		return dataSource;
-	}
+//	@Bean
+//	public JdbcTemplate jdbcTemplate (DataSource dataSource) {
+//		JdbcTemplate jdbcTemplate = new JdbcTemplate();
+//		jdbcTemplate.setDataSource(dataSource);
+//		return jdbcTemplate;
+//	}
+//
+//	@Bean
+//	public DataSource dataSource() {
+//		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+//		dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/test");
+//		dataSource.setUsername("root");
+//		dataSource.setPassword("root");
+//		return dataSource;
+//	}
 }

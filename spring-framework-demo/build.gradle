@@ -27,5 +27,5 @@ dependencies {
 
     compile(project(":spring-context"))
     compile(project(":spring-jdbc"))
-//    compile(project(":spring-web"))
+    compile(project(":spring-web"))
 }

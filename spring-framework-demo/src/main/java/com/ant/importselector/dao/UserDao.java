@@ -1,6 +1,9 @@
 package com.ant.importselector.dao;
 
+import com.ant.importselector.anno.AntAuto;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
 
 /**
  * @author gaoxx gaoxx@fxiaoke.com
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Component("aaa")
 public class UserDao {
+
 	private String id;
 	private String name;
 
@@ -26,8 +30,10 @@ public class UserDao {
 		return name;
 	}
 
-	public void setName(String name) {
+	@AntAuto
+	public void setName(String name, HashMap map) {
 		this.name = name;
+		System.out.println(map.toString());
 	}
 
 }

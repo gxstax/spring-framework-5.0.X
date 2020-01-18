@@ -27,10 +27,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.CachedIntrospectionResults;
 import org.springframework.beans.factory.BeanFactory;
@@ -175,12 +173,13 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	private ConfigurableEnvironment environment;
 
 	/** BeanFactoryPostProcessors to apply on refresh */
-	// 保存后置处理器
+	// 保存后置处理器, 我们通过context手动添加进去的就在这里
 	private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
 
 	/** System time in milliseconds when this context started */
 	private long startupDate;
 
+	/** beanFactory （Spring容器）是否还处于生存状态 */
 	/** Flag that indicates whether this context is currently active */
 	private final AtomicBoolean active = new AtomicBoolean();
 
@@ -525,10 +524,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			// Tell the subclass to refresh the internal bean factory.
 
-			//返回一个工厂beanFactory
-			//为什么要返回一个工厂？ 因为要对工厂进行初始化设置（相当于生产前添加设备以及员工）
-			//我们后面会把我们要生产的对象（相当于工厂要生产的产品）放进了类定义中（BeanDifinitionMap），
-			//下一步要产生这些类（产品），我们必须要初始化我们的工厂，并且要在工厂里面添加处理器（工厂工具和工人）才能生产出类对象
+			/**
+			 * 返回一个工厂beanFactory
+			 *
+			 * 为什么要返回一个工厂？ 因为要对工厂进行初始化设置（相当于生产前添加设备以及员工）
+			 * 我们后面会把我们要生产的对象（相当于工厂要生产的产品）放进了类定义中（BeanDifinitionMap），
+			 * 下一步要产生这些类（产品），我们必须要初始化我们的工厂，并且要在工厂里面添加处理器（工厂工具和工人）才能生产出类对象
+			 *
+			 */
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
@@ -537,12 +540,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			prepareBeanFactory(beanFactory);
 
 			try {
-				//这个是个空方法，没有任何的实现，先来看官方注释（允许在上下文子类中对bean工厂进行后处理）
-				//很明显应该是预留的一个bean工厂产生过程中的处理器，后续应该会有扩展
+				// 这个其实不是一个个空方法，在普通的spring容器是没有任何的实现的，
+				// 但是在web容器中就会调用子类AbstractRefreshableWebApplicationContext#postProcessBeanFactory()方法
+				// 来处理一些servlet
+				// 先来看官方注释（允许在上下文子类中对bean工厂进行后处理）
 				// Allows post-processing of the bean factory in context subclasses.
 				postProcessBeanFactory(beanFactory);
 
 				/*
+				 * 对容器的一些配置操作
 				 * attention: this is a 相当相当重要的一个方法.
 				 *
 				 * 在spring的环境中去执行已经被注册的 factory processors
@@ -553,7 +559,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 
 
-				//注册后置处理器
+				/*
+				 * 对容器中的 Bean 对象的操作
+				 */
 				// Register bean processors that intercept bean creation.
 				registerBeanPostProcessors(beanFactory);
 
@@ -561,7 +569,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Initialize message source for this context.
 				initMessageSource();
 
-				//spring的Event事件
+				// spring初始化一些 Event 事件
 				// Initialize event multicaster for this context.
 				initApplicationEventMulticaster();
 
@@ -569,9 +577,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Initialize other special beans in specific context subclasses.
 				onRefresh();
 
+				/*
+				 * 注册监听器
+				 */
 				// Check for listener beans and register them.
 				registerListeners();
-
 
 				/*
 				 * attention: this is a 非常重要的一个方法 too.
@@ -677,15 +687,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// bean表达式解释器
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
 
-
 		// 我猜是添加一个处理我们property或者xml文件的解析器，这个不是很重要，因为现在spring推崇0配置
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
-
-		// 添加一个后置处理器，第1个
+		// 添加一个后置处理器，第1个（参与bean实例化过程的后置处理器）
 		// Configure the bean factory with context callbacks.
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
-
 
 		/**
 		 * 设定beanFactory忽略检查配置，意思就是后面解析的时候如果是beanFactroy类，则不进行
@@ -706,13 +713,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.registerResolvableDependency(ApplicationContext.class, this);
 
 
-		// 注册一个后置处理器，第2个
+		// 注册一个后置处理器，第2个（参与bean实例化过程的后置处理器）
 		// Register early post-processor for detecting inner beans as ApplicationListeners.
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
 
-		//TODO 时间编制什么的鬼，不知道是干嘛的，不重要，先跳过
+		// TODO 时间编制什么的鬼，不知道是干嘛的，不重要，先跳过
 		// Detect a LoadTimeWeaver and prepare for weaving, if found.
 		if (beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
+			// 注册一个后置处理器，第3个 （注意这里不一样的一点是这里把beanFatory传入进来的）
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
 			// Set a temporary ClassLoader for type matching.
 			beanFactory.setTempClassLoader(new ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));
@@ -747,15 +755,21 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * <p>Must be called before singleton instantiation.
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
-		// 1. getBeanFactoryPostProcessors()这个方法是获取程序员自己定义的后置处理器，没有交给spring管理，
-		//    也就是这个后置处理器没有加@Component
-		// 2. invokeBeanFactoryPostProcessors则是得到spring内部自己维护的BeanDefinitionRegistryPostProcessor
+		/**
+		 * 1. getBeanFactoryPostProcessors()这个方法是获取程序员自己定义的后置处理器，
+		 *    程序员可以自己定义自己的后置处理器，然后手动放到private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
+		 *    这个list中去，那么在这里就可以取到，除了程序员自己定义的，这里的后置处理器是拿的容器里的（ApplicationContext里面的）
+		 *
+		 * 2. invokeBeanFactoryPostProcessors则是得到spring内部自己维护的BeanDefinitionRegistryPostProcessor，
+		 *     这其中就包括spring自己注册进去的后置处理器，这其中就包括ApplicationContextAwareProcessor这个处理器
+		 */
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
 
-		//把我们上面定义的后置处理器放到beanFactory中去
+		// 把我们上面定义的后置处理器放到beanFactory中去
 		// Detect a LoadTimeWeaver and prepare for weaving, if found in the meantime
 		// (e.g. through an @Bean method registered by ConfigurationClassPostProcessor)
 		if (beanFactory.getTempClassLoader() == null && beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
+			// 注册一个后置处理器
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
 			beanFactory.setTempClassLoader(new ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));
 		}
@@ -1076,12 +1090,18 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				}
 			}
 
+			// 销毁Beans
 			// Destroy all cached singletons in the context's BeanFactory.
 			destroyBeans();
 
+			// 关闭BeanFactory
 			// Close the state of this context itself.
 			closeBeanFactory();
 
+			/*
+			 * 如果在销毁beans和关闭beanFactory后，你还要在做一些其它的操作，
+			 * 可以继承ApplicationContext，实现onClose()接口去做一些操作
+			 */
 			// Let subclasses do some final clean-up if they wish...
 			onClose();
 
