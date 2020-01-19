@@ -69,7 +69,9 @@ public abstract class AbstractServiceLoaderBasedFactoryBean extends AbstractFact
 	 */
 	@Override
 	protected Object createInstance() {
+		// 我们通过FactoryBean 的方式去实例化对象，要求我们必须传入serviceType 属性
 		Assert.notNull(getServiceType(), "Property 'serviceType' is required");
+		// 这里spring 会从容器中迭代，根据类型给我们返回
 		return getObjectToExpose(ServiceLoader.load(getServiceType(), this.beanClassLoader));
 	}
 
