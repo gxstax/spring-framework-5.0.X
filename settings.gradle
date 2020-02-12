@@ -32,4 +32,9 @@ rootProject.children.each {project ->
 include 'spring-framework-demo'
 include 'spring-event-demo'
 include 'spring-mvc-demo'
+include "thinking-in-spring"
+include "thinking-in-spring:ioc-container-overview"
+findProject(':thinking-in-spring:ioc-container-overview')?.name = 'ioc-container-overview'
+include "thinking-in-spring:spring-bean"
+findProject(':thinking-in-spring:spring-bean')?.name = 'spring-bean'
 

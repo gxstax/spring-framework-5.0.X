@@ -879,6 +879,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 * <p>The default is {@code null} in which case there is no initializer method.
 	 */
 	public void setInitMethodName(@Nullable String initMethodName) {
+		// 如果设置了initMethod，会在这里加载，当spring初始化的时候会回调你的初始化方法
 		this.initMethodName = initMethodName;
 	}
 

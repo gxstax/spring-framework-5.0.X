@@ -586,7 +586,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				/*
 				 * attention: this is a 非常重要的一个方法 too.
 				 *
-				 * 这里是bean的实例化过程，相当重要
+				 * 这里是bean的实例化过程，相当重要(注意这里Bean是非延迟加载的)
 				 */
 				// Instantiate all remaining (non-lazy-init) singletons.
 				finishBeanFactoryInitialization(beanFactory);
@@ -1065,6 +1065,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #registerShutdownHook()
 	 */
 	protected void doClose() {
+		// Spring 上下文关闭
 		if (this.active.get() && this.closed.compareAndSet(false, true)) {
 			if (logger.isInfoEnabled()) {
 				logger.info("Closing " + this);

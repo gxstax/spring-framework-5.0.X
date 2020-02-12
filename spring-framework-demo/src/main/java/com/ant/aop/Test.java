@@ -19,5 +19,7 @@ public class Test {
 		applicationContext.refresh();
 		OrderDaoImpl bean = (OrderDaoImpl) applicationContext.getBean("orderDaoImpl");
 		bean.query();
+
+		applicationContext.close();
 	}
 }

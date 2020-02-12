@@ -294,6 +294,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * @see #getSingletonMutex()
 	 */
 	protected void removeSingleton(String beanName) {
+		// 销毁 Bean
 		synchronized (this.singletonObjects) {
 			this.singletonObjects.remove(beanName);
 			this.singletonFactories.remove(beanName);
@@ -522,10 +523,12 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 			this.singletonsCurrentlyInDestruction = true;
 		}
 
+		// 统计实现 DisposableBean的 Bean 名称
 		String[] disposableBeanNames;
 		synchronized (this.disposableBeans) {
 			disposableBeanNames = StringUtils.toStringArray(this.disposableBeans.keySet());
 		}
+		// 通过 BeanName 销毁上面统计的Bean
 		for (int i = disposableBeanNames.length - 1; i >= 0; i--) {
 			destroySingleton(disposableBeanNames[i]);
 		}

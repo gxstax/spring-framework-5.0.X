@@ -192,6 +192,11 @@ public interface BeanFactory {
 	<T> T getBean(Class<T> requiredType) throws BeansException;
 
 	/**
+	 * <p>
+	 * 返回一个单例，有可能是单例（independent）也有可能是原生（shared）
+	 * </p>
+	 */
+	/**
 	 * Return an instance, which may be shared or independent, of the specified bean.
 	 * <p>Allows for specifying explicit constructor arguments / factory method arguments,
 	 * overriding the specified default arguments (if any) in the bean definition.
